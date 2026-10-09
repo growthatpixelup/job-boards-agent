@@ -1,7 +1,7 @@
 import { mkdir, rm, writeFile } from "node:fs/promises";
 import { DETAILS_DIR, RAW_DIR, detailFile, loadFeed, pendingDetails } from "./feed.ts";
 import { minimalDetail } from "./contra.ts";
-import { ContraMcp, refreshTokens } from "./mcp-client.ts";
+import { ContraMcp, describeAccount, refreshTokens } from "./mcp-client.ts";
 
 // Headless version of the /contra-scrape skill's fetch steps: pulls the job feed (and
 // any needed descriptions) straight from Contra's MCP server into data/raw/ and
@@ -29,6 +29,7 @@ async function main() {
 
   const mcp = new ContraMcp(tokens.accessToken);
   await mcp.connect();
+  console.log(`[contra] account: ${await describeAccount(mcp)}`);
 
   await rm(RAW_DIR, { recursive: true, force: true });
   await mkdir(RAW_DIR, { recursive: true });

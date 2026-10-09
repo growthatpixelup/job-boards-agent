@@ -47,6 +47,18 @@ async function readRpc(res: Response, id: number): Promise<any> {
   return msg.result;
 }
 
+/** "@username" plus whether the feed is limited to a preview (no Contra Pro). Uses only read-only tools. */
+export async function describeAccount(mcp: ContraMcp): Promise<string> {
+  const me = await mcp.call("whoami");
+  if (!me?.isAuthenticated) throw new Error("the Contra login is not authenticated");
+  const profile = me.visitor?.userAccount?.profile;
+  const feed = await mcp.call("list_job_feed", { preset: "ALL", first: 1 });
+  const name = [profile?.firstName?.trim(), profile?.lastName?.trim()].filter(Boolean).join(" ");
+  return `@${profile?.displayUsername ?? "unknown"}${name ? ` (${name})` : ""} · ${
+    feed?.accessLimitedFeed ? "NO Contra Pro: only a small preview of the job board is visible" : "Contra Pro: full job board visible"
+  }`;
+}
+
 export class ContraMcp {
   private accessToken: string;
   private sessionId: string | null = null;

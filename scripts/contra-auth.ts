@@ -3,7 +3,7 @@ import { createHash, randomBytes } from "node:crypto";
 import { writeFile } from "node:fs/promises";
 import { createServer } from "node:http";
 import path from "node:path";
-import { MCP_URL, OAUTH_BASE, exchangeCode } from "../scraper/mcp-client.ts";
+import { ContraMcp, MCP_URL, OAUTH_BASE, describeAccount, exchangeCode } from "../scraper/mcp-client.ts";
 
 // One-time login for the GitHub Actions scrape. Registers an OAuth client with
 // Contra's MCP server, opens the browser to log in, and saves the client id +
@@ -79,6 +79,14 @@ async function main() {
     JSON.stringify({ CONTRA_CLIENT_ID: clientId, CONTRA_REFRESH_TOKEN: tokens.refreshToken }, null, 2) + "\n",
     { mode: 0o600 },
   );
+  // Show which account was connected, using the short-lived access token (the saved refresh token is untouched).
+  try {
+    const mcp = new ContraMcp(tokens.accessToken);
+    await mcp.connect();
+    console.log(`Connected Contra account: ${await describeAccount(mcp)}\n`);
+  } catch (err) {
+    console.warn(`Couldn't confirm which account was connected: ${err instanceof Error ? err.message : err}\n`);
+  }
   console.log(
     `Saved to ${OUT_FILE}\n\n` +
       "Add both values as repository secrets (GitHub → Settings → Secrets and variables → Actions):\n" +

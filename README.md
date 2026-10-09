@@ -37,9 +37,14 @@ Repository secrets (Settings → Secrets and variables → Actions):
 
 ### Switching the Contra account (e.g. on another machine)
 
-1. `npm install`, then `npm run contra:auth` and log in with the account to use.
-2. Copy both values from `.contra-auth.json` into the secrets above, then delete the file.
-3. Don't run `npm run scrape:fetch` / `scrape:ci` locally with a token GitHub is using:
+Needs Node 22.18+ (24 recommended) and a clone of this repo; no `npm install` needed for this step.
+
+1. Run `npm run contra:auth`. Open the login link it prints in a **private/incognito window** and
+   log in with the account to use; a browser already logged in to Contra connects that account
+   without asking. The login must finish in a browser on the same computer.
+2. Check the `Connected Contra account:` line shows the right person and "Contra Pro".
+3. Copy both values from `.contra-auth.json` into the secrets above, then delete the file.
+4. Don't run `npm run scrape:fetch` / `scrape:ci` locally with a token GitHub is using:
    each use rotates it and invalidates the other copy.
 
 ## Filtering
