@@ -1,5 +1,5 @@
 import { existsSync } from "node:fs";
-import { readdir, readFile } from "node:fs/promises";
+import { readdir, readFile, rm } from "node:fs/promises";
 import path from "node:path";
 import { normalize, type FeedPage, type JobDetail } from "./contra.ts";
 import { matchesFilters } from "./filters.ts";
@@ -9,7 +9,7 @@ import type { Job } from "./types.ts";
 export const DATA_DIR = path.resolve(import.meta.dirname, "..", "data");
 /** Raw list_job_feed pages for the current run (deleted after ingest). */
 export const RAW_DIR = path.join(DATA_DIR, "raw");
-/** Cached get_job_by_slug responses, one file per slug (kept across runs). */
+/** Cached get_job_by_slug responses, one file per slug. Committed by the GitHub workflow so runs only fetch new ones. */
 export const DETAILS_DIR = path.join(DATA_DIR, "details");
 
 export const detailFile = (slug: string) => path.join(DETAILS_DIR, `${slug}.json`);
@@ -63,4 +63,13 @@ export function pendingDetails(jobs: Job[]): { pending: string[]; summary: strin
     else pending.push(job.slug);
   }
   return { pending, summary: `${jobs.length} jobs: ${pending.length} need details, ${cached} cached, ${skipped} skipped by prescreen` };
+}
+
+/** Deletes cached descriptions for jobs no longer in the feed, so data/details/ stays small. Returns the count removed. */
+export async function pruneDetails(keepSlugs: Set<string>, dir = DETAILS_DIR): Promise<number> {
+  const stale = (await readdir(dir).catch(() => [] as string[])).filter(
+    (f) => f.endsWith(".json") && !keepSlugs.has(f.slice(0, -5)),
+  );
+  await Promise.all(stale.map((f) => rm(path.join(dir, f), { force: true })));
+  return stale.length;
 }

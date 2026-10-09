@@ -45,7 +45,10 @@ async function main() {
   await mkdir(DETAILS_DIR, { recursive: true });
   for (const slug of pending) {
     try {
-      await writeFile(detailFile(slug), JSON.stringify(await mcp.call("get_job_by_slug", { slug })));
+      const detail = await mcp.call("get_job_by_slug", { slug });
+      // Don't cache error responses: a cached file is never re-fetched.
+      if (detail?.ok === false) throw new Error(JSON.stringify(detail).slice(0, 200));
+      await writeFile(detailFile(slug), JSON.stringify(detail));
     } catch (err) {
       console.warn(`[contra] skipped details for ${slug}: ${err instanceof Error ? err.message : err}`);
     }

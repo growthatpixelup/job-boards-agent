@@ -1,6 +1,6 @@
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { DATA_DIR, RAW_DIR, loadFeed } from "./feed.ts";
+import { DATA_DIR, RAW_DIR, loadFeed, pruneDetails } from "./feed.ts";
 import { filterConfig, matchesFilters } from "./filters.ts";
 import { getClassifier } from "./icp/index.ts";
 import type { ClassifiedJob, IcpDecision, Job, RunResult } from "./types.ts";
@@ -83,6 +83,11 @@ async function main() {
   for (const j of feed.jobs) seen.add(j.id);
   await writeFile(seenFile, JSON.stringify([...seen]));
   await rm(RAW_DIR, { recursive: true, force: true }); // consumed; next run starts clean (details stay cached)
+  // Only the full feed tells us which jobs are gone; a BOOKMARKED/APPLIED run must not prune the rest.
+  if (result.preset === "ALL") {
+    const pruned = await pruneDetails(new Set(feed.jobs.map((j) => j.slug)));
+    if (pruned) console.log(`[contra] removed ${pruned} cached description(s) for jobs no longer in the feed`);
+  }
 
   const unfiltered = classifier.name === "none";
   console.log(
