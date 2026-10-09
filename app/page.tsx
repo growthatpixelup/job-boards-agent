@@ -1,69 +1,106 @@
-import Image from "next/image";
+import { readFile } from "node:fs/promises";
+import path from "node:path";
+import { connection } from "next/server";
+import { Suspense } from "react";
+import type { IcpDecision, Job, RunResult } from "@/scraper/types.ts";
+
+async function loadLatest(): Promise<RunResult | null> {
+  try {
+    const file = path.join(process.cwd(), "data", "latest.json");
+    return JSON.parse(await readFile(file, "utf8")) as RunResult;
+  } catch {
+    return null;
+  }
+}
+
+function formatBudget(b: Job["budget"]): string {
+  if (!b) return "—";
+  const range = [b.feeMin, b.feeMax].filter((n) => n != null).join(" – ");
+  const unit = { FIXED: "fixed", HOURLY: "/hr", WEEKLY: "/wk", MONTHLY: "/mo", UNKNOWN: "" }[b.type];
+  return range ? `${range} ${unit}` : b.type.toLowerCase();
+}
+
+const DECISION_STYLE: Record<IcpDecision, string> = {
+  qualified: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100",
+  maybe: "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100",
+  rejected: "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300",
+};
+
+async function JobList() {
+  await connection();
+  const run = await loadLatest();
+
+  if (!run) {
+    return (
+      <p className="text-zinc-600 dark:text-zinc-400">
+        No data yet. Run <code className="font-mono">/contra-scrape</code> in Claude Code to fetch jobs via the Contra MCP.
+      </p>
+    );
+  }
+
+  return (
+    <>
+      <p className="mb-6 text-sm text-zinc-600 dark:text-zinc-400">
+        Last run {new Date(run.ranAt).toLocaleString()} · {run.totalScraped} scraped ·{" "}
+        {run.classifier === "none"
+          ? "ICP filter off"
+          : `${run.counts?.qualified ?? 0} qualified · ${run.counts?.maybe ?? 0} maybe · ${run.counts?.rejected ?? 0} rejected by ICP`}{" "}
+        · {run.newSinceLastRun} new
+        {run.accessLimited && ` · feed limited to your account's preview (${run.boardTotal ?? "?"} on the board)`}
+      </p>
+      {run.jobs.length === 0 && (
+        <p className="text-zinc-600 dark:text-zinc-400">No jobs in this run.</p>
+      )}
+      <ul className="flex flex-col gap-3">
+        {run.jobs.map((job) => (
+          <li key={job.id} className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+            <div className="flex items-start justify-between gap-4">
+              <a href={job.url} target="_blank" rel="noreferrer" className="font-medium hover:underline">
+                {job.title}
+              </a>
+              <span className="flex shrink-0 gap-1">
+                {job.icp && job.icp.classifier !== "none" && (
+                  <span className={`rounded px-2 py-0.5 text-xs ${DECISION_STYLE[job.icp.decision]}`}>
+                    {job.icp.decision}
+                    {job.icp.tier && ` · ${job.icp.tier}`}
+                  </span>
+                )}
+                {job.isNew && (
+                  <span className="rounded bg-emerald-100 px-2 py-0.5 text-xs text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100">
+                    new
+                  </span>
+                )}
+              </span>
+            </div>
+            <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+              {[job.organization?.name ?? job.owner, formatBudget(job.budget), job.createdAt && new Date(job.createdAt).toLocaleDateString()]
+                .filter(Boolean)
+                .join(" · ")}
+            </p>
+            {(job.roles.length > 0 || job.tools.length > 0) && (
+              <p className="mt-2 text-xs text-zinc-500">{[...job.roles, ...job.tools].join(", ")}</p>
+            )}
+            {job.icp && job.icp.reasons.length > 0 && (
+              <ul className="mt-2 list-disc pl-5 text-xs text-zinc-600 dark:text-zinc-400">
+                {job.icp.reasons.map((r) => (
+                  <li key={r}>{r}</li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </>
+  );
+}
 
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert h-5 w-[100px]"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the{" "}
-            <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">
-              page.tsx
-            </code>{" "}
-            file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert h-[14px] w-4"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={14}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+    <main className="mx-auto w-full max-w-3xl px-4 py-12">
+      <h1 className="mb-2 text-2xl font-semibold">Contra jobs</h1>
+      <Suspense fallback={<p>Loading…</p>}>
+        <JobList />
+      </Suspense>
+    </main>
   );
 }

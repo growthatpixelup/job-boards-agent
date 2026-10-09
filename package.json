@@ -6,7 +6,12 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "scrape": "node --env-file-if-exists=.env.local scraper/run.ts",
+    "schedule:install": "powershell -ExecutionPolicy Bypass -File scripts/schedule.ps1",
+    "schedule:remove": "powershell -ExecutionPolicy Bypass -File scripts/schedule.ps1 -Remove",
+    "scrape:pending": "node scraper/pending.ts",
+    "test": "node --test \"scraper/**/*.test.ts\""
   },
   "dependencies": {
     "next": "16.4.0",
