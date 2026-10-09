@@ -1,36 +1,38 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Contra jobs scraper
 
-## Getting Started
+Pulls the Contra job feed through Contra's official MCP server (read-only tools only:
+`whoami`, `list_job_feed`, `get_job_by_slug`), filters it against the Pixelup ICP
+(`scraper/icp/`), and shows the result in a small Next.js app.
 
-First, run the development server:
+## Automatic runs (GitHub Actions)
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+`.github/workflows/scrape.yml` runs at **08:00 and 20:00 IST**, plus on demand from
+Actions → "Daily Contra scrape" → Run workflow. Each run commits `data/latest.json`,
+`data/runs/` and `data/seen-ids.json`.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Repository secrets (Settings → Secrets and variables → Actions):
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| Secret | Source |
+|---|---|
+| `CONTRA_CLIENT_ID` | `.contra-auth.json` after `npm run contra:auth` |
+| `CONTRA_REFRESH_TOKEN` | same |
+| `GH_SECRETS_PAT` | Fine-grained PAT for this repo with **Secrets: Read and write**. Contra rotates the refresh token on every use; the workflow stores the new one with this. |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Switching the Contra account (e.g. on another machine)
 
-## Learn More
+1. `npm install`, then `npm run contra:auth` and log in with the account to use.
+2. Copy both values from `.contra-auth.json` into the secrets above, then delete the file.
+3. Don't run `npm run scrape:fetch` / `scrape:ci` locally with a token GitHub is using:
+   each use rotates it and invalidates the other copy.
 
-To learn more about Next.js, take a look at the following resources:
+## Filtering
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+`ICP_CLASSIFIER` picks the filter: `regex` (default, rules from `scraper/icp/icp-brief.md`),
+`none` (keep every job), `anthropic` or `openai`. Housekeeping filters are in
+`scraper/filters.ts`.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Local use
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run dev`: the jobs app at http://localhost:3000 (reads `data/latest.json`)
+- `/contra-scrape` in Claude Code: scrape through Claude Code's own Contra MCP login
+- `npm test`: ICP rule tests

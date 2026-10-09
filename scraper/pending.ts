@@ -1,7 +1,4 @@
-import { existsSync } from "node:fs";
-import { detailFile, loadFeed } from "./feed.ts";
-import { matchesFilters } from "./filters.ts";
-import { getClassifier, prescreen } from "./icp/index.ts";
+import { loadFeed, pendingDetails } from "./feed.ts";
 
 // Prints the slugs whose description still needs fetching via the MCP
 // (get_job_by_slug), skipping jobs the title/roles/budget prescreen already rejects.
@@ -13,20 +10,6 @@ if (!pages) {
   process.exit(1);
 }
 
-if (getClassifier().name === "none") {
-  console.error(`[contra] ${jobs.length} jobs: ICP filtering is off, no details needed`);
-  console.log("[]");
-  process.exit(0);
-}
-
-const pending: string[] = [];
-let cached = 0;
-let skipped = 0;
-for (const job of jobs) {
-  if (!matchesFilters(job) || !prescreen(job).fetchDetail) skipped++;
-  else if (existsSync(detailFile(job.slug))) cached++;
-  else pending.push(job.slug);
-}
-
-console.error(`[contra] ${jobs.length} jobs: ${pending.length} need details, ${cached} cached, ${skipped} skipped by prescreen`);
+const { pending, summary } = pendingDetails(jobs);
+console.error(`[contra] ${summary}`);
 console.log(JSON.stringify(pending));

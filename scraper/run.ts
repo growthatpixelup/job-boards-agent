@@ -77,7 +77,8 @@ async function main() {
 
   await mkdir(path.join(DATA_DIR, "runs"), { recursive: true });
   const json = JSON.stringify(result, null, 2);
-  await writeFile(path.join(DATA_DIR, "runs", `${ranAt.slice(0, 10)}.json`), json);
+  // One file per run (UTC date + time), so twice-daily runs don't overwrite each other.
+  await writeFile(path.join(DATA_DIR, "runs", `${ranAt.slice(0, 16).replace(":", "")}.json`), json);
   await writeFile(path.join(DATA_DIR, "latest.json"), json);
   for (const j of feed.jobs) seen.add(j.id);
   await writeFile(seenFile, JSON.stringify([...seen]));

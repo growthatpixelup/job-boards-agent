@@ -42,5 +42,7 @@ yarn-error.log*
 next-env.d.ts
 
 # scraper output
-/data/
+/data/raw/
+/data/details/
+.contra-auth.json
 /logs/

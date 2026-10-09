@@ -11,6 +11,9 @@
     "schedule:install": "powershell -ExecutionPolicy Bypass -File scripts/schedule.ps1",
     "schedule:remove": "powershell -ExecutionPolicy Bypass -File scripts/schedule.ps1 -Remove",
     "scrape:pending": "node scraper/pending.ts",
+    "scrape:fetch": "node --env-file-if-exists=.env.local scraper/fetch.ts",
+    "scrape:ci": "node scraper/fetch.ts && node scraper/run.ts",
+    "contra:auth": "node scripts/contra-auth.ts",
     "test": "node --test \"scraper/**/*.test.ts\""
   },
   "dependencies": {

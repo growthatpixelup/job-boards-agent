@@ -1,0 +1,56 @@
+name: Daily Contra scrape
+
+on:
+  schedule:
+    - cron: "30 2,14 * * *" # 08:00 and 20:00 IST (02:30 / 14:30 UTC). GitHub may start scheduled runs a few minutes late.
+  workflow_dispatch: # "Run workflow" button in the Actions tab
+
+permissions:
+  contents: write # commit the refreshed data/ files
+
+concurrency:
+  group: contra-scrape
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24 # the scraper is plain TypeScript run natively; no npm install needed
+
+      - name: Fetch jobs from the Contra MCP and classify
+        env:
+          CONTRA_CLIENT_ID: ${{ secrets.CONTRA_CLIENT_ID }}
+          CONTRA_REFRESH_TOKEN: ${{ secrets.CONTRA_REFRESH_TOKEN }}
+          CONTRA_REFRESH_TOKEN_OUT: ${{ runner.temp }}/contra-refresh-token
+        run: npm run scrape:ci
+
+      # Contra may issue a new refresh token on every use; store it for tomorrow's run.
+      # Writing secrets needs a fine-grained PAT with "Secrets: read and write" on this repo.
+      - name: Save rotated Contra refresh token
+        if: always()
+        env:
+          GH_TOKEN: ${{ secrets.GH_SECRETS_PAT }}
+        run: |
+          f="$RUNNER_TEMP/contra-refresh-token"
+          [ -f "$f" ] || { echo "Refresh token unchanged."; exit 0; }
+          if [ -z "$GH_TOKEN" ]; then
+            echo "::error::Contra rotated the refresh token but GH_SECRETS_PAT is not set, so the next run will fail. Add the PAT secret and re-run npm run contra:auth."
+            exit 1
+          fi
+          gh secret set CONTRA_REFRESH_TOKEN --repo "$GITHUB_REPOSITORY" < "$f"
+          echo "Stored the new refresh token."
+
+      - name: Commit updated job data
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898341+github-actions[bot]@users.noreply.github.com"
+          git add data/latest.json data/runs data/seen-ids.json
+          git diff --cached --quiet && { echo "No changes."; exit 0; }
+          git commit -m "data: Contra scrape $(TZ=Asia/Kolkata date "+%F %H:%M IST")"
+          git push
