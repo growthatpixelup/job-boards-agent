@@ -16,7 +16,6 @@ function job(p: Omit<Partial<Job>, "budget"> & { budget?: [BudgetType, number, n
     approvedAt: null,
     category: null,
     organization: { name: "Acme", isVerified: false },
-    owner: null,
     country: null,
     hiringAsIndividual: false,
     description: "",
@@ -136,7 +135,7 @@ describe("real closed Contra jobs with descriptions (2026-10-07)", () => {
     assert.equal(decide(j), "rejected");
   });
 
-  it("holds OKTAI's AI-product website (individual poster, design+dev, no funding info) at maybe", () => {
+  it("qualifies OKTAI's AI-product website design + build (individual poster, no funding info → eddie)", () => {
     const v = classifyRegex(
       job({
         title: "Modern Website Designer/Developer Needed",
@@ -146,8 +145,9 @@ describe("real closed Contra jobs with descriptions (2026-10-07)", () => {
         budget: ["FIXED", 10_000, 14_000],
       }),
     );
-    assert.equal(v.decision, "maybe");
+    assert.equal(v.decision, "qualified");
     assert.equal(v.tier, "eddie");
+    assert.ok(v.signals.includes("service:development"));
   });
 
   it("holds Flowdeck's devtool logo refinement at maybe and ignores 'not a full rebrand'", () => {
@@ -191,8 +191,10 @@ describe("deal-breakers (doc §4 anti-market)", () => {
     assert.ok(has(j, "reject:budget-floor"));
   });
 
-  it("rejects 'Framer Motion' React work (not a Framer site)", () => {
-    assert.equal(decide(job({ title: "React developer with Framer Motion", roles: ["Frontend Developer"] })), "rejected");
+  it("counts 'Framer Motion' React work as development, not a Framer site", () => {
+    const j = job({ title: "React developer with Framer Motion", roles: ["Frontend Developer"] });
+    assert.ok(has(j, "service:development"));
+    assert.ok(!has(j, "service:website"));
   });
 
   it("rejects when nothing in the post asks for design", () => {
@@ -219,8 +221,43 @@ describe("maybe (service fits, evidence thin or budget below entry)", () => {
   it("consumer words next to B2B (vertical SaaS for restaurants)", () => {
     assert.equal(decide(job({ title: "Website redesign", description: "B2B SaaS for restaurant owners. Series A." })), "maybe");
   });
-  it("design + implementation title", () => {
-    assert.equal(decide(job({ title: "Webflow developer for website redesign", description: funded })), "maybe");
+  it("design + non-custom stack title", () => {
+    assert.equal(decide(job({ title: "Website redesign + WordPress developer", description: funded })), "maybe");
+  });
+  it("development job building from finished designs", () => {
+    const j = job({
+      title: "React developer for SaaS dashboard",
+      roles: ["Frontend Developer"],
+      description: `${funded} Our designs are complete in Figma; convert our Figma designs into React.`,
+    });
+    assert.equal(decide(j), "maybe");
+    assert.ok(has(j, "cap:execution-only"));
+  });
+});
+
+describe("custom development (Next.js / React)", () => {
+  const funded = "B2B SaaS, Series A, enterprise customers.";
+  it("qualifies a Next.js marketing-site build for a funded B2B SaaS", () => {
+    const j = job({ title: "Next.js developer for our marketing site", roles: ["Frontend Developer"], description: funded });
+    assert.equal(decide(j), "qualified");
+    assert.ok(has(j, "service:development"));
+  });
+  it("qualifies React, NextJS and custom-development titles", () => {
+    for (const title of ["Senior React engineer", "NextJS web app build", "Custom web app development for our AI platform", "Frontend developer"]) {
+      assert.ok(has(job({ title, description: funded }), "service:development"), title);
+    }
+  });
+  it("lets a design + development scope qualify (no implementation cap)", () => {
+    assert.equal(decide(job({ title: "Webflow developer for website redesign", description: funded })), "qualified");
+  });
+  it("keeps React Native, WordPress and backend-only work out of scope", () => {
+    assert.equal(decide(job({ title: "React Native developer", roles: ["Mobile Developer"], description: funded })), "rejected");
+    assert.equal(decide(job({ title: "WordPress web developer", roles: ["Web Developer"], description: funded })), "rejected");
+    assert.equal(decide(job({ title: "Backend engineer (Go)", roles: ["Backend Developer"], description: funded })), "rejected");
+  });
+  it("still rejects Figma-to-Webflow conversions on design-only asks", () => {
+    const j = job({ title: "Brand identity design", description: "Our designs are complete in Figma, convert our Figma designs into Webflow." });
+    assert.ok(has(j, "reject:execution-only"));
   });
   it("design ask only in the description", () => {
     const v = classifyRegex(job({ title: "Project for Acme", description: `We need a website redesign. ${funded}` }));

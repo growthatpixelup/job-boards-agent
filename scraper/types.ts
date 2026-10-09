@@ -8,13 +8,13 @@ export interface Job {
   createdAt: string | null;
   approvedAt: string | null;
   category: string | null;
+  /** The hiring company; null for private individuals. No poster names are stored (Contra terms). */
   organization: { name: string | null; isVerified: boolean } | null;
-  owner: string | null;
   /** Client's country as reported by Contra (often null). */
   country: string | null;
   /** True when the poster is hiring as a private individual rather than a company. */
   hiringAsIndividual: boolean;
-  /** Plain-text job description (from get_job_by_slug); null when not fetched. */
+  /** Plain-text job description (from get_job_by_slug, contact details removed); null when not fetched. Used for classifying only, never saved in run output. */
   description: string | null;
   budget: {
     type: BudgetType;

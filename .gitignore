@@ -43,5 +43,6 @@ next-env.d.ts
 
 # scraper output
 /data/raw/
+/data/details/
 .contra-auth.json
 /logs/

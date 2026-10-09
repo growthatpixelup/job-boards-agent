@@ -4,6 +4,23 @@ Pulls the Contra job feed through Contra's official MCP server (read-only tools 
 `whoami`, `list_job_feed`, `get_job_by_slug`), filters it against the Pixelup ICP
 (`scraper/icp/`), and shows the result in a small Next.js app.
 
+## Rules for using Contra
+
+Contra's terms only allow automated access through Contra's own software, and bar storing other
+users' personal information. So:
+
+- **Contra MCP only.** Never load contra.com pages any other way (no crawling, browser automation,
+  WebFetch or curl). If the MCP fails, the run stops.
+- **Read-only.** `scraper/mcp-client.ts` refuses every tool except `whoami`, `list_job_feed` and
+  `get_job_by_slug`. Don't add applying, bookmarking, dismissing or messaging.
+- **No personal information stored.** Poster names are never read; company names are dropped for
+  private individuals; cached descriptions have emails and phone numbers removed, live outside git
+  (`data/details/`, kept between runs by the Actions cache) and are never written to run output.
+- **The login token can act on the whole Contra account.** Keep this repo private and limit who has
+  write access.
+
+`scraper/contra.test.ts` checks these rules.
+
 ## Automatic runs (GitHub Actions)
 
 `.github/workflows/scrape.yml` runs at **08:00 and 20:00 IST**, plus on demand from

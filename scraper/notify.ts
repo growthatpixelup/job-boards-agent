@@ -3,7 +3,7 @@ import path from "node:path";
 import { DATA_DIR } from "./feed.ts";
 import type { ClassifiedJob, RunResult } from "./types.ts";
 
-// Posts the latest run's new matches (qualified/maybe, never seen before) to Slack via a
+// Posts the latest run's new qualified jobs (never seen before) to Slack via a
 // Workflow Builder webhook trigger with two Text variables: `summary` and `jobs`.
 // Env: SLACK_WEBHOOK_URL (skips quietly when unset), SLACK_DRY_RUN=1 prints the payload instead.
 
@@ -21,24 +21,24 @@ function budget(b: ClassifiedJob["budget"]): string {
   return range + { FIXED: " fixed", HOURLY: "/hr", WEEKLY: "/wk", MONTHLY: "/mo", UNKNOWN: "" }[b.type];
 }
 
+/** Title, client and budget, plus the link — the reasons stay in the app. */
 function line(j: ClassifiedJob): string {
-  const client = j.organization?.name ?? j.owner;
-  return `• [${j.icp.decision}] ${j.title} · ${[budget(j.budget), client].filter(Boolean).join(" · ")}\n  ${j.url}`;
+  return `• ${j.title}\n  ${[j.organization?.name, budget(j.budget)].filter(Boolean).join(" · ")}\n  ${j.url}`;
 }
 
 async function main() {
   const run = JSON.parse(await readFile(path.join(DATA_DIR, "latest.json"), "utf8")) as RunResult;
-  const fresh = run.jobs.filter((j) => j.isNew && j.icp.decision !== "rejected");
+  const fresh = run.jobs.filter((j) => j.isNew && j.icp.decision === "qualified");
   const when = new Date(run.ranAt).toLocaleString("en-IN", {
     timeZone: "Asia/Kolkata", day: "numeric", month: "short", hour: "numeric", minute: "2-digit",
   });
 
   const summary = fresh.length
-    ? `${fresh.length} new match${fresh.length === 1 ? "" : "es"} · ${when} IST run · ${run.totalScraped} jobs scanned`
-    : `No new matches · ${when} IST run · ${run.totalScraped} jobs scanned`;
+    ? `${fresh.length} new qualified job${fresh.length === 1 ? "" : "s"} on Contra · ${when} IST`
+    : `No new qualified jobs on Contra · ${when} IST`;
   const jobs = fresh.length
     ? fresh.slice(0, MAX_JOBS).map(line).join("\n") +
-      (fresh.length > MAX_JOBS ? `\n…and ${fresh.length - MAX_JOBS} more in data/latest.json` : "")
+      (fresh.length > MAX_JOBS ? `\n…and ${fresh.length - MAX_JOBS} more` : "")
     : "—";
   const payload = { summary, jobs };
 

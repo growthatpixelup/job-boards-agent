@@ -1,5 +1,6 @@
 import { mkdir, rm, writeFile } from "node:fs/promises";
 import { DETAILS_DIR, RAW_DIR, detailFile, loadFeed, pendingDetails } from "./feed.ts";
+import { minimalDetail } from "./contra.ts";
 import { ContraMcp, refreshTokens } from "./mcp-client.ts";
 
 // Headless version of the /contra-scrape skill's fetch steps: pulls the job feed (and
@@ -48,7 +49,7 @@ async function main() {
       const detail = await mcp.call("get_job_by_slug", { slug });
       // Don't cache error responses: a cached file is never re-fetched.
       if (detail?.ok === false) throw new Error(JSON.stringify(detail).slice(0, 200));
-      await writeFile(detailFile(slug), JSON.stringify(detail));
+      await writeFile(detailFile(slug), JSON.stringify(minimalDetail(detail)));
     } catch (err) {
       console.warn(`[contra] skipped details for ${slug}: ${err instanceof Error ? err.message : err}`);
     }

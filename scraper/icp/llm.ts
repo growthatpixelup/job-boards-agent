@@ -39,7 +39,7 @@ export const VERDICT_SCHEMA = {
 export function jobPrompt(job: Job): string {
   const post = {
     title: job.title,
-    client: job.organization?.name ?? job.owner ?? null,
+    client: job.organization?.name ?? null,
     clientCountry: job.country,
     postedByIndividual: job.hiringAsIndividual,
     contraRoles: job.roles,

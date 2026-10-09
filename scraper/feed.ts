@@ -1,7 +1,7 @@
 import { existsSync } from "node:fs";
-import { readdir, readFile, rm } from "node:fs/promises";
+import { readdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { normalize, type FeedPage, type JobDetail } from "./contra.ts";
+import { minimalDetail, normalize, type FeedPage, type JobDetail } from "./contra.ts";
 import { matchesFilters } from "./filters.ts";
 import { getClassifier, prescreen } from "./icp/index.ts";
 import type { Job } from "./types.ts";
@@ -9,7 +9,11 @@ import type { Job } from "./types.ts";
 export const DATA_DIR = path.resolve(import.meta.dirname, "..", "data");
 /** Raw list_job_feed pages for the current run (deleted after ingest). */
 export const RAW_DIR = path.join(DATA_DIR, "raw");
-/** Cached get_job_by_slug responses, one file per slug. Committed by the GitHub workflow so runs only fetch new ones. */
+/**
+ * Cached job descriptions, one file per slug, so runs only fetch new ones. Holds only the
+ * contact-redacted description text (see minimalDetail). Gitignored; the GitHub workflow keeps
+ * it between runs with actions/cache instead of committing it.
+ */
 export const DETAILS_DIR = path.join(DATA_DIR, "details");
 
 export const detailFile = (slug: string) => path.join(DETAILS_DIR, `${slug}.json`);
@@ -63,6 +67,15 @@ export function pendingDetails(jobs: Job[]): { pending: string[]; summary: strin
     else pending.push(job.slug);
   }
   return { pending, summary: `${jobs.length} jobs: ${pending.length} need details, ${cached} cached, ${skipped} skipped by prescreen` };
+}
+
+/** Rewrites any cached detail still holding a full MCP response (the /contra-scrape skill saves them verbatim) down to the description only. */
+export async function minimizeDetails(dir = DETAILS_DIR): Promise<void> {
+  for (const [slug, detail] of await readJsonFiles<JobDetail>(dir)) {
+    const min = minimalDetail(detail);
+    if (!min) await rm(path.join(dir, `${slug}.json`), { force: true });
+    else if (JSON.stringify(min) !== JSON.stringify(detail)) await writeFile(path.join(dir, `${slug}.json`), JSON.stringify(min));
+  }
 }
 
 /** Deletes cached descriptions for jobs no longer in the feed, so data/details/ stays small. Returns the count removed. */

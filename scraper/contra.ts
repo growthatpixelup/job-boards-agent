@@ -67,13 +67,30 @@ export function blocknoteToText(blocks: any): string {
   return lines.join("\n");
 }
 
+/** Strips email addresses and phone numbers, so no poster contact details are stored. */
+export function redactContact(text: string): string {
+  return text
+    .replace(/[\w.+-]+@[\w-]+(\.[\w-]+)+/g, "[email removed]")
+    .replace(/\+?\d[\d\s().-]{7,}\d/g, (m) => (m.replace(/\D/g, "").length >= 8 ? "[phone removed]" : m));
+}
+
+/**
+ * The only part of a get_job_by_slug response we keep on disk: the description text, with contact
+ * details removed. Contra's terms bar storing other users' personal information, so the poster's
+ * profile, name and the rest of the raw response are dropped before anything is written.
+ */
+export function minimalDetail(detail: JobDetail | null | undefined): JobDetail | null {
+  const d = detail?.job;
+  if (!d || detail?.ok === false) return null;
+  return { ok: true, job: { description: redactContact(blocknoteToText(d.blocknoteDescription ?? d.description)) } };
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function normalize(entry: any, detail?: JobDetail | null): Job | null {
   const job = entry?.job;
   if (!job?.jobId) return null; // ads and other non-job feed entries
-  const owner = job.owner?.userProfile ?? job.owner;
-  const d = detail?.job;
-  const description = d ? blocknoteToText(d.blocknoteDescription ?? d.description) || null : null;
+  const description = minimalDetail(detail)?.job.description || null;
+  const hiringAsIndividual = !!job.hiringAsIndividual;
   return {
     id: job.jobId,
     title: job.title?.trim() ?? "",
@@ -82,12 +99,13 @@ export function normalize(entry: any, detail?: JobDetail | null): Job | null {
     createdAt: job.createdAt ?? null,
     approvedAt: job.jobPosting?.approvedAt ?? null,
     category: null,
-    organization: job.organization
-      ? { name: job.organization.name?.trim() ?? null, isVerified: !!job.organization.isVerified }
-      : null,
-    owner: owner ? [owner.firstName, owner.lastName].filter(Boolean).join(" ") || null : null,
+    // Company name only; for a private individual it is often their own name, so drop it. The poster's name is never read.
+    organization:
+      job.organization && !hiringAsIndividual
+        ? { name: job.organization.name?.trim() ?? null, isVerified: !!job.organization.isVerified }
+        : null,
     country: (typeof job.country === "string" ? job.country : job.country?.name ?? job.country?.code) ?? null,
-    hiringAsIndividual: !!job.hiringAsIndividual,
+    hiringAsIndividual,
     description,
     budget: job.budget
       ? {

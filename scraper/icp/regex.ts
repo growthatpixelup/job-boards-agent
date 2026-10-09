@@ -26,7 +26,7 @@ const SERVICES: Rule[] = [
   {
     id: "website",
     label: "website",
-    re: /\b(web ?site|landing ?pages?|marketing (site|website|page)|home ?page|web)\s+(design(er|s)?|re-?design|revamp|refresh|overhaul|rebuild|build|development)\b|\b(re-?design|revamp|refresh|overhaul|rebuild|design|build|create)\s+(of\s+)?(our|a|the|my|an)?\s*(new\s+)?(web ?site|landing ?pages?|marketing site|home ?page)\b|\bwebflow\b|\bframer\b(?!\s*motion)|\blanding ?pages?\b/i,
+    re: /\b(web ?site|landing ?pages?|marketing (site|website|page)|home ?page|web)\s+(design(er|s)?|re-?design|revamp|refresh|overhaul|rebuild)\b|\b(re-?design|revamp|refresh|overhaul|rebuild|design|build|create)\s+(of\s+)?(our|a|the|my|an)?\s*(new\s+)?(web ?site|landing ?pages?|marketing site|home ?page)\b|\bwebflow\b|\bframer\b(?!\s*motion)|\blanding ?pages?\b/i,
   },
   {
     id: "product",
@@ -45,7 +45,15 @@ const SERVICES: Rule[] = [
     re: /\b(positioning|messaging (framework|strategy|architecture|house)|brand (narrative|story|storytelling))\b/i,
   },
   { id: "creative-direction", label: "creative direction", re: /\b(creative|art) direct(or|ion)\b/i },
+  {
+    id: "development",
+    label: "custom development (Next.js / React)",
+    re: /\b(next\.?\s?js|react(\.?js)?(?!\s*native)|custom[- ]((web ?site|web ?app|web|software|SaaS|dashboard|front-?end)\s+)?(development|developer|build|coded?)|(web ?site|web ?app|web|front-?end|SaaS|dashboard)\s+(development|developer|engineer(ing)?|build))\b/i,
+  },
 ];
+
+/** Builders and stacks that aren't custom development — "WordPress web developer" doesn't count as the development service. */
+const NON_CUSTOM_STACK = /\b(wordpress|woocommerce|elementor|shopify|wix|squarespace|magento|bubble|react native|flutter)\b/i;
 
 /** Contra role names that map to our services. */
 const SERVICE_ROLES =
@@ -59,10 +67,11 @@ const WEAK_SERVICES: Rule[] = [
 
 /** Core asks we don't sell. Only consulted when no service matched the title/roles. */
 const OUT_OF_SCOPE =
-  /\b(video|videographer|film|editor|editing|animat(or|ion|ions|ed)|motion (graphics?|design(er)?)|3D|CGI|renderings?|illustrat(or|ion|ions)|photograph(er|y)|copywrit(er|ing)|content (writ(er|ing)|creat(or|ion))|ghostwrit(er|ing)|blog(ger|ging)?|SEO|SEM|PPC|paid (ads|social|media)|media buy(er|ing)|(google|facebook|meta|linkedin|tiktok) ads|performance marketing|growth market(er|ing)|demand gen(eration)?|lead gen(eration)?|email marketing|social media|community manag(er|ement)|influencer|UGC|podcast|voice[- ]?over|translat(or|ion)|transcri(ber|ption)|data entry|virtual assistant|customer (success|support|service)|sales|business development|account (executive|manager)|appointment setter|cold call(er|ing)|recruit(er|ing)|bookkeep(er|ing)|accountant|accounting|paralegal|lawyer|(back[- ]?end|full[- ]?stack|front[- ]?end|software|mobile|iOS|android|devops|data|ML|AI|blockchain|smart contract|python|java(script)?|react|node(\.js)?|shopify|wordpress|unity|game) (developer|engineer|dev)|engineer(ing)?|developer advocate|QA|tester|data (scientist|analyst)|machine learning|marketing manager|marketer|product manager|project manager)\b/i;
+  /\b(video|videographer|film|editor|editing|animat(or|ion|ions|ed)|motion (graphics?|design(er)?)|3D|CGI|renderings?|illustrat(or|ion|ions)|photograph(er|y)|copywrit(er|ing)|content (writ(er|ing)|creat(or|ion))|ghostwrit(er|ing)|blog(ger|ging)?|SEO|SEM|PPC|paid (ads|social|media)|media buy(er|ing)|(google|facebook|meta|linkedin|tiktok) ads|performance marketing|growth market(er|ing)|demand gen(eration)?|lead gen(eration)?|email marketing|social media|community manag(er|ement)|influencer|UGC|podcast|voice[- ]?over|translat(or|ion)|transcri(ber|ption)|data entry|virtual assistant|customer (success|support|service)|sales|business development|account (executive|manager)|appointment setter|cold call(er|ing)|recruit(er|ing)|bookkeep(er|ing)|accountant|accounting|paralegal|lawyer|(back[- ]?end|full[- ]?stack|software|mobile|iOS|android|react native|flutter|devops|data|ML|AI|blockchain|smart contract|python|java(script)?|node(\.js)?|shopify|wordpress|unity|game) (developer|engineer|dev)|engineer(ing)?|developer advocate|QA|tester|data (scientist|analyst)|machine learning|marketing manager|marketer|product manager|project manager)\b/i;
 
-/** In a title that also names a service, these mean the ask is probably production/implementation, not design. */
-const MIXED_TITLE = /\b(video|film|animat(or|ion|ions)|motion|3D|illustrat(or|ion)|photograph(er|y)|copywrit(er|ing)|SEO|ads|developer|engineer|implementation)\b/i;
+/** In a title that also names a service, these mean the ask is probably production/implementation or a stack we don't build in. */
+const MIXED_TITLE =
+  /\b(video|film|animat(or|ion|ions)|motion|3D|illustrat(or|ion)|photograph(er|y)|copywrit(er|ing)|SEO|ads|implementation|(shopify|wordpress|wix|squarespace|mobile|iOS|android|react native|flutter|back-?end|python|blockchain|unity|game|AI|ML) (developer|engineer|dev))\b/i;
 
 /** A design ask stated in the description when the title is vague ("Help needed", "Project for X"). */
 const DESCRIPTION_ASK =
@@ -274,7 +283,7 @@ export function classifyRegex(job: Job, opts: RegexOptions = {}): IcpVerdict {
   };
 
   // 1. Service fit
-  const services = SERVICES.filter((r) => r.re.test(head));
+  const services = SERVICES.filter((r) => r.re.test(head) && !(r.id === "development" && NON_CUSTOM_STACK.test(head)));
   if (SERVICE_ROLES.test(roles) && !services.length) services.push({ id: "service-role", label: roles, re: /$^/ });
   const weak = WEAK_SERVICES.filter((r) => r.re.test(head));
   let serviceLabel: string;
@@ -301,12 +310,18 @@ export function classifyRegex(job: Job, opts: RegexOptions = {}): IcpVerdict {
   }
 
   // 2. Deal-breakers
+  const isDev = services.some((s) => s.id === "development");
   for (const r of HARD_REJECTS) {
     const m = body.match(r.re);
-    if (m) {
-      rejects.push(`${r.label} ("${m[0]}")`);
-      signals.push(`reject:${r.id}`);
+    if (!m) continue;
+    // Building from finished designs is the job for a development ask — flag it, don't reject.
+    if (r.id === "execution-only" && isDev) {
+      caps.push(`build-only — designs already done ("${m[0]}")`);
+      signals.push("cap:execution-only");
+      continue;
     }
+    rejects.push(`${r.label} ("${m[0]}")`);
+    signals.push(`reject:${r.id}`);
   }
 
   const isB2B = B2B.re.test(all);

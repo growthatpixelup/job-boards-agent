@@ -18,11 +18,13 @@ Contra entry sprint is $7,900; retainers start at $4k/month. Bangalore-based, SF
 - Product design: UI/UX for a SaaS or AI product, dashboards, web apps
 - Design systems, component libraries, ongoing design retainers
 - Pitch, investor or sales decks (as part of brand work)
+- Custom development: Next.js / React websites and web apps, front-end builds, custom-coded sites
 
 Not our service (reject when it is the core of the job): video editing, animation-only, motion-only,
 3D, illustration-only, photography, copywriting/content-only, SEO, ads/performance marketing, lead
-generation, social media management, sales/BD/customer success, pure engineering (backend, full-stack,
-mobile, data/ML), Shopify/WordPress store builds, virtual assistance.
+generation, social media management, sales/BD/customer success, engineering outside Next.js/React
+(backend-only, mobile incl. React Native/Flutter, data/ML, DevOps), Shopify/WordPress/Wix/Squarespace
+builds, virtual assistance.
 
 ## Client fit (the rings)
 
@@ -56,7 +58,8 @@ mobile, data/ML), Shopify/WordPress store builds, virtual assistance.
 - Procurement-driven or committee buyers: RFP/tender, steering/brand committee, vendor onboarding
 - On-site or US-domicile required, security clearance, local-only
 - Buyers expecting design to drive leads/SEO/ads ("make design drive our MQLs") — a growth-agency ask
-- Pixel-pushers: design already complete/locked, "convert our Figma to Webflow/code", "just implement" (applying an already-locked brand system is a strong negative)
+- Pixel-pushers: design already complete/locked, "convert our Figma to Webflow/code", "just implement" (applying an already-locked brand system is a strong negative).
+  Exception: for a Next.js/React development job, building from finished designs is a minor negative ("maybe"), not a deal-breaker.
 - Agencies or white-label/subcontract work for someone else's client
 - B2C/consumer brands (e-commerce, DTC, CPG/packaging, supplements, food & drink, restaurants, coaches, personal brands, real estate, fashion…)
 - Crypto/web3/NFT/DeFi
@@ -67,7 +70,8 @@ mobile, data/ML), Shopify/WordPress store builds, virtual assistance.
 - **qualified** — the core ask is one of our services, the client is (or very likely is) a funded B2B
   software company, no deal-breaker applies, and the budget is at/above our entry price.
 - **maybe** — service fits but evidence of client fit is thin, the budget is below entry price but not
-  insulting, a minor negative applies (e.g. India-based, logo-only), or the description is missing.
+  insulting, a minor negative applies (e.g. India-based, logo-only, a development job building from
+  finished designs), or the description is missing.
 - **rejected** — any deal-breaker, or the core ask is not a service we sell.
 
 When unsure between two decisions, pick the more conservative one (maybe over qualified).

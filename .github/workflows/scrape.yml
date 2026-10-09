@@ -23,6 +23,15 @@ jobs:
         with:
           node-version: 24 # the scraper is plain TypeScript run natively; no npm install needed
 
+      # Job descriptions are cached between runs here rather than committed, so they never enter git history.
+      # GitHub deletes the cache after 7 days without use.
+      - name: Restore cached job descriptions
+        uses: actions/cache@v4
+        with:
+          path: data/details
+          key: contra-details-${{ github.run_id }}
+          restore-keys: contra-details-
+
       - name: Fetch jobs from the Contra MCP and classify
         env:
           CONTRA_CLIENT_ID: ${{ secrets.CONTRA_CLIENT_ID }}
@@ -50,7 +59,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898341+github-actions[bot]@users.noreply.github.com"
-          git add -A data # latest.json, runs/, seen-ids.json and details/ (raw/ is gitignored)
+          git add -A data # latest.json, runs/ and seen-ids.json (raw/ and details/ are gitignored)
           git diff --cached --quiet && { echo "No changes."; exit 0; }
           git commit -m "data: Contra scrape $(TZ=Asia/Kolkata date "+%F %H:%M IST")"
           git push

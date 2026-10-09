@@ -73,7 +73,7 @@ async function JobList() {
               </span>
             </div>
             <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
-              {[job.organization?.name ?? job.owner, formatBudget(job.budget), job.createdAt && new Date(job.createdAt).toLocaleDateString()]
+              {[job.organization?.name, formatBudget(job.budget), job.createdAt && new Date(job.createdAt).toLocaleDateString()]
                 .filter(Boolean)
                 .join(" · ")}
             </p>

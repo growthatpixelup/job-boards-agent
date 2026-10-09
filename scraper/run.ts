@@ -1,6 +1,6 @@
 import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { DATA_DIR, RAW_DIR, loadFeed, pruneDetails } from "./feed.ts";
+import { DATA_DIR, RAW_DIR, loadFeed, minimizeDetails, pruneDetails } from "./feed.ts";
 import { filterConfig, matchesFilters } from "./filters.ts";
 import { getClassifier } from "./icp/index.ts";
 import type { ClassifiedJob, IcpDecision, Job, RunResult } from "./types.ts";
@@ -33,6 +33,7 @@ async function mapPool<T, R>(items: T[], limit: number, fn: (item: T) => Promise
 const RANK: Record<IcpDecision, number> = { qualified: 0, maybe: 1, rejected: 2 };
 
 async function main() {
+  await minimizeDetails();
   const feed = await loadFeed();
   if (!feed.pages) {
     throw new Error(`no feed pages in ${RAW_DIR}. Run /contra-scrape in Claude Code to fetch them via the Contra MCP.`);
@@ -69,7 +70,7 @@ async function main() {
     counts,
     accessLimited: feed.accessLimited,
     boardTotal: feed.boardTotal,
-    jobs: kept,
+    jobs: kept.map((j) => ({ ...j, description: null })), // descriptions are for classifying only, never saved in run output
     rejected: classified
       .filter((j) => j.icp.decision === "rejected")
       .map((j) => ({ title: j.title, url: j.url, reasons: j.icp.reasons })),
