@@ -1,17 +1,17 @@
 {
-  "ranAt": "2026-10-09T14:40:32.014Z",
+  "ranAt": "2026-10-09T19:35:28.396Z",
   "preset": "ALL",
   "classifier": "regex",
-  "totalScraped": 234,
+  "totalScraped": 229,
   "totalMatched": 42,
-  "newSinceLastRun": 42,
+  "newSinceLastRun": 0,
   "counts": {
     "qualified": 4,
     "maybe": 38,
-    "rejected": 192
+    "rejected": 187
   },
   "accessLimited": false,
-  "boardTotal": 234,
+  "boardTotal": 229,
   "jobs": [
     {
       "id": "WyJKb2IiLDk3NTExXQ==",
@@ -52,7 +52,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "qualified",
         "tier": "diana",
@@ -121,7 +121,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "qualified",
         "tier": "eddie",
@@ -190,7 +190,7 @@
         "viewed": true,
         "matched": true
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "qualified",
         "tier": "diana",
@@ -255,7 +255,7 @@
         "viewed": true,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "qualified",
         "tier": "eddie",
@@ -324,7 +324,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -397,7 +397,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "diana",
@@ -464,7 +464,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "diana",
@@ -532,7 +532,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "diana",
@@ -595,7 +595,7 @@
         "viewed": false,
         "matched": true
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -664,7 +664,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "diana",
@@ -734,7 +734,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "diana",
@@ -803,7 +803,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "diana",
@@ -872,7 +872,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "diana",
@@ -936,7 +936,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -1002,7 +1002,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -1072,7 +1072,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -1138,7 +1138,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "diana",
@@ -1202,7 +1202,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "diana",
@@ -1266,7 +1266,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "diana",
@@ -1329,7 +1329,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -1394,7 +1394,7 @@
         "viewed": true,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -1450,7 +1450,7 @@
         "viewed": true,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -1515,7 +1515,7 @@
         "viewed": true,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -1582,7 +1582,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -1651,7 +1651,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -1715,7 +1715,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "diana",
@@ -1784,7 +1784,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -1851,7 +1851,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -1919,7 +1919,7 @@
         "viewed": true,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -1983,7 +1983,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -2049,7 +2049,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -2112,7 +2112,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -2170,7 +2170,7 @@
         "viewed": true,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -2226,7 +2226,7 @@
         "viewed": true,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -2289,7 +2289,7 @@
         "viewed": true,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -2353,7 +2353,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -2419,7 +2419,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -2476,7 +2476,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -2536,7 +2536,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -2598,7 +2598,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -2654,7 +2654,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -2719,7 +2719,7 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": true,
+      "isNew": false,
       "icp": {
         "decision": "maybe",
         "tier": "eddie",
@@ -2737,6 +2737,13 @@
     }
   ],
   "rejected": [
+    {
+      "title": "Personal Brand + Website Designer for Mortgage Loan Officer",
+      "url": "https://contra.com/opportunity/P6FLQLrF-personal-brand-website-designer-for-mortgage-loan-officer",
+      "reasons": [
+        "B2C / consumer client (\"Personal Brand\")"
+      ]
+    },
     {
       "title": "Meta Static Ad Designer — DTC Health & Wellness",
       "url": "https://contra.com/opportunity/leAMc7Rk-meta-static-ad-designer-dtc-health-and-wellness",
@@ -2995,13 +3002,6 @@
       "url": "https://contra.com/opportunity/rgr7scoU-short-form-video-editor-and-clipper-reels-tik-tok-you-tube-shorts-full-time-parenting-brand",
       "reasons": [
         "not a service we sell — core ask is \"Video\" (Short-Form Video Editor & Clipper: Reels / TikTok / YouTube Shorts (Full-Time, Parenting Brand))"
-      ]
-    },
-    {
-      "title": "Video Editor for Case Study Videos",
-      "url": "https://contra.com/opportunity/RgZMmFXQ-video-editor-for-case-study-videos",
-      "reasons": [
-        "not a service we sell — core ask is \"Video\" (Video Editor for Case Study Videos)"
       ]
     },
     {
@@ -4046,41 +4046,6 @@
       "url": "https://contra.com/opportunity/PNRv6skb-expert-in-digital-trademark-protection-and-course-launch-strategy",
       "reasons": [
         "not a service we sell — core ask is \"Copywriter\" (Expert in Digital Trademark Protection and Course Launch Strategy)"
-      ]
-    },
-    {
-      "title": "Full-Stack/Backend Developer for Code Repository Audit and Documentation",
-      "url": "https://contra.com/opportunity/gAN3eUNZ-full-stackbackend-developer-for-code-repository-audit-and-documentation",
-      "reasons": [
-        "not a service we sell — core ask is \"Backend Developer\" (Full-Stack/Backend Developer for Code Repository Audit and Documentation)"
-      ]
-    },
-    {
-      "title": "SaaS Product Launch Specialist - Product Hunt, Reddit & Growth",
-      "url": "https://contra.com/opportunity/AYR3UbgX-saa-s-product-launch-specialist-product-hunt-reddit-and-growth",
-      "reasons": [
-        "not a service we sell — core ask is \"Marketer\" (SaaS Product Launch Specialist - Product Hunt, Reddit & Growth)"
-      ]
-    },
-    {
-      "title": "Online Course Developer using Claro",
-      "url": "https://contra.com/opportunity/vrRLUcXX-online-course-developer-using-claro",
-      "reasons": [
-        "no brand / website / product-design ask found (Online Course Developer using Claro)"
-      ]
-    },
-    {
-      "title": "Video Editor for TikTok and Instagram Content",
-      "url": "https://contra.com/opportunity/2YOPLbL6-video-editor-for-tik-tok-and-instagram-content",
-      "reasons": [
-        "not a service we sell — core ask is \"Video\" (Video Editor for TikTok and Instagram Content)"
-      ]
-    },
-    {
-      "title": "B2B Lead Generation Specialist for Legal Services in Block & Estate Management",
-      "url": "https://contra.com/opportunity/PYURQvEU-b2-b-lead-generation-specialist-for-legal-services-in-block-and-estate-management",
-      "reasons": [
-        "not a service we sell — core ask is \"Lead Generation\" (B2B Lead Generation Specialist for Legal Services in Block & Estate Management)"
       ]
     }
   ]
