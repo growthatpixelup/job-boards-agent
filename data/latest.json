@@ -1,17 +1,17 @@
 {
-  "ranAt": "2026-10-10T08:41:03.035Z",
+  "ranAt": "2026-10-10T18:43:37.068Z",
   "preset": "ALL",
   "classifier": "regex",
-  "totalScraped": 228,
-  "totalMatched": 40,
+  "totalScraped": 226,
+  "totalMatched": 39,
   "newSinceLastRun": 0,
   "counts": {
     "qualified": 4,
-    "maybe": 36,
-    "rejected": 188
+    "maybe": 35,
+    "rejected": 187
   },
   "accessLimited": false,
-  "boardTotal": 228,
+  "boardTotal": 226,
   "jobs": [
     {
       "id": "WyJKb2IiLDk3NTExXQ==",
@@ -754,72 +754,6 @@
           "+1 multi-service",
           "+2 b2b-software",
           "+1 trigger-rebrand",
-          "+1 systems"
-        ],
-        "classifier": "regex"
-      }
-    },
-    {
-      "id": "WyJKb2IiLDk5MTcxXQ==",
-      "title": "Product Designer (UI/UX) – Remote",
-      "slug": "svFe23gW-product-designer-uiux-remote",
-      "url": "https://contra.com/opportunity/svFe23gW-product-designer-uiux-remote",
-      "createdAt": "2026-10-09T11:11:46.577Z",
-      "approvedAt": "2026-10-09T11:35:04.056Z",
-      "category": null,
-      "organization": {
-        "name": "Welya",
-        "isVerified": false
-      },
-      "country": null,
-      "hiringAsIndividual": false,
-      "description": null,
-      "budget": {
-        "type": "FIXED",
-        "feeMin": 2500,
-        "feeMax": 5000,
-        "estimatedHours": null
-      },
-      "duration": {
-        "amount": 2,
-        "interval": "WEEK"
-      },
-      "roles": [
-        "Product Designer",
-        "Design Systems Specialist",
-        "Interaction Designer"
-      ],
-      "tools": [
-        "Figma"
-      ],
-      "timezone": {
-        "primaryUtcOffset": null,
-        "offsetTolerance": null
-      },
-      "visitor": {
-        "applied": false,
-        "bookmarked": false,
-        "dismissed": false,
-        "viewed": false,
-        "matched": false
-      },
-      "isNew": false,
-      "icp": {
-        "decision": "maybe",
-        "tier": "diana",
-        "score": 4,
-        "reasons": [
-          "product / UI-UX design + design system ask",
-          "multi-service scope",
-          "B2B software / SaaS",
-          "wants systems / ongoing partnership",
-          "⚠ budget $5,000 is below the $7,900 entry price"
-        ],
-        "signals": [
-          "service:product",
-          "service:design-system",
-          "+1 multi-service",
-          "+2 b2b-software",
           "+1 systems"
         ],
         "classifier": "regex"
@@ -2620,6 +2554,13 @@
   ],
   "rejected": [
     {
+      "title": "Design Engineer for 3D JavaScript Website Hero Scene",
+      "url": "https://contra.com/opportunity/vrBrBv77-design-engineer-for-3-d-java-script-website-hero-scene",
+      "reasons": [
+        "not a service we sell — core ask is \"Engineer\" (Design Engineer for 3D JavaScript Website Hero Scene)"
+      ]
+    },
+    {
       "title": "Motion Designer for 30s B2B Video Ad (LinkedIn + Meta)",
       "url": "https://contra.com/opportunity/bgkFq3ZM-motion-designer-for-30s-b2-b-video-ad-linked-in-meta",
       "reasons": [
@@ -3921,20 +3862,6 @@
       "url": "https://contra.com/opportunity/gNbc6PXg-video-editor-for-social-media-ad-campaigns",
       "reasons": [
         "not a service we sell — core ask is \"Video\" (Video Editor for Social Media Ad Campaigns)"
-      ]
-    },
-    {
-      "title": "Paid Media Associate, Meta Ads + Programmatic",
-      "url": "https://contra.com/opportunity/cQlAg7bU-paid-media-associate-meta-ads-programmatic",
-      "reasons": [
-        "not a service we sell — core ask is \"Paid Media\" (Paid Media Associate, Meta Ads + Programmatic)"
-      ]
-    },
-    {
-      "title": "Part-Time Social Media Content Creator for Home & Lifestyle E-commerce",
-      "url": "https://contra.com/opportunity/m33XosRv-part-time-social-media-content-creator-for-home-and-lifestyle-e-commerce",
-      "reasons": [
-        "not a service we sell — core ask is \"Social Media\" (Part-Time Social Media Content Creator for Home & Lifestyle E-commerce)"
       ]
     }
   ]
