@@ -1,17 +1,17 @@
 {
-  "ranAt": "2026-10-09T19:35:28.396Z",
+  "ranAt": "2026-10-10T08:41:03.035Z",
   "preset": "ALL",
   "classifier": "regex",
-  "totalScraped": 229,
-  "totalMatched": 42,
+  "totalScraped": 228,
+  "totalMatched": 40,
   "newSinceLastRun": 0,
   "counts": {
     "qualified": 4,
-    "maybe": 38,
-    "rejected": 187
+    "maybe": 36,
+    "rejected": 188
   },
   "accessLimited": false,
-  "boardTotal": 229,
+  "boardTotal": 228,
   "jobs": [
     {
       "id": "WyJKb2IiLDk3NTExXQ==",
@@ -1415,61 +1415,6 @@
       }
     },
     {
-      "id": "WyJKb2IiLDk5MTMwXQ==",
-      "title": "Webflow Developer for Hourly Website Tasks",
-      "slug": "mvc72mcE-webflow-developer-for-hourly-website-tasks",
-      "url": "https://contra.com/opportunity/mvc72mcE-webflow-developer-for-hourly-website-tasks",
-      "createdAt": "2026-10-08T20:35:10.628Z",
-      "approvedAt": "2026-10-08T20:46:40.207Z",
-      "category": null,
-      "organization": null,
-      "country": null,
-      "hiringAsIndividual": true,
-      "description": null,
-      "budget": {
-        "type": "HOURLY",
-        "feeMin": 75,
-        "feeMax": 125,
-        "estimatedHours": 5
-      },
-      "duration": null,
-      "roles": [
-        "Webflow Developer"
-      ],
-      "tools": [
-        "Webflow"
-      ],
-      "timezone": {
-        "primaryUtcOffset": null,
-        "offsetTolerance": null
-      },
-      "visitor": {
-        "applied": false,
-        "bookmarked": false,
-        "dismissed": false,
-        "viewed": true,
-        "matched": false
-      },
-      "isNew": false,
-      "icp": {
-        "decision": "maybe",
-        "tier": "eddie",
-        "score": 2,
-        "reasons": [
-          "website ask",
-          "premium budget $125/hr",
-          "− posted by a private individual",
-          "⚠ no evidence the client is a funded B2B software company"
-        ],
-        "signals": [
-          "service:website",
-          "+3 budget-premium",
-          "-1 individual"
-        ],
-        "classifier": "regex"
-      }
-    },
-    {
       "id": "WyJKb2IiLDk4NjQ3XQ==",
       "title": "Kajabi Website Consolidation and Brand Ecosystem Specialist",
       "slug": "sFrXFOeN-kajabi-website-consolidation-and-brand-ecosystem-specialist",
@@ -2063,69 +2008,6 @@
         "signals": [
           "service:website",
           "+1 trigger-deadline"
-        ],
-        "classifier": "regex"
-      }
-    },
-    {
-      "id": "WyJKb2IiLDk2NTMwXQ==",
-      "title": "Freelance Brand/Graphic Designer for Life-Sciences Rebrand Package",
-      "slug": "vPLENEsB-freelance-brandgraphic-designer-for-life-sciences-rebrand-package",
-      "url": "https://contra.com/opportunity/vPLENEsB-freelance-brandgraphic-designer-for-life-sciences-rebrand-package",
-      "createdAt": "2026-09-10T02:03:06.836Z",
-      "approvedAt": "2026-09-10T02:21:51.188Z",
-      "category": null,
-      "organization": {
-        "name": "Renova Therapeutics",
-        "isVerified": false
-      },
-      "country": null,
-      "hiringAsIndividual": false,
-      "description": null,
-      "budget": {
-        "type": "FIXED",
-        "feeMin": 2500,
-        "feeMax": 4000,
-        "estimatedHours": null
-      },
-      "duration": {
-        "amount": 7,
-        "interval": "WEEK"
-      },
-      "roles": [
-        "Brand Designer",
-        "Graphic Designer"
-      ],
-      "tools": [
-        "Squarespace",
-        "Adobe Illustrator",
-        "Microsoft PowerPoint"
-      ],
-      "timezone": {
-        "primaryUtcOffset": null,
-        "offsetTolerance": null
-      },
-      "visitor": {
-        "applied": false,
-        "bookmarked": false,
-        "dismissed": false,
-        "viewed": false,
-        "matched": false
-      },
-      "isNew": false,
-      "icp": {
-        "decision": "maybe",
-        "tier": "eddie",
-        "score": 1,
-        "reasons": [
-          "brand identity ask",
-          "rebrand / refresh underway",
-          "⚠ budget $4,000 is below the $7,900 entry price",
-          "⚠ no evidence the client is a funded B2B software company"
-        ],
-        "signals": [
-          "service:brand",
-          "+1 trigger-rebrand"
         ],
         "classifier": "regex"
       }
@@ -2737,6 +2619,34 @@
     }
   ],
   "rejected": [
+    {
+      "title": "Motion Designer for 30s B2B Video Ad (LinkedIn + Meta)",
+      "url": "https://contra.com/opportunity/bgkFq3ZM-motion-designer-for-30s-b2-b-video-ad-linked-in-meta",
+      "reasons": [
+        "not a service we sell — core ask is \"Motion Designer\" (Motion Designer for 30s B2B Video Ad (LinkedIn + Meta))"
+      ]
+    },
+    {
+      "title": "Freelance Creative Stylist — Bestselling Author Tour & Media Appearances",
+      "url": "https://contra.com/opportunity/vmYbgLWX-freelance-creative-stylist-bestselling-author-tour-and-media-appearances",
+      "reasons": [
+        "no brand / website / product-design ask found (Freelance Creative Stylist — Bestselling Author Tour & Media Appearances)"
+      ]
+    },
+    {
+      "title": "Experienced Web Designer to Refine Architectural Website Sections and Navigation",
+      "url": "https://contra.com/opportunity/EsqkPQBX-experienced-web-designer-to-refine-architectural-website-sections-and-navigation",
+      "reasons": [
+        "budget $900 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Freelance Talent Engineer (Clay / AI agents)",
+      "url": "https://contra.com/opportunity/6QqLWWMm-freelance-talent-engineer-clay-ai-agents",
+      "reasons": [
+        "not a service we sell — core ask is \"Engineer\" (Freelance Talent Engineer (Clay / AI agents))"
+      ]
+    },
     {
       "title": "Personal Brand + Website Designer for Mortgage Loan Officer",
       "url": "https://contra.com/opportunity/P6FLQLrF-personal-brand-website-designer-for-mortgage-loan-officer",
@@ -4025,27 +3935,6 @@
       "url": "https://contra.com/opportunity/m33XosRv-part-time-social-media-content-creator-for-home-and-lifestyle-e-commerce",
       "reasons": [
         "not a service we sell — core ask is \"Social Media\" (Part-Time Social Media Content Creator for Home & Lifestyle E-commerce)"
-      ]
-    },
-    {
-      "title": "Motion Designer",
-      "url": "https://contra.com/opportunity/ebAgBOgL-motion-designer",
-      "reasons": [
-        "not a service we sell — core ask is \"Motion Designer\" (Motion Designer)"
-      ]
-    },
-    {
-      "title": "Brand + Web Designer Needed for Brackett AI's Visual Storytelling and Brand Elevation",
-      "url": "https://contra.com/opportunity/A73cm6cs-brand-web-designer-needed-for-brackett-ais-visual-storytelling-and-brand-elevation",
-      "reasons": [
-        "budget $2,000 is below the $2,500 floor"
-      ]
-    },
-    {
-      "title": "Expert in Digital Trademark Protection and Course Launch Strategy",
-      "url": "https://contra.com/opportunity/PNRv6skb-expert-in-digital-trademark-protection-and-course-launch-strategy",
-      "reasons": [
-        "not a service we sell — core ask is \"Copywriter\" (Expert in Digital Trademark Protection and Course Launch Strategy)"
       ]
     }
   ]
