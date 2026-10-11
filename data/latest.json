@@ -1,18 +1,79 @@
 {
-  "ranAt": "2026-10-10T18:43:37.068Z",
+  "ranAt": "2026-10-11T09:05:06.914Z",
   "preset": "ALL",
   "classifier": "regex",
-  "totalScraped": 226,
+  "totalScraped": 223,
   "totalMatched": 39,
-  "newSinceLastRun": 0,
+  "newSinceLastRun": 1,
   "counts": {
-    "qualified": 4,
-    "maybe": 35,
-    "rejected": 187
+    "qualified": 5,
+    "maybe": 34,
+    "rejected": 184
   },
   "accessLimited": false,
-  "boardTotal": 226,
+  "boardTotal": 223,
   "jobs": [
+    {
+      "id": "WyJKb2IiLDk5MzE3XQ==",
+      "title": "Framer Expert for B2B SaaS Homepage Updates in Framer",
+      "slug": "eEMEoFNv-framer-expert-for-b2-b-saa-s-homepage-updates-in-framer",
+      "url": "https://contra.com/opportunity/eEMEoFNv-framer-expert-for-b2-b-saa-s-homepage-updates-in-framer",
+      "createdAt": "2026-10-11T00:02:14.557Z",
+      "approvedAt": "2026-10-11T00:19:06.885Z",
+      "category": null,
+      "organization": {
+        "name": "VelloHealth",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "HOURLY",
+        "feeMin": 50,
+        "feeMax": 100,
+        "estimatedHours": 10
+      },
+      "duration": {
+        "amount": 3,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "Framer Developer",
+        "Web Designer"
+      ],
+      "tools": [
+        "Framer"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": true,
+      "icp": {
+        "decision": "qualified",
+        "tier": "diana",
+        "score": 4,
+        "reasons": [
+          "website ask",
+          "budget $100/hr fits",
+          "B2B software / SaaS"
+        ],
+        "signals": [
+          "service:website",
+          "+2 budget-ok",
+          "+2 b2b-software"
+        ],
+        "classifier": "regex"
+      }
+    },
     {
       "id": "WyJKb2IiLDk3NTExXQ==",
       "title": "Founding Product Designer",
@@ -415,78 +476,6 @@
           "+3 ai-native",
           "+2 b2b-software",
           "+1 positioning",
-          "+1 systems"
-        ],
-        "classifier": "regex"
-      }
-    },
-    {
-      "id": "WyJKb2IiLDk2NTg4XQ==",
-      "title": "Senior Designer (International, Remote) Full-Time Applications Only",
-      "slug": "AmmLmMbs-senior-designer-international-remote-full-time-applications-only",
-      "url": "https://contra.com/opportunity/AmmLmMbs-senior-designer-international-remote-full-time-applications-only",
-      "createdAt": "2026-09-10T18:20:55.275Z",
-      "approvedAt": "2026-09-10T21:54:28.344Z",
-      "category": null,
-      "organization": {
-        "name": "Wow House Studio",
-        "isVerified": false
-      },
-      "country": null,
-      "hiringAsIndividual": false,
-      "description": null,
-      "budget": {
-        "type": "MONTHLY",
-        "feeMin": 2000,
-        "feeMax": 4000,
-        "estimatedHours": 0
-      },
-      "duration": null,
-      "roles": [
-        "Web Designer",
-        "Motion Designer",
-        "Brand Designer"
-      ],
-      "tools": [
-        "Figma",
-        "Claude",
-        "Adobe Creative Suite",
-        "Midjourney"
-      ],
-      "timezone": {
-        "primaryUtcOffset": null,
-        "offsetTolerance": null
-      },
-      "visitor": {
-        "applied": false,
-        "bookmarked": false,
-        "dismissed": false,
-        "viewed": false,
-        "matched": false
-      },
-      "isNew": false,
-      "icp": {
-        "decision": "maybe",
-        "tier": "diana",
-        "score": 6,
-        "reasons": [
-          "brand identity + website ask",
-          "multi-service scope",
-          "budget $4,000/mo fits",
-          "AI-native product",
-          "B2B software / SaaS",
-          "wants systems / ongoing partnership",
-          "− consumer-brand language (\"packaging\")",
-          "⚠ consumer-brand language (\"packaging\") alongside B2B signals"
-        ],
-        "signals": [
-          "service:brand",
-          "service:website",
-          "+1 multi-service",
-          "-3 b2c-mixed",
-          "+2 budget-ok",
-          "+3 ai-native",
-          "+2 b2b-software",
           "+1 systems"
         ],
         "classifier": "regex"
@@ -2554,6 +2543,13 @@
   ],
   "rejected": [
     {
+      "title": "Lead Editor with Taste: One of the Biggest AI Ads of the Year + Long-Term Role",
+      "url": "https://contra.com/opportunity/sglXeUUb-lead-editor-with-taste-one-of-the-biggest-ai-ads-of-the-year-long-term-role",
+      "reasons": [
+        "not a service we sell — core ask is \"Editor\" (Lead Editor with Taste: One of the Biggest AI Ads of the Year + Long-Term Role)"
+      ]
+    },
+    {
       "title": "Design Engineer for 3D JavaScript Website Hero Scene",
       "url": "https://contra.com/opportunity/vrBrBv77-design-engineer-for-3-d-java-script-website-hero-scene",
       "reasons": [
@@ -2579,13 +2575,6 @@
       "url": "https://contra.com/opportunity/EsqkPQBX-experienced-web-designer-to-refine-architectural-website-sections-and-navigation",
       "reasons": [
         "budget $900 is below the $2,500 floor"
-      ]
-    },
-    {
-      "title": "Freelance Talent Engineer (Clay / AI agents)",
-      "url": "https://contra.com/opportunity/6QqLWWMm-freelance-talent-engineer-clay-ai-agents",
-      "reasons": [
-        "not a service we sell — core ask is \"Engineer\" (Freelance Talent Engineer (Clay / AI agents))"
       ]
     },
     {
@@ -2902,13 +2891,6 @@
       "url": "https://contra.com/opportunity/sLOgl2AZ-astro-developer-for-ongoing-agency-work",
       "reasons": [
         "budget $40/hr is below the $50/hr floor"
-      ]
-    },
-    {
-      "title": "Framer Website Designer for Brand Refresh",
-      "url": "https://contra.com/opportunity/lMevsbkF-framer-website-designer-for-brand-refresh",
-      "reasons": [
-        "budget $1,000 is below the $2,500 floor"
       ]
     },
     {
@@ -3848,20 +3830,6 @@
       "url": "https://contra.com/opportunity/l66Obmro-membership-program-developer-for-storytelling-school",
       "reasons": [
         "no brand / website / product-design ask found (Membership Program Developer for Storytelling School)"
-      ]
-    },
-    {
-      "title": "Kajabi Membership Build and Launch Specialist Needed",
-      "url": "https://contra.com/opportunity/rqBYg3kR-kajabi-membership-build-and-launch-specialist-needed",
-      "reasons": [
-        "not a service we sell — core ask is \"Marketer\" (Kajabi Membership Build and Launch Specialist Needed)"
-      ]
-    },
-    {
-      "title": "Video Editor for Social Media Ad Campaigns",
-      "url": "https://contra.com/opportunity/gNbc6PXg-video-editor-for-social-media-ad-campaigns",
-      "reasons": [
-        "not a service we sell — core ask is \"Video\" (Video Editor for Social Media Ad Campaigns)"
       ]
     }
   ]
