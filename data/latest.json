@@ -1,28 +1,28 @@
 {
-  "ranAt": "2026-10-11T09:05:06.914Z",
+  "ranAt": "2026-10-11T19:01:37.096Z",
   "preset": "ALL",
   "classifier": "regex",
-  "totalScraped": 223,
+  "totalScraped": 219,
   "totalMatched": 39,
   "newSinceLastRun": 1,
   "counts": {
-    "qualified": 5,
-    "maybe": 34,
-    "rejected": 184
+    "qualified": 6,
+    "maybe": 33,
+    "rejected": 180
   },
   "accessLimited": false,
-  "boardTotal": 223,
+  "boardTotal": 219,
   "jobs": [
     {
-      "id": "WyJKb2IiLDk5MzE3XQ==",
-      "title": "Framer Expert for B2B SaaS Homepage Updates in Framer",
-      "slug": "eEMEoFNv-framer-expert-for-b2-b-saa-s-homepage-updates-in-framer",
-      "url": "https://contra.com/opportunity/eEMEoFNv-framer-expert-for-b2-b-saa-s-homepage-updates-in-framer",
-      "createdAt": "2026-10-11T00:02:14.557Z",
-      "approvedAt": "2026-10-11T00:19:06.885Z",
+      "id": "WyJKb2IiLDk5MzQzXQ==",
+      "title": "Product Designer for 5 High-End UI Showcase Visuals",
+      "slug": "vZlWNvMv-product-designer-for-5-high-end-ui-showcase-visuals",
+      "url": "https://contra.com/opportunity/vZlWNvMv-product-designer-for-5-high-end-ui-showcase-visuals",
+      "createdAt": "2026-10-11T11:52:36.437Z",
+      "approvedAt": "2026-10-11T12:31:04.085Z",
       "category": null,
       "organization": {
-        "name": "VelloHealth",
+        "name": "CREADEVS",
         "isVerified": false
       },
       "country": null,
@@ -30,20 +30,18 @@
       "description": null,
       "budget": {
         "type": "HOURLY",
-        "feeMin": 50,
-        "feeMax": 100,
-        "estimatedHours": 10
+        "feeMin": 60,
+        "feeMax": 75,
+        "estimatedHours": 25
       },
-      "duration": {
-        "amount": 3,
-        "interval": "WEEK"
-      },
+      "duration": null,
       "roles": [
-        "Framer Developer",
+        "Product Designer",
+        "UI Designer",
         "Web Designer"
       ],
       "tools": [
-        "Framer"
+        "Figma"
       ],
       "timezone": {
         "primaryUtcOffset": null,
@@ -60,14 +58,17 @@
       "icp": {
         "decision": "qualified",
         "tier": "diana",
-        "score": 4,
+        "score": 5,
         "reasons": [
-          "website ask",
-          "budget $100/hr fits",
+          "website + product / UI-UX design ask",
+          "multi-service scope",
+          "budget $75/hr fits",
           "B2B software / SaaS"
         ],
         "signals": [
           "service:website",
+          "service:product",
+          "+1 multi-service",
           "+2 budget-ok",
           "+2 b2b-software"
         ],
@@ -335,6 +336,67 @@
           "+2 budget-ok",
           "+3 ai-native",
           "+1 systems"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk5MzE3XQ==",
+      "title": "Framer Expert for B2B SaaS Homepage Updates in Framer",
+      "slug": "eEMEoFNv-framer-expert-for-b2-b-saa-s-homepage-updates-in-framer",
+      "url": "https://contra.com/opportunity/eEMEoFNv-framer-expert-for-b2-b-saa-s-homepage-updates-in-framer",
+      "createdAt": "2026-10-11T00:02:14.557Z",
+      "approvedAt": "2026-10-11T00:19:06.885Z",
+      "category": null,
+      "organization": {
+        "name": "VelloHealth",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "HOURLY",
+        "feeMin": 50,
+        "feeMax": 100,
+        "estimatedHours": 10
+      },
+      "duration": {
+        "amount": 3,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "Framer Developer",
+        "Web Designer"
+      ],
+      "tools": [
+        "Framer"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "qualified",
+        "tier": "diana",
+        "score": 4,
+        "reasons": [
+          "website ask",
+          "budget $100/hr fits",
+          "B2B software / SaaS"
+        ],
+        "signals": [
+          "service:website",
+          "+2 budget-ok",
+          "+2 b2b-software"
         ],
         "classifier": "regex"
       }
@@ -1669,72 +1731,6 @@
           "service:development",
           "+1 multi-service",
           "+1 trigger-deadline"
-        ],
-        "classifier": "regex"
-      }
-    },
-    {
-      "id": "WyJKb2IiLDk2NjcyXQ==",
-      "title": "Editorial Designer/Art Director for Independent Print Magazine",
-      "slug": "2eLXlPg6-editorial-designerart-director-for-independent-print-magazine",
-      "url": "https://contra.com/opportunity/2eLXlPg6-editorial-designerart-director-for-independent-print-magazine",
-      "createdAt": "2026-09-11T17:05:50.937Z",
-      "approvedAt": "2026-09-11T17:12:31.835Z",
-      "category": null,
-      "organization": {
-        "name": "Sexy Plate Sexy Space",
-        "isVerified": false
-      },
-      "country": null,
-      "hiringAsIndividual": false,
-      "description": null,
-      "budget": {
-        "type": "FIXED",
-        "feeMin": 2500,
-        "feeMax": 3500,
-        "estimatedHours": null
-      },
-      "duration": {
-        "amount": 1,
-        "interval": "MONTH"
-      },
-      "roles": [
-        "Editorial Designer",
-        "Art Director",
-        "Print Designer"
-      ],
-      "tools": [
-        "Adobe InDesign",
-        "Adobe Photoshop",
-        "Adobe Illustrator"
-      ],
-      "timezone": {
-        "primaryUtcOffset": null,
-        "offsetTolerance": null
-      },
-      "visitor": {
-        "applied": false,
-        "bookmarked": false,
-        "dismissed": false,
-        "viewed": false,
-        "matched": false
-      },
-      "isNew": false,
-      "icp": {
-        "decision": "maybe",
-        "tier": "eddie",
-        "score": 2,
-        "reasons": [
-          "creative direction ask",
-          "values positioning/narrative",
-          "founder-led decision",
-          "⚠ budget $3,500 is below the $7,900 entry price",
-          "⚠ no evidence the client is a funded B2B software company"
-        ],
-        "signals": [
-          "service:creative-direction",
-          "+1 positioning",
-          "+1 founder-led"
         ],
         "classifier": "regex"
       }
@@ -3802,34 +3798,6 @@
       "url": "https://contra.com/opportunity/7LPvsXUs-uiux-designer-for-food-delivery-app",
       "reasons": [
         "budget $2,000 is below the $2,500 floor"
-      ]
-    },
-    {
-      "title": "3D Animator for Golf Simulator Game - Short Reaction Clips",
-      "url": "https://contra.com/opportunity/g7rNOcv6-3-d-animator-for-golf-simulator-game-short-reaction-clips",
-      "reasons": [
-        "not a service we sell — core ask is \"3D\" (3D Animator for Golf Simulator Game - Short Reaction Clips)"
-      ]
-    },
-    {
-      "title": "Ad Designer for Product Launch",
-      "url": "https://contra.com/opportunity/rWRcolRM-ad-designer-for-product-launch",
-      "reasons": [
-        "no brand / website / product-design ask found (Ad Designer for Product Launch)"
-      ]
-    },
-    {
-      "title": "Facebook Ads Media Buyer for Vintage Luxury Watch Dealer",
-      "url": "https://contra.com/opportunity/XePB6bos-facebook-ads-media-buyer-for-vintage-luxury-watch-dealer",
-      "reasons": [
-        "not a service we sell — core ask is \"Facebook Ads\" (Facebook Ads Media Buyer for Vintage Luxury Watch Dealer)"
-      ]
-    },
-    {
-      "title": "Membership Program Developer for Storytelling School",
-      "url": "https://contra.com/opportunity/l66Obmro-membership-program-developer-for-storytelling-school",
-      "reasons": [
-        "no brand / website / product-design ask found (Membership Program Developer for Storytelling School)"
       ]
     }
   ]

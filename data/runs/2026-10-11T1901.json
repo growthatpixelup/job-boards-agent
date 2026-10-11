@@ -1,0 +1,3804 @@
+{
+  "ranAt": "2026-10-11T19:01:37.096Z",
+  "preset": "ALL",
+  "classifier": "regex",
+  "totalScraped": 219,
+  "totalMatched": 39,
+  "newSinceLastRun": 1,
+  "counts": {
+    "qualified": 6,
+    "maybe": 33,
+    "rejected": 180
+  },
+  "accessLimited": false,
+  "boardTotal": 219,
+  "jobs": [
+    {
+      "id": "WyJKb2IiLDk5MzQzXQ==",
+      "title": "Product Designer for 5 High-End UI Showcase Visuals",
+      "slug": "vZlWNvMv-product-designer-for-5-high-end-ui-showcase-visuals",
+      "url": "https://contra.com/opportunity/vZlWNvMv-product-designer-for-5-high-end-ui-showcase-visuals",
+      "createdAt": "2026-10-11T11:52:36.437Z",
+      "approvedAt": "2026-10-11T12:31:04.085Z",
+      "category": null,
+      "organization": {
+        "name": "CREADEVS",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "HOURLY",
+        "feeMin": 60,
+        "feeMax": 75,
+        "estimatedHours": 25
+      },
+      "duration": null,
+      "roles": [
+        "Product Designer",
+        "UI Designer",
+        "Web Designer"
+      ],
+      "tools": [
+        "Figma"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": true,
+      "icp": {
+        "decision": "qualified",
+        "tier": "diana",
+        "score": 5,
+        "reasons": [
+          "website + product / UI-UX design ask",
+          "multi-service scope",
+          "budget $75/hr fits",
+          "B2B software / SaaS"
+        ],
+        "signals": [
+          "service:website",
+          "service:product",
+          "+1 multi-service",
+          "+2 budget-ok",
+          "+2 b2b-software"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3NTExXQ==",
+      "title": "Founding Product Designer",
+      "slug": "Xo3rmZOm-founding-product-designer",
+      "url": "https://contra.com/opportunity/Xo3rmZOm-founding-product-designer",
+      "createdAt": "2026-09-22T13:48:16.839Z",
+      "approvedAt": "2026-09-23T03:14:16.877Z",
+      "category": null,
+      "organization": {
+        "name": "Perflo.ai",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "MONTHLY",
+        "feeMin": 4000,
+        "feeMax": 6000,
+        "estimatedHours": 0
+      },
+      "duration": null,
+      "roles": [
+        "Product Designer"
+      ],
+      "tools": [
+        "Figma"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "qualified",
+        "tier": "diana",
+        "score": 10,
+        "reasons": [
+          "product / UI-UX design ask",
+          "budget $6,000/mo fits",
+          "AI-native product",
+          "B2B software / SaaS",
+          "venture-funded (seed/Series C+/backed)",
+          "founder-led decision"
+        ],
+        "signals": [
+          "service:product",
+          "+2 budget-ok",
+          "+3 ai-native",
+          "+2 b2b-software",
+          "+2 funded",
+          "+1 founder-led"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk2OTMzXQ==",
+      "title": "Senior AI Product Designer (Consumer mobile)",
+      "slug": "FBBPOWsL-senior-ai-product-designer-consumer-mobile",
+      "url": "https://contra.com/opportunity/FBBPOWsL-senior-ai-product-designer-consumer-mobile",
+      "createdAt": "2026-09-14T19:49:14.061Z",
+      "approvedAt": "2026-09-14T19:51:22.920Z",
+      "category": null,
+      "organization": {
+        "name": "Jumpspeak",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "MONTHLY",
+        "feeMin": 6000,
+        "feeMax": 12000,
+        "estimatedHours": 0
+      },
+      "duration": null,
+      "roles": [
+        "UX Designer",
+        "Product Designer",
+        "UI Designer"
+      ],
+      "tools": [
+        "Figma",
+        "Lovable",
+        "Rive",
+        "Lottie",
+        "Claude"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "qualified",
+        "tier": "eddie",
+        "score": 8,
+        "reasons": [
+          "product / UI-UX design ask",
+          "premium budget $12,000/mo",
+          "AI-native product",
+          "values positioning/narrative",
+          "founder-led decision"
+        ],
+        "signals": [
+          "service:product",
+          "+3 budget-premium",
+          "+3 ai-native",
+          "+1 positioning",
+          "+1 founder-led"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk5MTM3XQ==",
+      "title": "Brand & Digital Designer | AI / B2B SaaS",
+      "slug": "BL6ERg2m-brand-and-digital-designer-or-ai-b2-b-saa-s",
+      "url": "https://contra.com/opportunity/BL6ERg2m-brand-and-digital-designer-or-ai-b2-b-saa-s",
+      "createdAt": "2026-10-08T22:50:42.256Z",
+      "approvedAt": "2026-10-08T22:56:03.839Z",
+      "category": null,
+      "organization": {
+        "name": "Vizit",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "HOURLY",
+        "feeMin": 50,
+        "feeMax": 100,
+        "estimatedHours": 6
+      },
+      "duration": {
+        "amount": 4,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "Brand Designer",
+        "Visual Designer",
+        "Graphic Designer"
+      ],
+      "tools": [
+        "Figma",
+        "Adobe Photoshop",
+        "Claude",
+        "Adobe Illustrator"
+      ],
+      "timezone": {
+        "primaryUtcOffset": -6,
+        "offsetTolerance": 0
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": true,
+        "matched": true
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "qualified",
+        "tier": "diana",
+        "score": 7,
+        "reasons": [
+          "brand identity ask",
+          "budget $100/hr fits",
+          "AI-native product",
+          "B2B software / SaaS"
+        ],
+        "signals": [
+          "service:brand",
+          "+2 budget-ok",
+          "+3 ai-native",
+          "+2 b2b-software"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk4OTk3XQ==",
+      "title": "AI Native Product Designer (React)",
+      "slug": "6EQqUeXQ-ai-native-product-designer-react",
+      "url": "https://contra.com/opportunity/6EQqUeXQ-ai-native-product-designer-react",
+      "createdAt": "2026-10-07T20:02:40.725Z",
+      "approvedAt": "2026-10-07T20:05:17.123Z",
+      "category": null,
+      "organization": {
+        "name": "Inflight",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 4000,
+        "feeMax": 8000,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 4,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "Web Developer",
+        "UI Designer",
+        "Frontend Engineer"
+      ],
+      "tools": [
+        "Claude",
+        "React"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": true,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "qualified",
+        "tier": "eddie",
+        "score": 7,
+        "reasons": [
+          "product / UI-UX design + custom development (Next.js / React) ask",
+          "multi-service scope",
+          "budget $8,000 fits",
+          "AI-native product",
+          "wants systems / ongoing partnership"
+        ],
+        "signals": [
+          "service:product",
+          "service:development",
+          "+1 multi-service",
+          "+2 budget-ok",
+          "+3 ai-native",
+          "+1 systems"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk5MzE3XQ==",
+      "title": "Framer Expert for B2B SaaS Homepage Updates in Framer",
+      "slug": "eEMEoFNv-framer-expert-for-b2-b-saa-s-homepage-updates-in-framer",
+      "url": "https://contra.com/opportunity/eEMEoFNv-framer-expert-for-b2-b-saa-s-homepage-updates-in-framer",
+      "createdAt": "2026-10-11T00:02:14.557Z",
+      "approvedAt": "2026-10-11T00:19:06.885Z",
+      "category": null,
+      "organization": {
+        "name": "VelloHealth",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "HOURLY",
+        "feeMin": 50,
+        "feeMax": 100,
+        "estimatedHours": 10
+      },
+      "duration": {
+        "amount": 3,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "Framer Developer",
+        "Web Designer"
+      ],
+      "tools": [
+        "Framer"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "qualified",
+        "tier": "diana",
+        "score": 4,
+        "reasons": [
+          "website ask",
+          "budget $100/hr fits",
+          "B2B software / SaaS"
+        ],
+        "signals": [
+          "service:website",
+          "+2 budget-ok",
+          "+2 b2b-software"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3NTc1XQ==",
+      "title": "Framer Website Developer for AI Searchability",
+      "slug": "mBsRBqk2-framer-website-developer-for-ai-searchability",
+      "url": "https://contra.com/opportunity/mBsRBqk2-framer-website-developer-for-ai-searchability",
+      "createdAt": "2026-09-22T22:29:54.872Z",
+      "approvedAt": "2026-09-22T22:45:19.213Z",
+      "category": null,
+      "organization": {
+        "name": "Sangha Partners",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "HOURLY",
+        "feeMin": 50,
+        "feeMax": 70,
+        "estimatedHours": 40
+      },
+      "duration": {
+        "amount": 1,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "Web Developer",
+        "Frontend Engineer",
+        "UX Engineer"
+      ],
+      "tools": [
+        "Framer",
+        "Django",
+        "Webflow"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 7,
+        "reasons": [
+          "website + product / UI-UX design + custom development (Next.js / React) ask",
+          "multi-service scope",
+          "AI-native product",
+          "going upmarket / needs enterprise credibility",
+          "wants systems / ongoing partnership",
+          "⚠ budget $70/hr is below the $75/hr entry price"
+        ],
+        "signals": [
+          "service:website",
+          "service:product",
+          "service:development",
+          "+1 multi-service",
+          "+3 ai-native",
+          "+2 upmarket",
+          "+1 systems"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3MjAxXQ==",
+      "title": "B2B Marketing Strategist for Next-Gen Creative Tech Studio",
+      "slug": "3OWYe2LB-b2-b-marketing-strategist-for-next-gen-creative-tech-studio",
+      "url": "https://contra.com/opportunity/3OWYe2LB-b2-b-marketing-strategist-for-next-gen-creative-tech-studio",
+      "createdAt": "2026-09-18T06:16:27.737Z",
+      "approvedAt": "2026-09-18T07:01:29.845Z",
+      "category": null,
+      "organization": {
+        "name": "KalpX Atelier",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 2000,
+        "feeMax": 4000,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 1,
+        "interval": "MONTH"
+      },
+      "roles": [
+        "Digital Marketing Specialist",
+        "Brand Strategist",
+        "Marketing Strategist"
+      ],
+      "tools": [
+        "Google Analytics",
+        "Notion",
+        "LinkedIn Sales Navigator",
+        "Ahrefs",
+        "HubSpot"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "diana",
+        "score": 7,
+        "reasons": [
+          "brand identity ask",
+          "AI-native product",
+          "B2B software / SaaS",
+          "values positioning/narrative",
+          "wants systems / ongoing partnership",
+          "⚠ budget $4,000 is below the $7,900 entry price"
+        ],
+        "signals": [
+          "service:brand",
+          "+3 ai-native",
+          "+2 b2b-software",
+          "+1 positioning",
+          "+1 systems"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3NzAwXQ==",
+      "title": "UX/UI Designer for AI SaaS Token Usage Dashboard",
+      "slug": "PAE6r7Le-uxui-designer-for-ai-saa-s-token-usage-dashboard",
+      "url": "https://contra.com/opportunity/PAE6r7Le-uxui-designer-for-ai-saa-s-token-usage-dashboard",
+      "createdAt": "2026-09-24T10:37:45.712Z",
+      "approvedAt": "2026-09-24T11:07:01.309Z",
+      "category": null,
+      "organization": null,
+      "country": null,
+      "hiringAsIndividual": true,
+      "description": null,
+      "budget": {
+        "type": "HOURLY",
+        "feeMin": 25,
+        "feeMax": 50,
+        "estimatedHours": 40
+      },
+      "duration": null,
+      "roles": [
+        "UX Designer",
+        "AI Visual Design",
+        "UI Designer"
+      ],
+      "tools": [
+        "Figma",
+        "FigJam",
+        "Claude"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "diana",
+        "score": 5,
+        "reasons": [
+          "product / UI-UX design ask",
+          "AI-native product",
+          "B2B software / SaaS",
+          "wants systems / ongoing partnership",
+          "− posted by a private individual",
+          "⚠ budget $50/hr is below the $75/hr entry price"
+        ],
+        "signals": [
+          "service:product",
+          "+3 ai-native",
+          "+2 b2b-software",
+          "+1 systems",
+          "-1 individual"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3NjExXQ==",
+      "title": "Brand Strategist for Branding Workshop",
+      "slug": "XbR67gQg-brand-strategist-for-branding-workshop",
+      "url": "https://contra.com/opportunity/XbR67gQg-brand-strategist-for-branding-workshop",
+      "createdAt": "2026-09-23T07:55:48.770Z",
+      "approvedAt": "2026-09-23T08:04:16.913Z",
+      "category": null,
+      "organization": {
+        "name": "Koia Objects",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "HOURLY",
+        "feeMin": 75,
+        "feeMax": 150,
+        "estimatedHours": 3
+      },
+      "duration": {
+        "amount": 1,
+        "interval": "MONTH"
+      },
+      "roles": [
+        "Brand Strategist"
+      ],
+      "tools": [],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": true
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 5,
+        "reasons": [
+          "brand identity ask",
+          "premium budget $150/hr",
+          "values positioning/narrative",
+          "wants systems / ongoing partnership",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:brand",
+          "+3 budget-premium",
+          "+1 positioning",
+          "+1 systems"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3MTU0XQ==",
+      "title": "Experienced E-commerce Web Designer/Developer for Premium Mattress Brand",
+      "slug": "kNlgm7Ye-experienced-e-commerce-web-designerdeveloper-for-premium-mattress-brand",
+      "url": "https://contra.com/opportunity/kNlgm7Ye-experienced-e-commerce-web-designerdeveloper-for-premium-mattress-brand",
+      "createdAt": "2026-09-17T14:22:17.641Z",
+      "approvedAt": "2026-09-17T14:28:53.108Z",
+      "category": null,
+      "organization": {
+        "name": "Minarsky & Co.",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "HOURLY",
+        "feeMin": 35,
+        "feeMax": 70,
+        "estimatedHours": 20
+      },
+      "duration": {
+        "amount": 2,
+        "interval": "MONTH"
+      },
+      "roles": [
+        "Web Developer",
+        "eCommerce Manager",
+        "UX Designer"
+      ],
+      "tools": [
+        "Shopify",
+        "Google Analytics",
+        "Stripe",
+        "GitHub",
+        "Figma"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "diana",
+        "score": 5,
+        "reasons": [
+          "website + product / UI-UX design + custom development (Next.js / React) ask",
+          "multi-service scope",
+          "B2B software / SaaS",
+          "launch / event deadline",
+          "wants systems / ongoing partnership",
+          "⚠ budget $70/hr is below the $75/hr entry price"
+        ],
+        "signals": [
+          "service:website",
+          "service:product",
+          "service:development",
+          "+1 multi-service",
+          "+2 b2b-software",
+          "+1 trigger-deadline",
+          "+1 systems"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk2MjQ4XQ==",
+      "title": "Humble AI Website Designer /eventual Framer implementation — Homepage for Manufacturing AI",
+      "slug": "PLoUmosb-humble-ai-website-designer-eventual-framer-implementation-homepage-for-manufacturing-ai",
+      "url": "https://contra.com/opportunity/PLoUmosb-humble-ai-website-designer-eventual-framer-implementation-homepage-for-manufacturing-ai",
+      "createdAt": "2026-09-07T13:53:39.189Z",
+      "approvedAt": "2026-09-11T20:34:32.796Z",
+      "category": null,
+      "organization": {
+        "name": "Humble Operations",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 4000,
+        "feeMax": 5000,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 4,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "Web Designer",
+        "Framer Developer",
+        "Design Systems Specialist"
+      ],
+      "tools": [
+        "Framer",
+        "Figma"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "diana",
+        "score": 5,
+        "reasons": [
+          "website + design system ask",
+          "multi-service scope",
+          "B2B software / SaaS",
+          "rebrand / refresh underway",
+          "wants systems / ongoing partnership",
+          "⚠ title mixes design with production/implementation work (\"Humble AI Website Designer /eventual Framer implementation — Homepage for Manufacturing AI\")",
+          "⚠ budget $5,000 is below the $7,900 entry price"
+        ],
+        "signals": [
+          "service:website",
+          "service:design-system",
+          "+1 multi-service",
+          "+2 b2b-software",
+          "+1 trigger-rebrand",
+          "+1 systems"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3ODI2XQ==",
+      "title": "Motion Designer for Premium SaaS Product Marketing Videos",
+      "slug": "QM6MrWWB-motion-designer-for-premium-saa-s-product-marketing-videos",
+      "url": "https://contra.com/opportunity/QM6MrWWB-motion-designer-for-premium-saa-s-product-marketing-videos",
+      "createdAt": "2026-09-25T23:22:51.281Z",
+      "approvedAt": "2026-09-25T23:30:24.395Z",
+      "category": null,
+      "organization": {
+        "name": "Onlo",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "HOURLY",
+        "feeMin": 35,
+        "feeMax": 70,
+        "estimatedHours": 15
+      },
+      "duration": {
+        "amount": 4,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "Motion Designer",
+        "Sound Designer",
+        "UI Designer"
+      ],
+      "tools": [
+        "Figma",
+        "Adobe After Effects",
+        "Adobe Illustrator",
+        "Adobe Premiere Pro"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "diana",
+        "score": 4,
+        "reasons": [
+          "product / UI-UX design ask",
+          "B2B software / SaaS",
+          "values positioning/narrative",
+          "wants systems / ongoing partnership",
+          "⚠ title mixes design with production/implementation work (\"Motion Designer for Premium SaaS Product Marketing Videos\")",
+          "⚠ budget $70/hr is below the $75/hr entry price"
+        ],
+        "signals": [
+          "service:product",
+          "+2 b2b-software",
+          "+1 positioning",
+          "+1 systems"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3NzYxXQ==",
+      "title": "Design unicorn 🦄",
+      "slug": "qPsblYLq-design-unicorn",
+      "url": "https://contra.com/opportunity/qPsblYLq-design-unicorn",
+      "createdAt": "2026-09-25T00:34:47.754Z",
+      "approvedAt": "2026-09-25T00:39:36.846Z",
+      "category": null,
+      "organization": {
+        "name": "Ask Tony",
+        "isVerified": true
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "HOURLY",
+        "feeMin": 50,
+        "feeMax": 100,
+        "estimatedHours": 20
+      },
+      "duration": null,
+      "roles": [
+        "Brand Designer",
+        "UI Designer",
+        "Pitch Deck Designer"
+      ],
+      "tools": [
+        "Figma",
+        "FLORA"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 4,
+        "reasons": [
+          "brand identity + product / UI-UX design + pitch / sales deck ask",
+          "multi-service scope",
+          "budget $100/hr fits",
+          "values positioning/narrative",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:brand",
+          "service:product",
+          "service:deck",
+          "+1 multi-service",
+          "+2 budget-ok",
+          "+1 positioning"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3MjcxXQ==",
+      "title": "Part-Time Remote UX/UI Designer for Philanthropic Website",
+      "slug": "2LbecPZY-part-time-remote-uxui-designer-for-philanthropic-website",
+      "url": "https://contra.com/opportunity/2LbecPZY-part-time-remote-uxui-designer-for-philanthropic-website",
+      "createdAt": "2026-09-19T02:56:24.010Z",
+      "approvedAt": "2026-09-27T22:38:00.053Z",
+      "category": null,
+      "organization": {
+        "name": "The Dudley T. Dougherty Foundation",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "HOURLY",
+        "feeMin": 50,
+        "feeMax": 75,
+        "estimatedHours": 20
+      },
+      "duration": {
+        "amount": 1,
+        "interval": "MONTH"
+      },
+      "roles": [
+        "UX Designer",
+        "Web Designer"
+      ],
+      "tools": [
+        "Figma"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 4,
+        "reasons": [
+          "website + product / UI-UX design ask",
+          "multi-service scope",
+          "budget $75/hr fits",
+          "wants systems / ongoing partnership",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:website",
+          "service:product",
+          "+1 multi-service",
+          "+2 budget-ok",
+          "+1 systems"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3MTQwXQ==",
+      "title": "Senior Motion Designer / Animation Director – Technology Brand Film",
+      "slug": "L2OOZkNm-senior-motion-designer-animation-director-technology-brand-film",
+      "url": "https://contra.com/opportunity/L2OOZkNm-senior-motion-designer-animation-director-technology-brand-film",
+      "createdAt": "2026-09-17T07:35:12.518Z",
+      "approvedAt": "2026-09-17T13:21:41.369Z",
+      "category": null,
+      "organization": {
+        "name": "Relove Technology",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 3500,
+        "feeMax": 6500,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 3,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "Motion Designer",
+        "Art Director",
+        "3D Animator"
+      ],
+      "tools": [
+        "Adobe After Effects",
+        "Cinema 4D",
+        "Blender",
+        "Adobe Illustrator",
+        "Adobe Premiere Pro"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 4,
+        "reasons": [
+          "creative direction ask",
+          "going upmarket / needs enterprise credibility",
+          "launch / event deadline",
+          "values positioning/narrative",
+          "⚠ title mixes design with production/implementation work (\"Senior Motion Designer / Animation Director – Technology Brand Film\")",
+          "⚠ budget $6,500 is below the $7,900 entry price",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:creative-direction",
+          "+2 upmarket",
+          "+1 trigger-deadline",
+          "+1 positioning"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk4MDc4XQ==",
+      "title": "SaaS Landing Page Designer",
+      "slug": "XNMvvQlW-saa-s-landing-page-designer",
+      "url": "https://contra.com/opportunity/XNMvvQlW-saa-s-landing-page-designer",
+      "createdAt": "2026-09-29T10:27:33.032Z",
+      "approvedAt": "2026-09-29T14:55:30.183Z",
+      "category": null,
+      "organization": {
+        "name": "AdRamp",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 1500,
+        "feeMax": 3000,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 1,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "UI Designer",
+        "Web Designer"
+      ],
+      "tools": [
+        "Figma"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "diana",
+        "score": 3,
+        "reasons": [
+          "website + product / UI-UX design ask",
+          "multi-service scope",
+          "B2B software / SaaS",
+          "⚠ budget $3,000 is below the $7,900 entry price"
+        ],
+        "signals": [
+          "service:website",
+          "service:product",
+          "+1 multi-service",
+          "+2 b2b-software"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3OTkzXQ==",
+      "title": "Website Designer",
+      "slug": "LLQcBvbr-website-designer",
+      "url": "https://contra.com/opportunity/LLQcBvbr-website-designer",
+      "createdAt": "2026-09-28T14:32:31.318Z",
+      "approvedAt": "2026-09-28T14:38:01.100Z",
+      "category": null,
+      "organization": {
+        "name": "Boxem",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 3000,
+        "feeMax": 6000,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 3,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "UI Designer",
+        "Web Designer",
+        "Graphic Designer"
+      ],
+      "tools": [
+        "Figma"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "diana",
+        "score": 3,
+        "reasons": [
+          "website + product / UI-UX design ask",
+          "multi-service scope",
+          "B2B software / SaaS",
+          "⚠ budget $6,000 is below the $7,900 entry price"
+        ],
+        "signals": [
+          "service:website",
+          "service:product",
+          "+1 multi-service",
+          "+2 b2b-software"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3MTg1XQ==",
+      "title": "Skilled UX/UI Designer for SAAS Website Completion",
+      "slug": "3PFRvNeZ-skilled-uxui-designer-for-saas-website-completion",
+      "url": "https://contra.com/opportunity/3PFRvNeZ-skilled-uxui-designer-for-saas-website-completion",
+      "createdAt": "2026-09-17T23:12:17.728Z",
+      "approvedAt": "2026-09-17T23:27:40.523Z",
+      "category": null,
+      "organization": {
+        "name": "Something Great",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 2000,
+        "feeMax": 4000,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 1,
+        "interval": "MONTH"
+      },
+      "roles": [
+        "UX Designer",
+        "UI Designer",
+        "Web Designer"
+      ],
+      "tools": [
+        "Figma"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "diana",
+        "score": 3,
+        "reasons": [
+          "website + product / UI-UX design ask",
+          "multi-service scope",
+          "B2B software / SaaS",
+          "⚠ budget $4,000 is below the $7,900 entry price"
+        ],
+        "signals": [
+          "service:website",
+          "service:product",
+          "+1 multi-service",
+          "+2 b2b-software"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3MDg5XQ==",
+      "title": "Senior UX/UI Designer – Swim Training App (Flutter) – Full UX, UI & Design System",
+      "slug": "eoome6cR-senior-uxui-designer-swim-training-app-flutter-full-ux-ui-and-design-system",
+      "url": "https://contra.com/opportunity/eoome6cR-senior-uxui-designer-swim-training-app-flutter-full-ux-ui-and-design-system",
+      "createdAt": "2026-09-16T15:00:04.226Z",
+      "approvedAt": "2026-09-16T16:17:44.777Z",
+      "category": null,
+      "organization": {
+        "name": "Catch Swim Ltd",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 3500,
+        "feeMax": 7000,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 5,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "UI Designer",
+        "UX Designer"
+      ],
+      "tools": [
+        "Figma"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 3,
+        "reasons": [
+          "product / UI-UX design + design system ask",
+          "multi-service scope",
+          "wants systems / ongoing partnership",
+          "founder-led decision",
+          "⚠ budget $7,000 is below the $7,900 entry price",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:product",
+          "service:design-system",
+          "+1 multi-service",
+          "+1 systems",
+          "+1 founder-led"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDg2Mzk4XQ==",
+      "title": "Freelance Graphic Designer Needed",
+      "slug": "6YQvAcPr-freelance-graphic-designer-needed",
+      "url": "https://contra.com/opportunity/6YQvAcPr-freelance-graphic-designer-needed",
+      "createdAt": "2026-05-06T13:05:38.182Z",
+      "approvedAt": "2026-10-06T15:35:58.589Z",
+      "category": null,
+      "organization": {
+        "name": "Growmodo",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "MONTHLY",
+        "feeMin": 4000,
+        "feeMax": 4500,
+        "estimatedHours": 0
+      },
+      "duration": null,
+      "roles": [
+        "Graphic Designer",
+        "Brand Designer",
+        "Presentation Designer"
+      ],
+      "tools": [
+        "Figma",
+        "Adobe Photoshop"
+      ],
+      "timezone": {
+        "primaryUtcOffset": 1,
+        "offsetTolerance": 0
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": true,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 3,
+        "reasons": [
+          "brand identity + pitch / sales deck ask",
+          "multi-service scope",
+          "budget $4,500/mo fits",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:brand",
+          "service:deck",
+          "+1 multi-service",
+          "+2 budget-ok"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk4NjQ3XQ==",
+      "title": "Kajabi Website Consolidation and Brand Ecosystem Specialist",
+      "slug": "sFrXFOeN-kajabi-website-consolidation-and-brand-ecosystem-specialist",
+      "url": "https://contra.com/opportunity/sFrXFOeN-kajabi-website-consolidation-and-brand-ecosystem-specialist",
+      "createdAt": "2026-10-05T00:30:23.976Z",
+      "approvedAt": "2026-10-05T00:43:56.394Z",
+      "category": null,
+      "organization": {
+        "name": "Jacksonville Health and Wellness",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 2000,
+        "feeMax": 3000,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 6,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "Web Designer",
+        "SEO Specialist",
+        "UX Designer"
+      ],
+      "tools": [
+        "Kajabi",
+        "Google Search Console",
+        "Canva"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": true,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 2,
+        "reasons": [
+          "website + product / UI-UX design ask",
+          "multi-service scope",
+          "launch / event deadline",
+          "⚠ budget $3,000 is below the $7,900 entry price",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:website",
+          "service:product",
+          "+1 multi-service",
+          "+1 trigger-deadline"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk4NTc2XQ==",
+      "title": "Brand Identity & Editable PowerPoint Template for StepFive",
+      "slug": "r2Zcse67-brand-identity-and-editable-power-point-template-for-step-five",
+      "url": "https://contra.com/opportunity/r2Zcse67-brand-identity-and-editable-power-point-template-for-step-five",
+      "createdAt": "2026-10-03T22:51:58.528Z",
+      "approvedAt": "2026-10-04T00:11:07.752Z",
+      "category": null,
+      "organization": {
+        "name": "The Cloud Update",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 3000,
+        "feeMax": 4000,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 4,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "Logo Designer",
+        "Brand Designer",
+        "Pitch Deck Designer"
+      ],
+      "tools": [
+        "Microsoft PowerPoint",
+        "Figma",
+        "Adobe Illustrator"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 2,
+        "reasons": [
+          "brand identity + pitch / sales deck ask",
+          "multi-service scope",
+          "AI-native product",
+          "wants systems / ongoing partnership",
+          "− consumer-brand language (\"Apparel\")",
+          "⚠ consumer-brand language (\"Apparel\") alongside B2B signals",
+          "⚠ budget $4,000 is below the $7,900 entry price"
+        ],
+        "signals": [
+          "service:brand",
+          "service:deck",
+          "+1 multi-service",
+          "-3 b2c-mixed",
+          "+3 ai-native",
+          "+1 systems"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3ODUzXQ==",
+      "title": "Product engineer to take a vibe-coded events platform from 70% to launched",
+      "slug": "E2mXPl3r-product-engineer-to-take-a-vibe-coded-events-platform-from-70percent-to-launched",
+      "url": "https://contra.com/opportunity/E2mXPl3r-product-engineer-to-take-a-vibe-coded-events-platform-from-70percent-to-launched",
+      "createdAt": "2026-09-26T17:44:38.069Z",
+      "approvedAt": "2026-09-26T21:48:55.719Z",
+      "category": null,
+      "organization": {
+        "name": "TechUnited",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "HOURLY",
+        "feeMin": 25,
+        "feeMax": 50,
+        "estimatedHours": 20
+      },
+      "duration": {
+        "amount": 1,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "Product Designer",
+        "Design Engineer",
+        "Frontend Engineer"
+      ],
+      "tools": [
+        "Claude"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 2,
+        "reasons": [
+          "product / UI-UX design + custom development (Next.js / React) ask",
+          "multi-service scope",
+          "values positioning/narrative",
+          "⚠ budget $50/hr is below the $75/hr entry price",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:product",
+          "service:development",
+          "+1 multi-service",
+          "+1 positioning"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3NDI3XQ==",
+      "title": "Brand Identity Designer (B2B SaaS Rebrand) - STARTING NEXT WEEK",
+      "slug": "RYWo2v6r-brand-identity-designer-b2-b-saa-s-rebrand-starting-next-week",
+      "url": "https://contra.com/opportunity/RYWo2v6r-brand-identity-designer-b2-b-saa-s-rebrand-starting-next-week",
+      "createdAt": "2026-09-21T14:23:20.088Z",
+      "approvedAt": "2026-09-21T14:36:04.382Z",
+      "category": null,
+      "organization": {
+        "name": "Enersee",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 2500,
+        "feeMax": 5000,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 2,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "Brand Designer",
+        "Motion Designer"
+      ],
+      "tools": [
+        "Figma"
+      ],
+      "timezone": {
+        "primaryUtcOffset": 1,
+        "offsetTolerance": 1
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "diana",
+        "score": 2,
+        "reasons": [
+          "brand identity ask",
+          "B2B software / SaaS",
+          "rebrand / refresh underway",
+          "values positioning/narrative",
+          "wants systems / ongoing partnership",
+          "− consumer-brand language (\"merch\")",
+          "⚠ consumer-brand language (\"merch\") alongside B2B signals",
+          "⚠ budget $5,000 is below the $7,900 entry price"
+        ],
+        "signals": [
+          "service:brand",
+          "-3 b2c-mixed",
+          "+2 b2b-software",
+          "+1 trigger-rebrand",
+          "+1 positioning",
+          "+1 systems"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3MzY3XQ==",
+      "title": "Freelance Webflow Designer for High-Tech Single-Page Site",
+      "slug": "QAONZkb3-freelance-webflow-designer-for-high-tech-single-page-site",
+      "url": "https://contra.com/opportunity/QAONZkb3-freelance-webflow-designer-for-high-tech-single-page-site",
+      "createdAt": "2026-09-20T21:17:50.723Z",
+      "approvedAt": "2026-09-20T21:28:47.351Z",
+      "category": null,
+      "organization": {
+        "name": "Fello Agency",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 1500,
+        "feeMax": 3000,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 2,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "Web Developer",
+        "Web Designer"
+      ],
+      "tools": [
+        "Webflow"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 2,
+        "reasons": [
+          "website + custom development (Next.js / React) ask",
+          "multi-service scope",
+          "launch / event deadline",
+          "⚠ budget $3,000 is below the $7,900 entry price",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:website",
+          "service:development",
+          "+1 multi-service",
+          "+1 trigger-deadline"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk5MTA3XQ==",
+      "title": "Webflow Technical SEO: Implement Audit Fixes on a 2,100-Page Localized Site",
+      "slug": "mskWekYW-webflow-technical-seo-implement-audit-fixes-on-a-2100-page-localized-site",
+      "url": "https://contra.com/opportunity/mskWekYW-webflow-technical-seo-implement-audit-fixes-on-a-2100-page-localized-site",
+      "createdAt": "2026-10-08T16:06:54.563Z",
+      "approvedAt": "2026-10-08T16:15:02.990Z",
+      "category": null,
+      "organization": {
+        "name": "SmartScout",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 2500,
+        "feeMax": 5000,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 1,
+        "interval": "MONTH"
+      },
+      "roles": [
+        "Web Developer",
+        "SEO Specialist",
+        "Webflow Developer"
+      ],
+      "tools": [
+        "Webflow",
+        "Google Analytics",
+        "Google Search Console",
+        "Ahrefs",
+        "SEMrush"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": true,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 1,
+        "reasons": [
+          "website + custom development (Next.js / React) ask",
+          "multi-service scope",
+          "⚠ title mixes design with production/implementation work (\"Webflow Technical SEO: Implement Audit Fixes on a 2,100-Page Localized Site\")",
+          "⚠ budget $5,000 is below the $7,900 entry price",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:website",
+          "service:development",
+          "+1 multi-service"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3Njk0XQ==",
+      "title": "Versatile Digital Designer for Diverse Projects",
+      "slug": "qLO2PeXg-versatile-digital-designer-for-diverse-projects",
+      "url": "https://contra.com/opportunity/qLO2PeXg-versatile-digital-designer-for-diverse-projects",
+      "createdAt": "2026-09-24T10:17:57.572Z",
+      "approvedAt": "2026-09-24T10:55:54.818Z",
+      "category": null,
+      "organization": {
+        "name": "Salty Fruit",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "MONTHLY",
+        "feeMin": 2500,
+        "feeMax": 3000,
+        "estimatedHours": 0
+      },
+      "duration": null,
+      "roles": [
+        "Brand Designer",
+        "Animator",
+        "Web Designer"
+      ],
+      "tools": [
+        "Paper",
+        "Claude",
+        "Sanity",
+        "Canva"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 1,
+        "reasons": [
+          "brand identity + website ask",
+          "multi-service scope",
+          "⚠ budget $3,000/mo is below the $4,000/mo entry price",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:brand",
+          "service:website",
+          "+1 multi-service"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3NDM2XQ==",
+      "title": "Web Designer for AI-Driven Home Services Websites",
+      "slug": "l3rvcQkX-web-designer-for-ai-driven-home-services-websites",
+      "url": "https://contra.com/opportunity/l3rvcQkX-web-designer-for-ai-driven-home-services-websites",
+      "createdAt": "2026-09-21T17:58:31.672Z",
+      "approvedAt": "2026-09-21T18:07:54.356Z",
+      "category": null,
+      "organization": {
+        "name": "Lizard Marketing",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "HOURLY",
+        "feeMin": 55,
+        "feeMax": 74,
+        "estimatedHours": 20
+      },
+      "duration": {
+        "amount": 1,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "Web Designer",
+        "AI Visual Design"
+      ],
+      "tools": [
+        "Claude",
+        "GitHub",
+        "Webflow",
+        "Figma",
+        "CSS"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 1,
+        "reasons": [
+          "website ask",
+          "launch / event deadline",
+          "⚠ budget $74/hr is below the $75/hr entry price",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:website",
+          "+1 trigger-deadline"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk5MTE4XQ==",
+      "title": "Framer Designer",
+      "slug": "Y6NMv73L-framer-designer",
+      "url": "https://contra.com/opportunity/Y6NMv73L-framer-designer",
+      "createdAt": "2026-10-08T18:59:55.311Z",
+      "approvedAt": "2026-10-08T19:11:28.108Z",
+      "category": null,
+      "organization": {
+        "name": "Outsetstyle",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 1500,
+        "feeMax": 3000,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 1,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "Framer Designer"
+      ],
+      "tools": [],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": true,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 0,
+        "reasons": [
+          "website ask",
+          "⚠ budget $3,000 is below the $7,900 entry price",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:website"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk5MTE2XQ==",
+      "title": "Rive Designer for Landing Page Hero Section",
+      "slug": "lclqABQo-rive-designer-for-landing-page-hero-section",
+      "url": "https://contra.com/opportunity/lclqABQo-rive-designer-for-landing-page-hero-section",
+      "createdAt": "2026-10-08T18:53:12.692Z",
+      "approvedAt": "2026-10-09T01:41:00.214Z",
+      "category": null,
+      "organization": null,
+      "country": null,
+      "hiringAsIndividual": true,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 1500,
+        "feeMax": 3000,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 2,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "Rive Animator",
+        "Interaction Designer"
+      ],
+      "tools": [
+        "Rive"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": true,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 0,
+        "reasons": [
+          "website + product / UI-UX design ask",
+          "multi-service scope",
+          "− posted by a private individual",
+          "⚠ budget $3,000 is below the $7,900 entry price",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:website",
+          "service:product",
+          "+1 multi-service",
+          "-1 individual"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk4MzY0XQ==",
+      "title": "Technical VA for Multi-Speaker Virtual Summit",
+      "slug": "OZvOOR6F-technical-va-for-multi-speaker-virtual-summit",
+      "url": "https://contra.com/opportunity/OZvOOR6F-technical-va-for-multi-speaker-virtual-summit",
+      "createdAt": "2026-10-01T19:51:39.266Z",
+      "approvedAt": "2026-10-08T14:35:17.019Z",
+      "category": null,
+      "organization": null,
+      "country": null,
+      "hiringAsIndividual": true,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 1800,
+        "feeMax": 2500,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 5,
+        "interval": "MONTH"
+      },
+      "roles": [
+        "Web Developer",
+        "Event Planner",
+        "Technical Support Specialist"
+      ],
+      "tools": [
+        "Kajabi",
+        "Zapier"
+      ],
+      "timezone": {
+        "primaryUtcOffset": -6,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": true,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 0,
+        "reasons": [
+          "custom development (Next.js / React) ask",
+          "launch / event deadline",
+          "− posted by a private individual",
+          "⚠ budget $2,500 is below the $7,900 entry price",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:development",
+          "+1 trigger-deadline",
+          "-1 individual"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk4MDQ5XQ==",
+      "title": "UI/UX Designer for a Retro-Style Personal Growth App (Mobile, Figma)",
+      "slug": "leM662gl-uiux-designer-for-a-retro-style-personal-growth-app-mobile-figma",
+      "url": "https://contra.com/opportunity/leM662gl-uiux-designer-for-a-retro-style-personal-growth-app-mobile-figma",
+      "createdAt": "2026-09-28T23:27:37.566Z",
+      "approvedAt": "2026-09-29T00:26:24.761Z",
+      "category": null,
+      "organization": {
+        "name": "Nexuscai",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 2000,
+        "feeMax": 3000,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 2,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "UI Designer",
+        "Prototyper",
+        "Design Systems Specialist"
+      ],
+      "tools": [
+        "Figma"
+      ],
+      "timezone": {
+        "primaryUtcOffset": -7,
+        "offsetTolerance": 2
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 0,
+        "reasons": [
+          "product / UI-UX design + design system ask",
+          "multi-service scope",
+          "wants systems / ongoing partnership",
+          "− brand/strategy already locked — execution against an existing system",
+          "⚠ budget $3,000 is below the $7,900 entry price",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:product",
+          "service:design-system",
+          "+1 multi-service",
+          "+1 systems",
+          "-2 locked-brand"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3ODA5XQ==",
+      "title": "Replo Designer Needed for Landing Page Creation",
+      "slug": "bQBObFWE-replo-designer-needed-for-landing-page-creation",
+      "url": "https://contra.com/opportunity/bQBObFWE-replo-designer-needed-for-landing-page-creation",
+      "createdAt": "2026-09-25T18:27:21.488Z",
+      "approvedAt": "2026-09-25T18:51:40.699Z",
+      "category": null,
+      "organization": {
+        "name": "Belliwelli",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 2500,
+        "feeMax": 5000,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 5,
+        "interval": "DAY"
+      },
+      "roles": [
+        "Replo Designer",
+        "Interactive Design"
+      ],
+      "tools": [
+        "Replo"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 0,
+        "reasons": [
+          "website ask",
+          "⚠ budget $5,000 is below the $7,900 entry price",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:website"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3NzUxXQ==",
+      "title": "tiktok creative person",
+      "slug": "cLMvURQm-tiktok-creative-person",
+      "url": "https://contra.com/opportunity/cLMvURQm-tiktok-creative-person",
+      "createdAt": "2026-09-24T19:55:31.218Z",
+      "approvedAt": "2026-09-24T21:08:23.876Z",
+      "category": null,
+      "organization": {
+        "name": "FlexWash",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "HOURLY",
+        "feeMin": 30,
+        "feeMax": 60,
+        "estimatedHours": 40
+      },
+      "duration": null,
+      "roles": [
+        "Video Editor",
+        "Creative Director"
+      ],
+      "tools": [
+        "CapCut",
+        "Canva"
+      ],
+      "timezone": {
+        "primaryUtcOffset": -5,
+        "offsetTolerance": 2
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 0,
+        "reasons": [
+          "creative direction ask",
+          "⚠ budget $60/hr is below the $75/hr entry price",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:creative-direction"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3Njc1XQ==",
+      "title": "Freelance Product Designer for Mobile App and Web Platform",
+      "slug": "MAO76ekB-freelance-product-designer-for-mobile-app-and-web-platform",
+      "url": "https://contra.com/opportunity/MAO76ekB-freelance-product-designer-for-mobile-app-and-web-platform",
+      "createdAt": "2026-09-24T06:30:41.704Z",
+      "approvedAt": "2026-09-24T08:13:13.781Z",
+      "category": null,
+      "organization": {
+        "name": "Tundra Ventures P.C.",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 1250,
+        "feeMax": 2500,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 1,
+        "interval": "MONTH"
+      },
+      "roles": [
+        "UI Designer",
+        "UX Designer",
+        "Product Designer"
+      ],
+      "tools": [
+        "Figma"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 0,
+        "reasons": [
+          "product / UI-UX design ask",
+          "⚠ budget $2,500 is below the $7,900 entry price",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:product"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3NTgxXQ==",
+      "title": "Brand Identity / Vector Production Designer for Existing Logo System",
+      "slug": "LR7BRsXF-brand-identity-vector-production-designer-for-existing-logo-system",
+      "url": "https://contra.com/opportunity/LR7BRsXF-brand-identity-vector-production-designer-for-existing-logo-system",
+      "createdAt": "2026-09-23T00:41:11.033Z",
+      "approvedAt": "2026-09-23T01:00:00.401Z",
+      "category": null,
+      "organization": {
+        "name": "LumaPath Consulting",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 2000,
+        "feeMax": 4000,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 3,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "Brand Designer",
+        "Logo Designer",
+        "Typographer"
+      ],
+      "tools": [
+        "Adobe Illustrator",
+        "Adobe Photoshop",
+        "Adobe InDesign"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 0,
+        "reasons": [
+          "brand identity ask",
+          "⚠ budget $4,000 is below the $7,900 entry price",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:brand"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3NTY5XQ==",
+      "title": "Graphic Designer for Google Play Store Assets and Promotional Banner",
+      "slug": "cNYA2gFA-graphic-designer-for-google-play-store-assets-and-promotional-banner",
+      "url": "https://contra.com/opportunity/cNYA2gFA-graphic-designer-for-google-play-store-assets-and-promotional-banner",
+      "createdAt": "2026-09-22T21:34:29.090Z",
+      "approvedAt": "2026-09-23T10:20:34.620Z",
+      "category": null,
+      "organization": null,
+      "country": null,
+      "hiringAsIndividual": true,
+      "description": null,
+      "budget": {
+        "type": "HOURLY",
+        "feeMin": 25,
+        "feeMax": 50,
+        "estimatedHours": 10
+      },
+      "duration": {
+        "amount": 1,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "Product Designer",
+        "Brand Designer"
+      ],
+      "tools": [
+        "Figma"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 0,
+        "reasons": [
+          "brand identity + product / UI-UX design ask",
+          "multi-service scope",
+          "− posted by a private individual",
+          "⚠ budget $50/hr is below the $75/hr entry price",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:brand",
+          "service:product",
+          "+1 multi-service",
+          "-1 individual"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk2NjgzXQ==",
+      "title": "Kajabi Expert for Website Review and Optimization",
+      "slug": "3M6vPcPm-kajabi-expert-for-website-review-and-optimization",
+      "url": "https://contra.com/opportunity/3M6vPcPm-kajabi-expert-for-website-review-and-optimization",
+      "createdAt": "2026-09-11T20:44:25.571Z",
+      "approvedAt": "2026-09-11T20:58:05.247Z",
+      "category": null,
+      "organization": {
+        "name": "Clearly Aligned",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 3000,
+        "feeMax": 5000,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 1,
+        "interval": "MONTH"
+      },
+      "roles": [
+        "UI Designer"
+      ],
+      "tools": [
+        "Kajabi",
+        "Google Analytics",
+        "Figma"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 0,
+        "reasons": [
+          "product / UI-UX design ask",
+          "⚠ budget $5,000 is below the $7,900 entry price",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:product"
+        ],
+        "classifier": "regex"
+      }
+    }
+  ],
+  "rejected": [
+    {
+      "title": "Lead Editor with Taste: One of the Biggest AI Ads of the Year + Long-Term Role",
+      "url": "https://contra.com/opportunity/sglXeUUb-lead-editor-with-taste-one-of-the-biggest-ai-ads-of-the-year-long-term-role",
+      "reasons": [
+        "not a service we sell — core ask is \"Editor\" (Lead Editor with Taste: One of the Biggest AI Ads of the Year + Long-Term Role)"
+      ]
+    },
+    {
+      "title": "Design Engineer for 3D JavaScript Website Hero Scene",
+      "url": "https://contra.com/opportunity/vrBrBv77-design-engineer-for-3-d-java-script-website-hero-scene",
+      "reasons": [
+        "not a service we sell — core ask is \"Engineer\" (Design Engineer for 3D JavaScript Website Hero Scene)"
+      ]
+    },
+    {
+      "title": "Motion Designer for 30s B2B Video Ad (LinkedIn + Meta)",
+      "url": "https://contra.com/opportunity/bgkFq3ZM-motion-designer-for-30s-b2-b-video-ad-linked-in-meta",
+      "reasons": [
+        "not a service we sell — core ask is \"Motion Designer\" (Motion Designer for 30s B2B Video Ad (LinkedIn + Meta))"
+      ]
+    },
+    {
+      "title": "Freelance Creative Stylist — Bestselling Author Tour & Media Appearances",
+      "url": "https://contra.com/opportunity/vmYbgLWX-freelance-creative-stylist-bestselling-author-tour-and-media-appearances",
+      "reasons": [
+        "no brand / website / product-design ask found (Freelance Creative Stylist — Bestselling Author Tour & Media Appearances)"
+      ]
+    },
+    {
+      "title": "Experienced Web Designer to Refine Architectural Website Sections and Navigation",
+      "url": "https://contra.com/opportunity/EsqkPQBX-experienced-web-designer-to-refine-architectural-website-sections-and-navigation",
+      "reasons": [
+        "budget $900 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Personal Brand + Website Designer for Mortgage Loan Officer",
+      "url": "https://contra.com/opportunity/P6FLQLrF-personal-brand-website-designer-for-mortgage-loan-officer",
+      "reasons": [
+        "B2C / consumer client (\"Personal Brand\")"
+      ]
+    },
+    {
+      "title": "Meta Static Ad Designer — DTC Health & Wellness",
+      "url": "https://contra.com/opportunity/leAMc7Rk-meta-static-ad-designer-dtc-health-and-wellness",
+      "reasons": [
+        "not a service we sell — core ask is \"Copywriter\" (Meta Static Ad Designer — DTC Health & Wellness)"
+      ]
+    },
+    {
+      "title": "AI SEO Expert",
+      "url": "https://contra.com/opportunity/k7ONFoWZ-ai-seo-expert",
+      "reasons": [
+        "not a service we sell — core ask is \"SEO\" (AI SEO Expert)"
+      ]
+    },
+    {
+      "title": "AI Team",
+      "url": "https://contra.com/opportunity/oRPWFYMR-ai-team",
+      "reasons": [
+        "not a service we sell — core ask is \"3D\" (AI Team)"
+      ]
+    },
+    {
+      "title": "AI Filmmaker",
+      "url": "https://contra.com/opportunity/UPblFLlZ-ai-filmmaker",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (AI Filmmaker)"
+      ]
+    },
+    {
+      "title": "AI Filmmaker",
+      "url": "https://contra.com/opportunity/WqMmOR3v-ai-filmmaker",
+      "reasons": [
+        "not a service we sell — core ask is \"Content Creator\" (AI Filmmaker)"
+      ]
+    },
+    {
+      "title": "Full-Service Shopify UI/UX Designer & Developer for Aesthetic Gen Z Skincare Brand.",
+      "url": "https://contra.com/opportunity/mULo337E-full-service-shopify-uiux-designer-and-developer-for-aesthetic-gen-z-skincare-brand",
+      "reasons": [
+        "B2C / consumer client (\"Skincare\")"
+      ]
+    },
+    {
+      "title": "Ongoing LinkedIn & Social Content Partner",
+      "url": "https://contra.com/opportunity/Yv6qXg6A-ongoing-linked-in-and-social-content-partner",
+      "reasons": [
+        "not a service we sell — core ask is \"Content Writer\" (Ongoing LinkedIn & Social Content Partner)"
+      ]
+    },
+    {
+      "title": "Next.js and Sanity site migration and publishing fix",
+      "url": "https://contra.com/opportunity/6gqEscgZ-nextjs-and-sanity-site-migration-and-publishing-fix",
+      "reasons": [
+        "budget $600 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Custom Luxury Wedding Website Designer – Romantic Italian Destination Wedding",
+      "url": "https://contra.com/opportunity/lXBUqbmo-custom-luxury-wedding-website-designer-romantic-italian-destination-wedding",
+      "reasons": [
+        "B2C / consumer client (\"Wedding\")",
+        "budget $500 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Instagram & TikTok Social Media Manager | Beauty & E-commerce",
+      "url": "https://contra.com/opportunity/UXAsvPAg-instagram-and-tik-tok-social-media-manager-or-beauty-and-e-commerce",
+      "reasons": [
+        "not a service we sell — core ask is \"Social Media\" (Instagram & TikTok Social Media Manager | Beauty & E-commerce)"
+      ]
+    },
+    {
+      "title": "Kajabi Landing Page Optimization Specialist",
+      "url": "https://contra.com/opportunity/vOOMcooR-kajabi-landing-page-optimization-specialist",
+      "reasons": [
+        "budget $2,000 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Freelance Web Designer & Framer/Webflow Developer | VUBO Website Redesign",
+      "url": "https://contra.com/opportunity/7RUOPsFr-freelance-web-designer-and-framerwebflow-developer-or-vubo-website-redesign",
+      "reasons": [
+        "pre-PMF / unfunded / equity-only (\"revenue share\")"
+      ]
+    },
+    {
+      "title": "Framer Landing Page Designer/Builder",
+      "url": "https://contra.com/opportunity/l2c2oUmr-framer-landing-page-designerbuilder",
+      "reasons": [
+        "budget $1,200 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Freelance App Growth Marketer",
+      "url": "https://contra.com/opportunity/7W7qgl2k-freelance-app-growth-marketer",
+      "reasons": [
+        "not a service we sell — core ask is \"Growth Marketer\" (Freelance App Growth Marketer)"
+      ]
+    },
+    {
+      "title": "Brand Identity and Typography Designer",
+      "url": "https://contra.com/opportunity/OgokkvBE-brand-identity-and-typography-designer",
+      "reasons": [
+        "budget $700 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "TikTok Social Media Manager & Video Editor | Small Business",
+      "url": "https://contra.com/opportunity/Re7P6FAW-tik-tok-social-media-manager-and-video-editor-or-small-business",
+      "reasons": [
+        "not a service we sell — core ask is \"Social Media\" (TikTok Social Media Manager & Video Editor | Small Business)"
+      ]
+    },
+    {
+      "title": "Instagram Content Creator & Social Media Manager | Beauty Brand",
+      "url": "https://contra.com/opportunity/lR2Ekm6r-instagram-content-creator-and-social-media-manager-or-beauty-brand",
+      "reasons": [
+        "not a service we sell — core ask is \"Content Creator\" (Instagram Content Creator & Social Media Manager | Beauty Brand)"
+      ]
+    },
+    {
+      "title": "Kajabi Website Specialist Needed",
+      "url": "https://contra.com/opportunity/M6FPoBvE-kajabi-website-specialist-needed",
+      "reasons": [
+        "budget $1,200 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Kajabi Course Designer and Conversion Expert",
+      "url": "https://contra.com/opportunity/rM3F26BZ-kajabi-course-designer-and-conversion-expert",
+      "reasons": [
+        "not a service we sell — core ask is \"Marketer\" (Kajabi Course Designer and Conversion Expert)"
+      ]
+    },
+    {
+      "title": "Brand Guide/Book Designer",
+      "url": "https://contra.com/opportunity/bqAWPm2r-brand-guidebook-designer",
+      "reasons": [
+        "budget $500 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "LinkedIn Go-To-Market Engineer",
+      "url": "https://contra.com/opportunity/YZXZYE3m-linked-in-go-to-market-engineer",
+      "reasons": [
+        "not a service we sell — core ask is \"Engineer\" (LinkedIn Go-To-Market Engineer)"
+      ]
+    },
+    {
+      "title": "Long-Form YouTube Editor for B2B Marketing Channel (4 videos/week, ongoing)",
+      "url": "https://contra.com/opportunity/2lElvrLX-long-form-you-tube-editor-for-b2-b-marketing-channel-4-videosweek-ongoing",
+      "reasons": [
+        "not a service we sell — core ask is \"Editor\" (Long-Form YouTube Editor for B2B Marketing Channel (4 videos/week, ongoing))"
+      ]
+    },
+    {
+      "title": "Freelance Video Editor for Anniversary Project",
+      "url": "https://contra.com/opportunity/L6kRXNqP-freelance-video-editor-for-anniversary-project",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Freelance Video Editor for Anniversary Project)"
+      ]
+    },
+    {
+      "title": "Event Photographer Needed in Brooklyn Heights",
+      "url": "https://contra.com/opportunity/UAUm6oM7-event-photographer-needed-in-brooklyn-heights",
+      "reasons": [
+        "not a service we sell — core ask is \"Photographer\" (Event Photographer Needed in Brooklyn Heights)"
+      ]
+    },
+    {
+      "title": "Video Editor for High-End Paid Social Ads",
+      "url": "https://contra.com/opportunity/cgbvvqMU-video-editor-for-high-end-paid-social-ads",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Video Editor for High-End Paid Social Ads)"
+      ]
+    },
+    {
+      "title": "Brand Identity Designer for a Wellness/Supplement DTC Brand",
+      "url": "https://contra.com/opportunity/l7MRvYMb-brand-identity-designer-for-a-wellnesssupplement-dtc-brand",
+      "reasons": [
+        "B2C / consumer client (\"DTC\")"
+      ]
+    },
+    {
+      "title": "Brand + Website Designer for Charles Lawrie MD",
+      "url": "https://contra.com/opportunity/crQUrcce-brand-website-designer-for-charles-lawrie-md",
+      "reasons": [
+        "budget $1,500 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Chief Operating Officer (COO)",
+      "url": "https://contra.com/opportunity/6rF2RX3R-chief-operating-officer-coo",
+      "reasons": [
+        "no brand / website / product-design ask found (Chief Operating Officer (COO))"
+      ]
+    },
+    {
+      "title": "Motion and ad designer for B2B AI and SaaS Meta ads",
+      "url": "https://contra.com/opportunity/qrQb22vs-motion-and-ad-designer-for-b2-b-ai-and-saa-s-meta-ads",
+      "reasons": [
+        "not a service we sell — core ask is \"Meta ads\" (Motion and ad designer for B2B AI and SaaS Meta ads)"
+      ]
+    },
+    {
+      "title": "Logo & Brand Identity Designer",
+      "url": "https://contra.com/opportunity/3eoZ3ReF-logo-and-brand-identity-designer",
+      "reasons": [
+        "budget $1,000 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Canada-based TikTok and Reels Content Creator",
+      "url": "https://contra.com/opportunity/NEkWkPO3-canada-based-tik-tok-and-reels-content-creator",
+      "reasons": [
+        "not a service we sell — core ask is \"Content Creator\" (Canada-based TikTok and Reels Content Creator)"
+      ]
+    },
+    {
+      "title": "Social Media Manager",
+      "url": "https://contra.com/opportunity/NelPOXrQ-social-media-manager",
+      "reasons": [
+        "not a service we sell — core ask is \"Social Media\" (Social Media Manager)"
+      ]
+    },
+    {
+      "title": "PDP Bundle Builder",
+      "url": "https://contra.com/opportunity/7MqEPMUv-pdp-bundle-builder",
+      "reasons": [
+        "no brand / website / product-design ask found (PDP Bundle Builder)"
+      ]
+    },
+    {
+      "title": "Website Logo and Redesign website",
+      "url": "https://contra.com/opportunity/FvbBlvvO-website-logo-and-redesign-website",
+      "reasons": [
+        "budget $400 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Forward Deployed Creative",
+      "url": "https://contra.com/opportunity/mrObrg6B-forward-deployed-creative",
+      "reasons": [
+        "not a service we sell — core ask is \"Content Creator\" (Forward Deployed Creative)"
+      ]
+    },
+    {
+      "title": "Book Cover Designer for ML Metrics",
+      "url": "https://contra.com/opportunity/Loqq6YEO-book-cover-designer-for-ml-metrics",
+      "reasons": [
+        "not a service we sell — core ask is \"illustrator\" (Book Cover Designer for ML Metrics)"
+      ]
+    },
+    {
+      "title": "Short-Form Video Editor & Clipper: Reels / TikTok / YouTube Shorts (Full-Time, Parenting Brand)",
+      "url": "https://contra.com/opportunity/rgr7scoU-short-form-video-editor-and-clipper-reels-tik-tok-you-tube-shorts-full-time-parenting-brand",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Short-Form Video Editor & Clipper: Reels / TikTok / YouTube Shorts (Full-Time, Parenting Brand))"
+      ]
+    },
+    {
+      "title": "Reels Editor + Content Planner",
+      "url": "https://contra.com/opportunity/MEmZEkec-reels-editor-content-planner",
+      "reasons": [
+        "not a service we sell — core ask is \"Editor\" (Reels Editor + Content Planner)"
+      ]
+    },
+    {
+      "title": "Freelance Graphic Designer — Product Visual Generation in Flora",
+      "url": "https://contra.com/opportunity/2NORgZPF-freelance-graphic-designer-product-visual-generation-in-flora",
+      "reasons": [
+        "B2C / consumer client (\"apparel\")"
+      ]
+    },
+    {
+      "title": "Creative Video Editor Brand Launch Film",
+      "url": "https://contra.com/opportunity/YZ6MX6PR-creative-video-editor-brand-launch-film",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Creative Video Editor Brand Launch Film)"
+      ]
+    },
+    {
+      "title": "Website Dynamic Animations",
+      "url": "https://contra.com/opportunity/BUrkrUFZ-website-dynamic-animations",
+      "reasons": [
+        "not a service we sell — core ask is \"Animations\" (Website Dynamic Animations)"
+      ]
+    },
+    {
+      "title": "Customer Development & Partnerships Lead for B2B SaaS (Contract, Remote)",
+      "url": "https://contra.com/opportunity/3OvqYWcs-customer-development-and-partnerships-lead-for-b2-b-saa-s-contract-remote",
+      "reasons": [
+        "not a service we sell — core ask is \"Customer Success\" (Customer Development & Partnerships Lead for B2B SaaS (Contract, Remote))"
+      ]
+    },
+    {
+      "title": "Story-led explainer video producer for agri-fintech platform",
+      "url": "https://contra.com/opportunity/262BFqWZ-story-led-explainer-video-producer-for-agri-fintech-platform",
+      "reasons": [
+        "not a service we sell — core ask is \"video\" (Story-led explainer video producer for agri-fintech platform)"
+      ]
+    },
+    {
+      "title": "Astro Developer for Ongoing Agency Work",
+      "url": "https://contra.com/opportunity/sLOgl2AZ-astro-developer-for-ongoing-agency-work",
+      "reasons": [
+        "budget $40/hr is below the $50/hr floor"
+      ]
+    },
+    {
+      "title": "(Toronto) Event Videographer & Editor for Internal Hype Video",
+      "url": "https://contra.com/opportunity/PNZPvlYY-toronto-event-videographer-and-editor-for-internal-hype-video",
+      "reasons": [
+        "not a service we sell — core ask is \"Videographer\" ((Toronto) Event Videographer & Editor for Internal Hype Video)"
+      ]
+    },
+    {
+      "title": "Chief Technology Officer (CTO)",
+      "url": "https://contra.com/opportunity/6kMAO7R2-chief-technology-officer-cto",
+      "reasons": [
+        "not a service we sell — core ask is \"AI Developer\" (Chief Technology Officer (CTO))"
+      ]
+    },
+    {
+      "title": "Logo and Landing Page Design for Anxiety Treatment Melbourne",
+      "url": "https://contra.com/opportunity/m6X6EZPB-logo-and-landing-page-design-for-anxiety-treatment-melbourne",
+      "reasons": [
+        "budget $2,000 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Online Course Marketing",
+      "url": "https://contra.com/opportunity/MqEMqBmc-online-course-marketing",
+      "reasons": [
+        "not a service we sell — core ask is \"Copywriter\" (Online Course Marketing)"
+      ]
+    },
+    {
+      "title": "Independent Content and Marketing Operator",
+      "url": "https://contra.com/opportunity/N7v66YlO-independent-content-and-marketing-operator",
+      "reasons": [
+        "not a service we sell — core ask is \"Content Creator\" (Independent Content and Marketing Operator)"
+      ]
+    },
+    {
+      "title": "Framer Website Designer for Meditation Media Brand",
+      "url": "https://contra.com/opportunity/OoEFNNqm-framer-website-designer-for-meditation-media-brand",
+      "reasons": [
+        "budget $1,000 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Kajabi site set-up and 2 courses",
+      "url": "https://contra.com/opportunity/qMAQgrEQ-kajabi-site-set-up-and-2-courses",
+      "reasons": [
+        "no brand / website / product-design ask found (Kajabi site set-up and 2 courses)"
+      ]
+    },
+    {
+      "title": "Motion & Graphic Designer for Creator Snap",
+      "url": "https://contra.com/opportunity/sX6B6MbM-motion-and-graphic-designer-for-creator-snap",
+      "reasons": [
+        "budget $1,500 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Senior TypeScript/Node.js Engineer for KLOS Recovery Assessment",
+      "url": "https://contra.com/opportunity/skZFs7RR-senior-type-scriptnodejs-engineer-for-klos-recovery-assessment",
+      "reasons": [
+        "not a service we sell — core ask is \"Node.js Engineer\" (Senior TypeScript/Node.js Engineer for KLOS Recovery Assessment)"
+      ]
+    },
+    {
+      "title": "Content Strategist & Performance Analyst for Construction Media Brand",
+      "url": "https://contra.com/opportunity/qZPoFk32-content-strategist-and-performance-analyst-for-construction-media-brand",
+      "reasons": [
+        "not a service we sell — core ask is \"Social Media\" (Content Strategist & Performance Analyst for Construction Media Brand)"
+      ]
+    },
+    {
+      "title": "Growth Marketing Engineer (AI-First)",
+      "url": "https://contra.com/opportunity/BqQs2cMA-growth-marketing-engineer-ai-first",
+      "reasons": [
+        "not a service we sell — core ask is \"Growth Marketing\" (Growth Marketing Engineer (AI-First))"
+      ]
+    },
+    {
+      "title": "Hands-on Marketing & Content Lead - Creative Software (Part-Time)",
+      "url": "https://contra.com/opportunity/WrQQBZ7g-hands-on-marketing-and-content-lead-creative-software-part-time",
+      "reasons": [
+        "not a service we sell — core ask is \"Content Creator\" (Hands-on Marketing & Content Lead - Creative Software (Part-Time))"
+      ]
+    },
+    {
+      "title": "AI Image Creator for Merch",
+      "url": "https://contra.com/opportunity/cMkb7s7Y-ai-image-creator-for-merch",
+      "reasons": [
+        "no brand / website / product-design ask found (AI Image Creator for Merch)"
+      ]
+    },
+    {
+      "title": "Instagram Content Lead for Toady Bear Norwich — Paid 30-Day Pilot",
+      "url": "https://contra.com/opportunity/Mrl2RlXF-instagram-content-lead-for-toady-bear-norwich-paid-30-day-pilot",
+      "reasons": [
+        "not a service we sell — core ask is \"Social Media\" (Instagram Content Lead for Toady Bear Norwich — Paid 30-Day Pilot)"
+      ]
+    },
+    {
+      "title": "DTC Video Editor (AI Animations)",
+      "url": "https://contra.com/opportunity/o6YqQ7Ym-dtc-video-editor-ai-animations",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (DTC Video Editor (AI Animations))"
+      ]
+    },
+    {
+      "title": "Founding Marketing Lead",
+      "url": "https://contra.com/opportunity/3o2YYFcc-founding-marketing-lead",
+      "reasons": [
+        "not a service we sell — core ask is \"Social Media\" (Founding Marketing Lead)"
+      ]
+    },
+    {
+      "title": "TikTok/ Reels Video Editor For Ecommerce Business (Ongoing)",
+      "url": "https://contra.com/opportunity/v3mFUNPk-tik-tok-reels-video-editor-for-ecommerce-business-ongoing",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (TikTok/ Reels Video Editor For Ecommerce Business (Ongoing))"
+      ]
+    },
+    {
+      "title": "Brand developer / creative director",
+      "url": "https://contra.com/opportunity/ZkkeOkAr-brand-developer-creative-director",
+      "reasons": [
+        "B2C / consumer client (\"skincare\")"
+      ]
+    },
+    {
+      "title": "E-Commerce Growth Marketer (Paid Media, Klaviyo, & SEO) – A A L A (Premium Women's Apparel)",
+      "url": "https://contra.com/opportunity/mclcYFOq-e-commerce-growth-marketer-paid-media-klaviyo-and-seo-a-a-l-a-premium-womens-apparel",
+      "reasons": [
+        "not a service we sell — core ask is \"Growth Marketer\" (E-Commerce Growth Marketer (Paid Media, Klaviyo, & SEO) – A A L A (Premium Women's Apparel))"
+      ]
+    },
+    {
+      "title": "Freelance Short-Form Video Editor",
+      "url": "https://contra.com/opportunity/W27OE3vs-freelance-short-form-video-editor",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Freelance Short-Form Video Editor)"
+      ]
+    },
+    {
+      "title": "Video Editor / Motion Designer for Performance Golf Glove Marketing Videos",
+      "url": "https://contra.com/opportunity/vBgvcEcQ-video-editor-motion-designer-for-performance-golf-glove-marketing-videos",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Video Editor / Motion Designer for Performance Golf Glove Marketing Videos)"
+      ]
+    },
+    {
+      "title": "Brand Designer for SaaS Brand System & Logo Refinement",
+      "url": "https://contra.com/opportunity/ZFeEFEv6-brand-designer-for-saa-s-brand-system-and-logo-refinement",
+      "reasons": [
+        "budget $1,500 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Mascot and Character Designer for Kids App",
+      "url": "https://contra.com/opportunity/vlqZLWMX-mascot-and-character-designer-for-kids-app",
+      "reasons": [
+        "not a service we sell — core ask is \"Animator\" (Mascot and Character Designer for Kids App)"
+      ]
+    },
+    {
+      "title": "Senior Game Developer (Game Feel, UI, Animations, VFX)",
+      "url": "https://contra.com/opportunity/WElsXkPe-senior-game-developer-game-feel-ui-animations-vfx",
+      "reasons": [
+        "B2C / consumer client (\"mobile game\")"
+      ]
+    },
+    {
+      "title": "Senior Game Designer (Multiplayer Gameplay Modes)",
+      "url": "https://contra.com/opportunity/vebY73YO-senior-game-designer-multiplayer-gameplay-modes",
+      "reasons": [
+        "no brand / website / product-design ask found (Senior Game Designer (Multiplayer Gameplay Modes))"
+      ]
+    },
+    {
+      "title": "Short-Form Video Editor for Instagram Reels and TikTok",
+      "url": "https://contra.com/opportunity/XRBoYLcc-short-form-video-editor-for-instagram-reels-and-tik-tok",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Short-Form Video Editor for Instagram Reels and TikTok)"
+      ]
+    },
+    {
+      "title": "Podcast Video Editor Needed",
+      "url": "https://contra.com/opportunity/QrRgUMbk-podcast-video-editor-needed",
+      "reasons": [
+        "not a service we sell — core ask is \"Podcast\" (Podcast Video Editor Needed)"
+      ]
+    },
+    {
+      "title": "BuildShip Developer for AI-Powered WhatsApp Grocery Agent Backend",
+      "url": "https://contra.com/opportunity/NbRvAbbZ-build-ship-developer-for-ai-powered-whats-app-grocery-agent-backend",
+      "reasons": [
+        "not a service we sell — core ask is \"AI Developer\" (BuildShip Developer for AI-Powered WhatsApp Grocery Agent Backend)"
+      ]
+    },
+    {
+      "title": "YouTube Producer/Editor – Music & Pop Culture Video Essays",
+      "url": "https://contra.com/opportunity/MsP7FNrE-you-tube-producereditor-music-and-pop-culture-video-essays",
+      "reasons": [
+        "not a service we sell — core ask is \"Editor\" (YouTube Producer/Editor – Music & Pop Culture Video Essays)"
+      ]
+    },
+    {
+      "title": "Kajabi Platform Maintenance Support",
+      "url": "https://contra.com/opportunity/6c7UBoNF-kajabi-platform-maintenance-support",
+      "reasons": [
+        "not a service we sell — core ask is \"Editor\" (Kajabi Platform Maintenance Support)"
+      ]
+    },
+    {
+      "title": "Lead Short-Form Video Editor for Construction Brand",
+      "url": "https://contra.com/opportunity/WsBlEcRZ-lead-short-form-video-editor-for-construction-brand",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Lead Short-Form Video Editor for Construction Brand)"
+      ]
+    },
+    {
+      "title": "Ongoing Freelance Designer (15h/week): Isometric + Social for Tech/AI Brands",
+      "url": "https://contra.com/opportunity/vr3PlcE2-ongoing-freelance-designer-15hweek-isometric-social-for-techai-brands",
+      "reasons": [
+        "budget $45/hr is below the $50/hr floor"
+      ]
+    },
+    {
+      "title": "Creative Strategist",
+      "url": "https://contra.com/opportunity/LMcWXr2X-creative-strategist",
+      "reasons": [
+        "not a service we sell — core ask is \"Copywriter\" (Creative Strategist)"
+      ]
+    },
+    {
+      "title": "Senior Video Editor",
+      "url": "https://contra.com/opportunity/6Lo2Eq2r-senior-video-editor",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Senior Video Editor)"
+      ]
+    },
+    {
+      "title": "Social media strategy and execution",
+      "url": "https://contra.com/opportunity/E2Y76lbg-social-media-strategy-and-execution",
+      "reasons": [
+        "not a service we sell — core ask is \"Social media\" (Social media strategy and execution)"
+      ]
+    },
+    {
+      "title": "Kajabi Retreat Landing Page Specialist",
+      "url": "https://contra.com/opportunity/gYEPFAXF-kajabi-retreat-landing-page-specialist",
+      "reasons": [
+        "budget $600 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "NYC Videographer & Editor for Editorial Student Profile Shoot",
+      "url": "https://contra.com/opportunity/gQ2M7rMg-nyc-videographer-and-editor-for-editorial-student-profile-shoot",
+      "reasons": [
+        "not a service we sell — core ask is \"Videographer\" (NYC Videographer & Editor for Editorial Student Profile Shoot)"
+      ]
+    },
+    {
+      "title": "Higgsfield Brand Film Creator for Luxury Travel App",
+      "url": "https://contra.com/opportunity/ARksmBEL-higgsfield-brand-film-creator-for-luxury-travel-app",
+      "reasons": [
+        "not a service we sell — core ask is \"Film\" (Higgsfield Brand Film Creator for Luxury Travel App)"
+      ]
+    },
+    {
+      "title": "Experienced AI Filmmakers Wanted for Long-Form Cinematic Productions",
+      "url": "https://contra.com/opportunity/lZlWPQo3-experienced-ai-filmmakers-wanted-for-long-form-cinematic-productions",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Experienced AI Filmmakers Wanted for Long-Form Cinematic Productions)"
+      ]
+    },
+    {
+      "title": "iOS & Android App Developer – B2B2C Automotive Marketplace",
+      "url": "https://contra.com/opportunity/NqRBRPQo-i-os-and-android-app-developer-b2-b2-c-automotive-marketplace",
+      "reasons": [
+        "not a service we sell — core ask is \"Flutter Developer\" (iOS & Android App Developer – B2B2C Automotive Marketplace)"
+      ]
+    },
+    {
+      "title": "Social Media Designer for Instagram Organic and Paid Ad Assets",
+      "url": "https://contra.com/opportunity/Pom2vQv2-social-media-designer-for-instagram-organic-and-paid-ad-assets",
+      "reasons": [
+        "not a service we sell — core ask is \"Social Media\" (Social Media Designer for Instagram Organic and Paid Ad Assets)"
+      ]
+    },
+    {
+      "title": "Cinematic Social Media Video Editor",
+      "url": "https://contra.com/opportunity/eELeAP3A-cinematic-social-media-video-editor",
+      "reasons": [
+        "not a service we sell — core ask is \"Social Media\" (Cinematic Social Media Video Editor)"
+      ]
+    },
+    {
+      "title": "UI/UX Designer for SAT Practice Mobile and Web App",
+      "url": "https://contra.com/opportunity/ZOvb2sXE-uiux-designer-for-sat-practice-mobile-and-web-app",
+      "reasons": [
+        "budget $2,000 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Motion Designer for Mobile App (UI Interactions & 3D Venue Transitions)",
+      "url": "https://contra.com/opportunity/E6OW2PoZ-motion-designer-for-mobile-app-ui-interactions-and-3-d-venue-transitions",
+      "reasons": [
+        "budget $2,000 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Motion Designer for AI Products Portfolio Sizzle Reel",
+      "url": "https://contra.com/opportunity/eqR7RO3Q-motion-designer-for-ai-products-portfolio-sizzle-reel",
+      "reasons": [
+        "not a service we sell — core ask is \"Motion Designer\" (Motion Designer for AI Products Portfolio Sizzle Reel)"
+      ]
+    },
+    {
+      "title": "Kajabi course implementation, checkouts & automation QA",
+      "url": "https://contra.com/opportunity/scZbXleW-kajabi-course-implementation-checkouts-and-automation-qa",
+      "reasons": [
+        "not a service we sell — core ask is \"QA\" (Kajabi course implementation, checkouts & automation QA)"
+      ]
+    },
+    {
+      "title": "Email Template Designer for New Brand",
+      "url": "https://contra.com/opportunity/6XXqP7rE-email-template-designer-for-new-brand",
+      "reasons": [
+        "not a service we sell — core ask is \"Email Marketing\" (Email Template Designer for New Brand)"
+      ]
+    },
+    {
+      "title": "Freelance Social Creative Coordinator for Baddie Pops",
+      "url": "https://contra.com/opportunity/MoromgY2-freelance-social-creative-coordinator-for-baddie-pops",
+      "reasons": [
+        "not a service we sell — core ask is \"Content Creator\" (Freelance Social Creative Coordinator for Baddie Pops)"
+      ]
+    },
+    {
+      "title": "Organic Social Media Growth Strategist for Personal Brand",
+      "url": "https://contra.com/opportunity/AXeNAkPq-organic-social-media-growth-strategist-for-personal-brand",
+      "reasons": [
+        "not a service we sell — core ask is \"Social Media\" (Organic Social Media Growth Strategist for Personal Brand)"
+      ]
+    },
+    {
+      "title": "SEO and Mobile Optimization Developer for Hurricane Labs",
+      "url": "https://contra.com/opportunity/BMYRrg7F-seo-and-mobile-optimization-developer-for-hurricane-labs",
+      "reasons": [
+        "budget $1,500 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "ComfyUI Workflow for Graphic Novel - Ai Image Generation",
+      "url": "https://contra.com/opportunity/sEFc6l3q-comfy-ui-workflow-for-graphic-novel-ai-image-generation",
+      "reasons": [
+        "no brand / website / product-design ask found (ComfyUI Workflow for Graphic Novel - Ai Image Generation)"
+      ]
+    },
+    {
+      "title": "Mobile App Designer Needed for Two App Projects",
+      "url": "https://contra.com/opportunity/MevBmLBY-mobile-app-designer-needed-for-two-app-projects",
+      "reasons": [
+        "no brand / website / product-design ask found (Mobile App Designer Needed for Two App Projects)"
+      ]
+    },
+    {
+      "title": "Freelance B2B Content Specialist for Insights Article (First of Many)",
+      "url": "https://contra.com/opportunity/qY2RsMqq-freelance-b2-b-content-specialist-for-insights-article-first-of-many",
+      "reasons": [
+        "not a service we sell — core ask is \"Content Writer\" (Freelance B2B Content Specialist for Insights Article (First of Many))"
+      ]
+    },
+    {
+      "title": "Social Media Manager with Influencer Marketing Experience – Beauty Brand",
+      "url": "https://contra.com/opportunity/WvYOA2ML-social-media-manager-with-influencer-marketing-experience-beauty-brand",
+      "reasons": [
+        "not a service we sell — core ask is \"Social Media\" (Social Media Manager with Influencer Marketing Experience – Beauty Brand)"
+      ]
+    },
+    {
+      "title": "Brand Identity Designer for SaaS Project",
+      "url": "https://contra.com/opportunity/WlksBvBB-brand-identity-designer-for-saa-s-project",
+      "reasons": [
+        "budget $1,000 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Unreal Engine 5.8 Natural Environment Artist for Visual Test",
+      "url": "https://contra.com/opportunity/sPlrEseN-unreal-engine-58-natural-environment-artist-for-visual-test",
+      "reasons": [
+        "not a service we sell — core ask is \"3D\" (Unreal Engine 5.8 Natural Environment Artist for Visual Test)"
+      ]
+    },
+    {
+      "title": "UX Review and Recommendations for Mobile Application and Website",
+      "url": "https://contra.com/opportunity/7BQgmPQo-ux-review-and-recommendations-for-mobile-application-and-website",
+      "reasons": [
+        "budget $500 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Senior Creative Strategy & Paid Media Lead — Healthcare",
+      "url": "https://contra.com/opportunity/OrLQlREl-senior-creative-strategy-and-paid-media-lead-healthcare",
+      "reasons": [
+        "not a service we sell — core ask is \"Paid Media\" (Senior Creative Strategy & Paid Media Lead — Healthcare)"
+      ]
+    },
+    {
+      "title": "Video Editor for Concho Valley Together's Long-Term Flood Recovery Project",
+      "url": "https://contra.com/opportunity/2s37seQr-video-editor-for-concho-valley-togethers-long-term-flood-recovery-project",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Video Editor for Concho Valley Together's Long-Term Flood Recovery Project)"
+      ]
+    },
+    {
+      "title": "Freelancer Needed for Website Design and Development in Framer",
+      "url": "https://contra.com/opportunity/2LBoAYv2-freelancer-needed-for-website-design-and-development-in-framer",
+      "reasons": [
+        "budget $2,000 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Google Ads Manager for AdWarp Testing Opportunity",
+      "url": "https://contra.com/opportunity/scZbUERe-google-ads-manager-for-ad-warp-testing-opportunity",
+      "reasons": [
+        "not a service we sell — core ask is \"Google Ads\" (Google Ads Manager for AdWarp Testing Opportunity)"
+      ]
+    },
+    {
+      "title": "Experienced Media Buyer for High-Converting Meta Ads",
+      "url": "https://contra.com/opportunity/PAskMclg-experienced-media-buyer-for-high-converting-meta-ads",
+      "reasons": [
+        "not a service we sell — core ask is \"Media Buyer\" (Experienced Media Buyer for High-Converting Meta Ads)"
+      ]
+    },
+    {
+      "title": "E-commerce Advisor and Consultant",
+      "url": "https://contra.com/opportunity/2rAEcM72-e-commerce-advisor-and-consultant",
+      "reasons": [
+        "no brand / website / product-design ask found (E-commerce Advisor and Consultant)"
+      ]
+    },
+    {
+      "title": "E-commerce Product Video Editing",
+      "url": "https://contra.com/opportunity/eBqMZlBk-e-commerce-product-video-editing",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (E-commerce Product Video Editing)"
+      ]
+    },
+    {
+      "title": "Rockstar UI/UX Designer",
+      "url": "https://contra.com/opportunity/WcOsMBvs-rockstar-uiux-designer",
+      "reasons": [
+        "weak fit (score -1): posted by a private individual"
+      ]
+    },
+    {
+      "title": "Next.js / Payload CMS Developer (Ongoing Collaboration)",
+      "url": "https://contra.com/opportunity/ZePRUAZR-nextjs-payload-cms-developer-ongoing-collaboration",
+      "reasons": [
+        "budget $40/hr is below the $50/hr floor"
+      ]
+    },
+    {
+      "title": "Elementor Developer (Ongoing Collaboration)",
+      "url": "https://contra.com/opportunity/eE7b7X2q-elementor-developer-ongoing-collaboration",
+      "reasons": [
+        "not a service we sell — core ask is \"WordPress Developer\" (Elementor Developer (Ongoing Collaboration))"
+      ]
+    },
+    {
+      "title": "AI Creative Director",
+      "url": "https://contra.com/opportunity/ePrbmsgr-ai-creative-director",
+      "reasons": [
+        "budget $30/hr is below the $50/hr floor"
+      ]
+    },
+    {
+      "title": "AI UGC Visual Content Creator for Software /Digital Products",
+      "url": "https://contra.com/opportunity/UWgOoLRU-ai-ugc-visual-content-creator-for-software-digital-products",
+      "reasons": [
+        "not a service we sell — core ask is \"UGC\" (AI UGC Visual Content Creator for Software /Digital Products)"
+      ]
+    },
+    {
+      "title": "UI/UX Design Engineer",
+      "url": "https://contra.com/opportunity/kvev7U7q-uiux-design-engineer",
+      "reasons": [
+        "budget $35/hr is below the $50/hr floor"
+      ]
+    },
+    {
+      "title": "Senior Full Stack Engineer",
+      "url": "https://contra.com/opportunity/k6b3oogY-senior-full-stack-engineer",
+      "reasons": [
+        "not a service we sell — core ask is \"Full Stack Engineer\" (Senior Full Stack Engineer)"
+      ]
+    },
+    {
+      "title": "Webflow Developer (Ongoing Collaboration) | Chicken Dinner | Perth, WA",
+      "url": "https://contra.com/opportunity/breAcPXs-webflow-developer-ongoing-collaboration-or-chicken-dinner-or-perth-wa",
+      "reasons": [
+        "budget $40/hr is below the $50/hr floor"
+      ]
+    },
+    {
+      "title": "Freelance Animator Needed for Festival Announcements",
+      "url": "https://contra.com/opportunity/QEbBkZmF-freelance-animator-needed-for-festival-announcements",
+      "reasons": [
+        "not a service we sell — core ask is \"Animator\" (Freelance Animator Needed for Festival Announcements)"
+      ]
+    },
+    {
+      "title": "Front End Designer (Website Design Expert)",
+      "url": "https://contra.com/opportunity/lebFoPom-front-end-designer-website-design-expert",
+      "reasons": [
+        "full-time / in-house employment (\"full-time employment\")"
+      ]
+    },
+    {
+      "title": "Senior Full-Stack Developer for App Production",
+      "url": "https://contra.com/opportunity/POEsBXZL-senior-full-stack-developer-for-app-production",
+      "reasons": [
+        "not a service we sell — core ask is \"Full-Stack Developer\" (Senior Full-Stack Developer for App Production)"
+      ]
+    },
+    {
+      "title": "Social Media & Content Designer",
+      "url": "https://contra.com/opportunity/PLNYqF3k-social-media-and-content-designer",
+      "reasons": [
+        "not a service we sell — core ask is \"Social Media\" (Social Media & Content Designer)"
+      ]
+    },
+    {
+      "title": "Logo Designer for Brand Identity Development",
+      "url": "https://contra.com/opportunity/URAsL6FF-logo-designer-for-brand-identity-development",
+      "reasons": [
+        "budget $1,500 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Ecommerce Copywriter for Email Marketing",
+      "url": "https://contra.com/opportunity/M7sNM2QZ-ecommerce-copywriter-for-email-marketing",
+      "reasons": [
+        "not a service we sell — core ask is \"Copywriter\" (Ecommerce Copywriter for Email Marketing)"
+      ]
+    },
+    {
+      "title": "Los Angeles-Based Videographer/Director/Editor for  Music Video/Instagram Reels",
+      "url": "https://contra.com/opportunity/FeF3kQOO-los-angeles-based-videographerdirectoreditor-for-music-videoinstagram-reels",
+      "reasons": [
+        "not a service we sell — core ask is \"Videographer\" (Los Angeles-Based Videographer/Director/Editor for  Music Video/Instagram Reels)"
+      ]
+    },
+    {
+      "title": "Prototype Designs for Calendar + Deep-focus Desktop/Mobile Application",
+      "url": "https://contra.com/opportunity/62BB7XeR-prototype-designs-for-calendar-deep-focus-desktopmobile-application",
+      "reasons": [
+        "budget $1,500 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Photographer/Visual Artist for Botanical Ingredient Imagery",
+      "url": "https://contra.com/opportunity/vWqgRRQ2-photographervisual-artist-for-botanical-ingredient-imagery",
+      "reasons": [
+        "not a service we sell — core ask is \"Photographer\" (Photographer/Visual Artist for Botanical Ingredient Imagery)"
+      ]
+    },
+    {
+      "title": "AI Consultant for jafar AI",
+      "url": "https://contra.com/opportunity/Z7vqe7kQ-ai-consultant-for-jafar-ai",
+      "reasons": [
+        "not a service we sell — core ask is \"AI Engineer\" (AI Consultant for jafar AI)"
+      ]
+    },
+    {
+      "title": "Freelance Packaging Designer — Finish Print-Ready Skincare/Nutraceutical Packaging System",
+      "url": "https://contra.com/opportunity/2WgqEYc2-freelance-packaging-designer-finish-print-ready-skincarenutraceutical-packaging-system",
+      "reasons": [
+        "B2C / consumer client (\"Packaging\")",
+        "budget $2,000 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Brand Strategy Expert Needed for UI/UX Alignment",
+      "url": "https://contra.com/opportunity/7vWvUrc6-brand-strategy-expert-needed-for-uiux-alignment",
+      "reasons": [
+        "budget $2,000 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Short Form Video Editor for Social Media Content",
+      "url": "https://contra.com/opportunity/bNoMoLom-short-form-video-editor-for-social-media-content",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Short Form Video Editor for Social Media Content)"
+      ]
+    },
+    {
+      "title": "Freelance Developer Needed for Migration from Base44 to Supabase",
+      "url": "https://contra.com/opportunity/UqcNFPqA-freelance-developer-needed-for-migration-from-base44-to-supabase",
+      "reasons": [
+        "not a service we sell — core ask is \"Backend Engineer\" (Freelance Developer Needed for Migration from Base44 to Supabase)"
+      ]
+    },
+    {
+      "title": "Web Designer/Developer for Nonprofit Website Launch",
+      "url": "https://contra.com/opportunity/NsrmbXlO-web-designerdeveloper-for-nonprofit-website-launch",
+      "reasons": [
+        "budget $300 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Social Media & Motion Designer",
+      "url": "https://contra.com/opportunity/OZLNN72O-social-media-and-motion-designer",
+      "reasons": [
+        "not a service we sell — core ask is \"Social Media\" (Social Media & Motion Designer)"
+      ]
+    },
+    {
+      "title": "Course Creator",
+      "url": "https://contra.com/opportunity/2PmlFRmB-course-creator",
+      "reasons": [
+        "no brand / website / product-design ask found (Course Creator)"
+      ]
+    },
+    {
+      "title": "Video Editor for AI Product Launch Video",
+      "url": "https://contra.com/opportunity/Legb7NmF-video-editor-for-ai-product-launch-video",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Video Editor for AI Product Launch Video)"
+      ]
+    },
+    {
+      "title": "Freelance Growth Marketer for Mobile App User Acquisition",
+      "url": "https://contra.com/opportunity/UBceqYeX-freelance-growth-marketer-for-mobile-app-user-acquisition",
+      "reasons": [
+        "not a service we sell — core ask is \"Growth Marketer\" (Freelance Growth Marketer for Mobile App User Acquisition)"
+      ]
+    },
+    {
+      "title": "Social Media Content Strategist for Substack Growth",
+      "url": "https://contra.com/opportunity/LeZc7BAM-social-media-content-strategist-for-substack-growth",
+      "reasons": [
+        "not a service we sell — core ask is \"Social Media\" (Social Media Content Strategist for Substack Growth)"
+      ]
+    },
+    {
+      "title": "Social Media Video Editor — Remote",
+      "url": "https://contra.com/opportunity/2mbLg6Q2-social-media-video-editor-remote",
+      "reasons": [
+        "not a service we sell — core ask is \"Social Media\" (Social Media Video Editor — Remote)"
+      ]
+    },
+    {
+      "title": "Experienced Web Designer for Mobile-First Design Project",
+      "url": "https://contra.com/opportunity/LWsUZU6O-experienced-web-designer-for-mobile-first-design-project",
+      "reasons": [
+        "budget $2,000 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Graphic Designer for Modular Email Template System in Mailchimp",
+      "url": "https://contra.com/opportunity/vWMkqkRc-graphic-designer-for-modular-email-template-system-in-mailchimp",
+      "reasons": [
+        "not a service we sell — core ask is \"Email Marketing\" (Graphic Designer for Modular Email Template System in Mailchimp)"
+      ]
+    },
+    {
+      "title": "Product Video Animator",
+      "url": "https://contra.com/opportunity/OMcP7XOb-product-video-animator",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Product Video Animator)"
+      ]
+    },
+    {
+      "title": "Logo and Simple Website Design for Leadership Consulting Practice",
+      "url": "https://contra.com/opportunity/lgMNv7eL-logo-and-simple-website-design-for-leadership-consulting-practice",
+      "reasons": [
+        "budget $2,000 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Founder's Outbound Researcher / SDR - P&C Insurance AI Startup",
+      "url": "https://contra.com/opportunity/AO2ELvbB-founders-outbound-researcher-sdr-pandc-insurance-ai-startup",
+      "reasons": [
+        "no brand / website / product-design ask found (Founder's Outbound Researcher / SDR - P&C Insurance AI Startup)"
+      ]
+    },
+    {
+      "title": "Squarespace Web Designer for Photography Portfolio and Marketplace Development",
+      "url": "https://contra.com/opportunity/lovBbWbW-squarespace-web-designer-for-photography-portfolio-and-marketplace-development",
+      "reasons": [
+        "budget $30/hr is below the $50/hr floor"
+      ]
+    },
+    {
+      "title": "Rive Animator for Minimalist Chameleon Character",
+      "url": "https://contra.com/opportunity/Rs623lOb-rive-animator-for-minimalist-chameleon-character",
+      "reasons": [
+        "not a service we sell — core ask is \"Animator\" (Rive Animator for Minimalist Chameleon Character)"
+      ]
+    },
+    {
+      "title": "AI Growth Engineer — SaaS Growth",
+      "url": "https://contra.com/opportunity/2lRW3YYq-ai-growth-engineer-saa-s-growth",
+      "reasons": [
+        "not a service we sell — core ask is \"Engineer\" (AI Growth Engineer — SaaS Growth)"
+      ]
+    },
+    {
+      "title": "Creative Front-End Developer Needed for Interactive Advent Calendar - Immediate Start",
+      "url": "https://contra.com/opportunity/QXAQYL7B-creative-front-end-developer-needed-for-interactive-advent-calendar-immediate-start",
+      "reasons": [
+        "weak fit (score -1): consumer-brand language (\"church\")"
+      ]
+    },
+    {
+      "title": "Short-Form Video Editor — Comedy, Character & Lifestyle",
+      "url": "https://contra.com/opportunity/qM76v7A7-short-form-video-editor-comedy-character-and-lifestyle",
+      "reasons": [
+        "budget $40/hr is below the $50/hr floor"
+      ]
+    },
+    {
+      "title": "Rive Animator/Designer Needed for Interactive Animation Project",
+      "url": "https://contra.com/opportunity/EFRLsZgO-rive-animatordesigner-needed-for-interactive-animation-project",
+      "reasons": [
+        "not a service we sell — core ask is \"Animator\" (Rive Animator/Designer Needed for Interactive Animation Project)"
+      ]
+    },
+    {
+      "title": "Part-Time PR Specialist for Magazine Non Grata",
+      "url": "https://contra.com/opportunity/gFLvFcL6-part-time-pr-specialist-for-magazine-non-grata",
+      "reasons": [
+        "no brand / website / product-design ask found (Part-Time PR Specialist for Magazine Non Grata)"
+      ]
+    },
+    {
+      "title": "Framer Designer-Developer for Editorial Blog Rebuild",
+      "url": "https://contra.com/opportunity/UgBoXX6A-framer-designer-developer-for-editorial-blog-rebuild",
+      "reasons": [
+        "budget $2,000 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "AI Systems Engineer / Agentic Full-Stack Builder",
+      "url": "https://contra.com/opportunity/eNeMRbF6-ai-systems-engineer-agentic-full-stack-builder",
+      "reasons": [
+        "not a service we sell — core ask is \"Engineer\" (AI Systems Engineer / Agentic Full-Stack Builder)"
+      ]
+    },
+    {
+      "title": "Reddit Engagement Specialist for Technology and AI Communities",
+      "url": "https://contra.com/opportunity/RPRXlLkg-reddit-engagement-specialist-for-technology-and-ai-communities",
+      "reasons": [
+        "not a service we sell — core ask is \"Content Creator\" (Reddit Engagement Specialist for Technology and AI Communities)"
+      ]
+    },
+    {
+      "title": "Video editing for a Fashion / UGC TikTok Video",
+      "url": "https://contra.com/opportunity/2Eb2RrB3-video-editing-for-a-fashion-ugc-tik-tok-video",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Video editing for a Fashion / UGC TikTok Video)"
+      ]
+    },
+    {
+      "title": "Mascot Character Design and Implementation",
+      "url": "https://contra.com/opportunity/MWUBYsm2-mascot-character-design-and-implementation",
+      "reasons": [
+        "not a service we sell — core ask is \"Animator\" (Mascot Character Design and Implementation)"
+      ]
+    },
+    {
+      "title": "LinkedIn Profile Transformation Specialist for Coaching Business",
+      "url": "https://contra.com/opportunity/ZUAkcNq6-linked-in-profile-transformation-specialist-for-coaching-business",
+      "reasons": [
+        "not a service we sell — core ask is \"Social Media\" (LinkedIn Profile Transformation Specialist for Coaching Business)"
+      ]
+    },
+    {
+      "title": "Mobile App Launch Video",
+      "url": "https://contra.com/opportunity/e3Y33Ycl-mobile-app-launch-video",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Mobile App Launch Video)"
+      ]
+    },
+    {
+      "title": "TikTok Shop Expert for Optimizing Business and Seller Centers",
+      "url": "https://contra.com/opportunity/XEmBc3PB-tik-tok-shop-expert-for-optimizing-business-and-seller-centers",
+      "reasons": [
+        "no brand / website / product-design ask found (TikTok Shop Expert for Optimizing Business and Seller Centers)"
+      ]
+    },
+    {
+      "title": "Freelancer for Qualitative Market Research and Consumer Interviews",
+      "url": "https://contra.com/opportunity/QYRrsYAc-freelancer-for-qualitative-market-research-and-consumer-interviews",
+      "reasons": [
+        "no brand / website / product-design ask found (Freelancer for Qualitative Market Research and Consumer Interviews)"
+      ]
+    },
+    {
+      "title": "Developer Needed to Finalize Construction Software",
+      "url": "https://contra.com/opportunity/lMUsgvl6-developer-needed-to-finalize-construction-software",
+      "reasons": [
+        "not a service we sell — core ask is \"Software Engineer\" (Developer Needed to Finalize Construction Software)"
+      ]
+    },
+    {
+      "title": "Senior DevOps Engineer",
+      "url": "https://contra.com/opportunity/b2oQkYBq-senior-dev-ops-engineer",
+      "reasons": [
+        "not a service we sell — core ask is \"DevOps Engineer\" (Senior DevOps Engineer)"
+      ]
+    },
+    {
+      "title": "Backend Engineer — Asset Pipeline Platform",
+      "url": "https://contra.com/opportunity/E22s2ReF-backend-engineer-asset-pipeline-platform",
+      "reasons": [
+        "not a service we sell — core ask is \"Backend Engineer\" (Backend Engineer — Asset Pipeline Platform)"
+      ]
+    },
+    {
+      "title": "Short-Form Video Creator (Music Campaign)",
+      "url": "https://contra.com/opportunity/WNbEQ6k2-short-form-video-creator-music-campaign",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Short-Form Video Creator (Music Campaign))"
+      ]
+    },
+    {
+      "title": "Rive Animation Specialist Needed",
+      "url": "https://contra.com/opportunity/AUWF6mlm-rive-animation-specialist-needed",
+      "reasons": [
+        "not a service we sell — core ask is \"Animation\" (Rive Animation Specialist Needed)"
+      ]
+    },
+    {
+      "title": "Freelance Video Edit Evaluation Specialist",
+      "url": "https://contra.com/opportunity/loRlqmAW-freelance-video-edit-evaluation-specialist",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Freelance Video Edit Evaluation Specialist)"
+      ]
+    },
+    {
+      "title": "Shopify E-commerce & Growth Specialist for Pre-Launch Wellness Brand",
+      "url": "https://contra.com/opportunity/Eo22bYrE-shopify-e-commerce-and-growth-specialist-for-pre-launch-wellness-brand",
+      "reasons": [
+        "not a service we sell — core ask is \"Shopify Developer\" (Shopify E-commerce & Growth Specialist for Pre-Launch Wellness Brand)"
+      ]
+    },
+    {
+      "title": "Digital Flyer Designer for Exclusive Childcare App",
+      "url": "https://contra.com/opportunity/cAPWgsFo-digital-flyer-designer-for-exclusive-childcare-app",
+      "reasons": [
+        "budget $450 is below the $2,500 floor"
+      ]
+    },
+    {
+      "title": "Graphic/Brand Designer for Sports Recruiting Company",
+      "url": "https://contra.com/opportunity/FRBUm7gY-graphicbrand-designer-for-sports-recruiting-company",
+      "reasons": [
+        "budget $30/hr is below the $50/hr floor"
+      ]
+    },
+    {
+      "title": "Founders School -- Senior Short-Form Video Editor",
+      "url": "https://contra.com/opportunity/g3XRLZqZ-founders-school-senior-short-form-video-editor",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Founders School -- Senior Short-Form Video Editor)"
+      ]
+    },
+    {
+      "title": "Founders School -- Senior Long-Form Video Editor",
+      "url": "https://contra.com/opportunity/UvlblvQR-founders-school-senior-long-form-video-editor",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Founders School -- Senior Long-Form Video Editor)"
+      ]
+    },
+    {
+      "title": "Freelance Social Media Marketer/Content Creator for Telehealth Startup",
+      "url": "https://contra.com/opportunity/YgAeL3Oc-freelance-social-media-marketercontent-creator-for-telehealth-startup",
+      "reasons": [
+        "not a service we sell — core ask is \"Social Media\" (Freelance Social Media Marketer/Content Creator for Telehealth Startup)"
+      ]
+    },
+    {
+      "title": "DaVinci Resolve Editor for Business/Leadership Podcast Episode",
+      "url": "https://contra.com/opportunity/slgsWvZg-da-vinci-resolve-editor-for-businessleadership-podcast-episode",
+      "reasons": [
+        "not a service we sell — core ask is \"Editor\" (DaVinci Resolve Editor for Business/Leadership Podcast Episode)"
+      ]
+    },
+    {
+      "title": "KAJABI Expert for Website and App Development",
+      "url": "https://contra.com/opportunity/l7rLbXqO-kajabi-expert-for-website-and-app-development",
+      "reasons": [
+        "not a service we sell — core ask is \"SEO\" (KAJABI Expert for Website and App Development)"
+      ]
+    },
+    {
+      "title": "Marketing Execution - B2C Travel Brand Launch (Malaysia + Singapore)",
+      "url": "https://contra.com/opportunity/c6gqM723-marketing-execution-b2-c-travel-brand-launch-malaysia-singapore",
+      "reasons": [
+        "not a service we sell — core ask is \"Social Media\" (Marketing Execution - B2C Travel Brand Launch (Malaysia + Singapore))"
+      ]
+    },
+    {
+      "title": "UI/UX Designer for Food Delivery App",
+      "url": "https://contra.com/opportunity/7LPvsXUs-uiux-designer-for-food-delivery-app",
+      "reasons": [
+        "budget $2,000 is below the $2,500 floor"
+      ]
+    }
+  ]
+}
