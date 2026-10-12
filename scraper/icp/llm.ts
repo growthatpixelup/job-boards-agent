@@ -40,11 +40,12 @@ export const VERDICT_SCHEMA = {
     scope: { type: "string", description: "One line: the deliverables the post actually asks for." },
     estimated_value_usd: { type: "number", description: "Estimated total project value in USD (see Project size in the brief)." },
     value_basis: { type: "string", description: "One line: how the estimate was reached, e.g. \"$100/hr × ~15 hrs for 3 screens\"." },
+    full_time: { type: "boolean", description: "True if the post is for a full-time / in-house role." },
     confidence: { type: "number", description: "0 to 1" },
     reasons: { type: "array", items: { type: "string" }, description: "Most important first, each citing evidence from the post." },
     deal_breakers: { type: "array", items: { type: "string" }, description: "Deal-breakers from the brief that apply; empty if none." },
   },
-  required: ["decision", "tier", "sprint_types", "scope", "estimated_value_usd", "value_basis", "confidence", "reasons", "deal_breakers"],
+  required: ["decision", "tier", "sprint_types", "scope", "estimated_value_usd", "value_basis", "full_time", "confidence", "reasons", "deal_breakers"],
   additionalProperties: false,
 } as const;
 
@@ -87,6 +88,7 @@ export function parseVerdict(text: string, classifier: string): IcpVerdict {
       scope: json.scope ?? "",
       estimatedValueUsd: value,
       basis: json.value_basis ?? "",
+      fullTime: json.full_time === true,
     },
   };
 }

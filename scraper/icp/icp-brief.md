@@ -63,7 +63,6 @@ builds, virtual assistance.
 - Agencies or white-label/subcontract work for someone else's client
 - B2C/consumer brands (e-commerce, DTC, CPG/packaging, supplements, food & drink, restaurants, coaches, personal brands, real estate, fashion…)
 - Crypto/web3/NFT/DeFi
-- Full-time employment / in-house hire (we are a studio, not a seat)
 
 ## Project size (minimum $10,000)
 
@@ -83,6 +82,12 @@ If the stated budget and the described scope disagree, go with what the scope re
 
 Below $10,000 is too small (a logo, one landing page, a few screens, small fixes, a handful of hours),
 unless the post makes clear it is the first phase of a larger engagement.
+
+## Full-time roles
+
+A full-time or in-house role is **not** a deal-breaker. Judge it like any other job (service, client fit,
+size; value it as the pay over ~6 months unless the post says otherwise) and set `full_time` to true.
+We won't take the seat; we'll reach out to the company on a different platform and pitch a sprint instead.
 
 ## Decision rules
 

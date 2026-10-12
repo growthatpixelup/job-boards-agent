@@ -106,11 +106,6 @@ const HARD_REJECTS: Rule[] = [
     re: /\b(on-?site (only|required|work|role|position|presence)|in-?office (only|required|role|position)|in[- ]person (only|required|work|role)|(must|need to|required to) (be|reside|live|work)( located| based)? in (the )?(US|USA|U\.S\.|United States|UK|Europe|EU|Canada)|(US|U\.S\.)[- ](citizens?|persons?|residents?) only|security clearance|must be (US|UK|EU)[- ]based|(US|UK|EU)[- ]based only|local (candidates|freelancers) only|relocation required|hybrid (role|position))\b/i,
   },
   {
-    id: "employment",
-    label: "full-time / in-house employment",
-    re: /\b(full[- ]time (employee|employment|position|role|hire|job)|permanent (position|role|hire)|W-?2|salaried|in-?house (designer|position|role|hire)|employee benefits|health insurance|401k)\b/i,
-  },
-  {
     id: "execution-only",
     label: "design already done — implementation only (pixel-pusher ask)",
     re: /\b((designs?|mock-?ups?|figma( files?)?|wireframes?|layouts?) (is|are) (already )?(complete|completed|done|finished|final(ized)?|ready|provided|locked|approved)|design (and content )?(is|are) (complete|done|finished|final|ready)|(convert|turn|translate|implement|build|code|develop) (our |the |these |existing |an existing |provided |ready |approved )?(figma|xd|sketch|psd|adobe xd|designs|design files|mock-?ups?) (files? )?(in)?to|figma[- ]to[- ](webflow|framer|code|html|react|wordpress)|implementation of (our|the|existing) (figma|designs?)|we (already )?have (the |our |all )?(designs|figma files|mock-?ups)( ready| done| complete)?|(just|only) need (someone|a developer|help) to (build|implement|develop|code))\b/i,
@@ -121,6 +116,10 @@ const HARD_REJECTS: Rule[] = [
     re: /\b(white[- ]?label(ed)?|sub-?contract(or|ing)?|(for|on behalf of) (one of )?our clients?|our client'?s (brand|website|project|app)|agency (partner|overflow|capacity)|we'?re (a|an) [\w -]{0,30}agency|we are (a|an) [\w -]{0,30}agency)\b/i,
   },
 ];
+
+/** Full-time / in-house roles: not a deal-breaker — sent on if they fit, flagged so we reach out off Contra. */
+const FULL_TIME =
+  /\b(full[- ]time|permanent (position|role|hire)|W-?2|salaried|in-?house (designer|position|role|hire)|employee benefits|health insurance|401k)\b/i;
 
 const B2C =
   /\b(B2C|D2C|DTC|direct[- ]to[- ]consumer|e-?commerce (store|brand|site|website|shop)|online (store|shop)|shopify (store|theme|site)|etsy|amazon (listing|store|seller)|dropshipping|consumer (app|brand|product)|restaurant|caf[eé]|coffee shop|bakery|salon|real estate (agent|agency|listing)|realtor|wedding|personal (brand(ing)?|website)|portfolio website|my (book|novel|podcast|youtube|channel|music|band|album)|influencer|life coach|(coach|coaching) (business|brand|website)|fitness (brand|app|coach|studio)|gym|yoga|clothing (brand|line)|fashion brand|apparel|streetwear|skincare|cosmetics|beauty brand|jewel(le)?ry|candles?|pet (brand|food|products)|church|ministry|dating app|mobile game|esports|(product |physical )?packaging|cartons?|sachets?|vitamins?|supplements|supplement (brand|startup|company|line)|CPG|FMCG|consumer goods|beverages?|(food|drink|tea|coffee|wine|beer|spirits|snack) brand|merch(andise)?)\b/i;
@@ -322,6 +321,12 @@ export function classifyRegex(job: Job, opts: RegexOptions = {}): IcpVerdict {
     }
     rejects.push(`${r.label} ("${m[0]}")`);
     signals.push(`reject:${r.id}`);
+  }
+
+  const fullTime = body.match(FULL_TIME);
+  if (fullTime) {
+    caps.push(`full-time role ("${fullTime[0]}") — reach out on a different platform`);
+    signals.push("flag:full-time");
   }
 
   const isB2B = B2B.re.test(all);

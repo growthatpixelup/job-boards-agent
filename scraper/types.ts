@@ -60,6 +60,8 @@ export interface IcpVerdict {
     estimatedValueUsd: number | null;
     /** How the estimate was reached. */
     basis: string;
+    /** Full-time / in-house role: we don't apply on Contra, we reach out on a different platform. */
+    fullTime: boolean;
   };
 }
 

@@ -174,7 +174,6 @@ describe("deal-breakers (doc §4 anti-market)", () => {
     ["cost-shopper", "We have a tight budget so looking for the cheapest option.", "reject:cost-shopper"],
     ["committee", "Please respond to our RFP; final selection by the brand committee.", "reject:committee"],
     ["on-site", "You must be based in the US. US citizens only.", "reject:on-site"],
-    ["employment", "This is a full-time position with health insurance.", "reject:employment"],
     ["execution-only", "Our designs are complete in Figma, we need someone to convert our Figma designs into Webflow.", "reject:execution-only"],
     ["agency", "We're a branding agency looking for white-label help on our client's brand.", "reject:agency"],
     ["B2C", "We sell skincare through our Shopify store.", "reject:b2c"],
@@ -188,6 +187,12 @@ describe("deal-breakers (doc §4 anti-market)", () => {
       assert.ok(has(j, signal), `expected ${signal}, got ${classifyRegex(j).signals.join(", ")}`);
     });
   }
+
+  it("flags full-time roles instead of rejecting them", () => {
+    const j = job({ ...base, description: "B2B SaaS, Series A. This is a full-time position with health insurance." });
+    assert.equal(decide(j), "maybe");
+    assert.ok(has(j, "flag:full-time"));
+  });
 
   it("rejects a budget below the floor", () => {
     const j = job({ ...base, description: "B2B SaaS, Series A.", budget: ["FIXED", 300, 500] });

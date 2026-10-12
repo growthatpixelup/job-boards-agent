@@ -33,7 +33,10 @@ function size(j: ClassifiedJob): string | null {
 /** Title, client, budget and estimated size, plus the link — the reasons stay in the app. */
 function line(j: ClassifiedJob): string {
   const est = size(j);
-  return `• ${j.title}\n  ${[j.organization?.name, budget(j.budget)].filter(Boolean).join(" · ")}\n${est ? `  ${est}\n` : ""}  ${j.url}`;
+  const fullTime = j.icp.project?.fullTime
+    ? "  ⚠ FULL-TIME ROLE: don't apply on Contra, reach out to them on a different platform and pitch a sprint\n"
+    : "";
+  return `• ${j.title}\n  ${[j.organization?.name, budget(j.budget)].filter(Boolean).join(" · ")}\n${est ? `  ${est}\n` : ""}${fullTime}  ${j.url}`;
 }
 
 async function main() {

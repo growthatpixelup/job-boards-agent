@@ -65,6 +65,14 @@ async function JobList() {
                     {job.icp.tier && ` · ${job.icp.tier}`}
                   </span>
                 )}
+                {job.icp?.project?.fullTime && (
+                  <span
+                    className="rounded bg-violet-100 px-2 py-0.5 text-xs text-violet-800 dark:bg-violet-900 dark:text-violet-100"
+                    title="Reach out on a different platform instead of applying on Contra"
+                  >
+                    full-time
+                  </span>
+                )}
                 {job.isNew && (
                   <span className="rounded bg-emerald-100 px-2 py-0.5 text-xs text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100">
                     new
