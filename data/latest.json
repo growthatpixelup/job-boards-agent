@@ -1,80 +1,18 @@
 {
-  "ranAt": "2026-10-11T19:01:37.096Z",
+  "ranAt": "2026-10-12T09:27:26.491Z",
   "preset": "ALL",
   "classifier": "regex",
-  "totalScraped": 219,
+  "totalScraped": 221,
   "totalMatched": 39,
-  "newSinceLastRun": 1,
+  "newSinceLastRun": 2,
   "counts": {
     "qualified": 6,
     "maybe": 33,
-    "rejected": 180
+    "rejected": 182
   },
   "accessLimited": false,
-  "boardTotal": 219,
+  "boardTotal": 221,
   "jobs": [
-    {
-      "id": "WyJKb2IiLDk5MzQzXQ==",
-      "title": "Product Designer for 5 High-End UI Showcase Visuals",
-      "slug": "vZlWNvMv-product-designer-for-5-high-end-ui-showcase-visuals",
-      "url": "https://contra.com/opportunity/vZlWNvMv-product-designer-for-5-high-end-ui-showcase-visuals",
-      "createdAt": "2026-10-11T11:52:36.437Z",
-      "approvedAt": "2026-10-11T12:31:04.085Z",
-      "category": null,
-      "organization": {
-        "name": "CREADEVS",
-        "isVerified": false
-      },
-      "country": null,
-      "hiringAsIndividual": false,
-      "description": null,
-      "budget": {
-        "type": "HOURLY",
-        "feeMin": 60,
-        "feeMax": 75,
-        "estimatedHours": 25
-      },
-      "duration": null,
-      "roles": [
-        "Product Designer",
-        "UI Designer",
-        "Web Designer"
-      ],
-      "tools": [
-        "Figma"
-      ],
-      "timezone": {
-        "primaryUtcOffset": null,
-        "offsetTolerance": null
-      },
-      "visitor": {
-        "applied": false,
-        "bookmarked": false,
-        "dismissed": false,
-        "viewed": false,
-        "matched": false
-      },
-      "isNew": true,
-      "icp": {
-        "decision": "qualified",
-        "tier": "diana",
-        "score": 5,
-        "reasons": [
-          "website + product / UI-UX design ask",
-          "multi-service scope",
-          "budget $75/hr fits",
-          "B2B software / SaaS"
-        ],
-        "signals": [
-          "service:website",
-          "service:product",
-          "+1 multi-service",
-          "+2 budget-ok",
-          "+2 b2b-software"
-        ],
-        "classifier": "regex"
-      }
-    },
     {
       "id": "WyJKb2IiLDk3NTExXQ==",
       "title": "Founding Product Designer",
@@ -341,6 +279,68 @@
       }
     },
     {
+      "id": "WyJKb2IiLDk5MzQzXQ==",
+      "title": "Product Designer for 5 High-End UI Showcase Visuals",
+      "slug": "vZlWNvMv-product-designer-for-5-high-end-ui-showcase-visuals",
+      "url": "https://contra.com/opportunity/vZlWNvMv-product-designer-for-5-high-end-ui-showcase-visuals",
+      "createdAt": "2026-10-11T11:52:36.437Z",
+      "approvedAt": "2026-10-11T12:31:04.085Z",
+      "category": null,
+      "organization": {
+        "name": "CREADEVS",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "HOURLY",
+        "feeMin": 60,
+        "feeMax": 75,
+        "estimatedHours": 25
+      },
+      "duration": null,
+      "roles": [
+        "Product Designer",
+        "UI Designer",
+        "Web Designer"
+      ],
+      "tools": [
+        "Figma"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "qualified",
+        "tier": "diana",
+        "score": 5,
+        "reasons": [
+          "website + product / UI-UX design ask",
+          "multi-service scope",
+          "budget $75/hr fits",
+          "B2B software / SaaS"
+        ],
+        "signals": [
+          "service:website",
+          "service:product",
+          "+1 multi-service",
+          "+2 budget-ok",
+          "+2 b2b-software"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
       "id": "WyJKb2IiLDk5MzE3XQ==",
       "title": "Framer Expert for B2B SaaS Homepage Updates in Framer",
       "slug": "eEMEoFNv-framer-expert-for-b2-b-saa-s-homepage-updates-in-framer",
@@ -397,6 +397,127 @@
           "service:website",
           "+2 budget-ok",
           "+2 b2b-software"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk5Mzk3XQ==",
+      "title": "UI & UX Designer for Toy Website",
+      "slug": "mglPQElv-ui-and-ux-designer-for-toy-website",
+      "url": "https://contra.com/opportunity/mglPQElv-ui-and-ux-designer-for-toy-website",
+      "createdAt": "2026-10-12T04:44:18.623Z",
+      "approvedAt": "2026-10-12T04:55:55.083Z",
+      "category": null,
+      "organization": {
+        "name": "Something Great",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 5000,
+        "feeMax": 10000,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 3,
+        "interval": "MONTH"
+      },
+      "roles": [
+        "UI Designer",
+        "UX Designer",
+        "Motion Designer"
+      ],
+      "tools": [
+        "Figma",
+        "Webflow",
+        "Framer"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": true,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 2,
+        "reasons": [
+          "product / UI-UX design ask",
+          "budget $10,000 fits",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:product",
+          "+2 budget-ok"
+        ],
+        "classifier": "regex"
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk5Mzc1XQ==",
+      "title": "Website Refresh for Deep-Tech Startup",
+      "slug": "gLWlQbYX-website-refresh-for-deep-tech-startup",
+      "url": "https://contra.com/opportunity/gLWlQbYX-website-refresh-for-deep-tech-startup",
+      "createdAt": "2026-10-11T20:19:38.518Z",
+      "approvedAt": "2026-10-11T20:35:09.182Z",
+      "category": null,
+      "organization": {
+        "name": "Moon Trades Technologies",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "FIXED",
+        "feeMin": 1500,
+        "feeMax": 3000,
+        "estimatedHours": null
+      },
+      "duration": {
+        "amount": 3,
+        "interval": "WEEK"
+      },
+      "roles": [
+        "Web Designer"
+      ],
+      "tools": [],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": true,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 1,
+        "reasons": [
+          "website ask",
+          "launch / event deadline",
+          "⚠ budget $3,000 is below the $7,900 entry price",
+          "⚠ no evidence the client is a funded B2B software company"
+        ],
+        "signals": [
+          "service:website",
+          "+1 trigger-deadline"
         ],
         "classifier": "regex"
       }
@@ -735,76 +856,6 @@
           "+1 multi-service",
           "+2 b2b-software",
           "+1 trigger-deadline",
-          "+1 systems"
-        ],
-        "classifier": "regex"
-      }
-    },
-    {
-      "id": "WyJKb2IiLDk2MjQ4XQ==",
-      "title": "Humble AI Website Designer /eventual Framer implementation — Homepage for Manufacturing AI",
-      "slug": "PLoUmosb-humble-ai-website-designer-eventual-framer-implementation-homepage-for-manufacturing-ai",
-      "url": "https://contra.com/opportunity/PLoUmosb-humble-ai-website-designer-eventual-framer-implementation-homepage-for-manufacturing-ai",
-      "createdAt": "2026-09-07T13:53:39.189Z",
-      "approvedAt": "2026-09-11T20:34:32.796Z",
-      "category": null,
-      "organization": {
-        "name": "Humble Operations",
-        "isVerified": false
-      },
-      "country": null,
-      "hiringAsIndividual": false,
-      "description": null,
-      "budget": {
-        "type": "FIXED",
-        "feeMin": 4000,
-        "feeMax": 5000,
-        "estimatedHours": null
-      },
-      "duration": {
-        "amount": 4,
-        "interval": "WEEK"
-      },
-      "roles": [
-        "Web Designer",
-        "Framer Developer",
-        "Design Systems Specialist"
-      ],
-      "tools": [
-        "Framer",
-        "Figma"
-      ],
-      "timezone": {
-        "primaryUtcOffset": null,
-        "offsetTolerance": null
-      },
-      "visitor": {
-        "applied": false,
-        "bookmarked": false,
-        "dismissed": false,
-        "viewed": false,
-        "matched": false
-      },
-      "isNew": false,
-      "icp": {
-        "decision": "maybe",
-        "tier": "diana",
-        "score": 5,
-        "reasons": [
-          "website + design system ask",
-          "multi-service scope",
-          "B2B software / SaaS",
-          "rebrand / refresh underway",
-          "wants systems / ongoing partnership",
-          "⚠ title mixes design with production/implementation work (\"Humble AI Website Designer /eventual Framer implementation — Homepage for Manufacturing AI\")",
-          "⚠ budget $5,000 is below the $7,900 entry price"
-        ],
-        "signals": [
-          "service:website",
-          "service:design-system",
-          "+1 multi-service",
-          "+2 b2b-software",
-          "+1 trigger-rebrand",
           "+1 systems"
         ],
         "classifier": "regex"
@@ -2475,69 +2526,30 @@
         ],
         "classifier": "regex"
       }
-    },
-    {
-      "id": "WyJKb2IiLDk2NjgzXQ==",
-      "title": "Kajabi Expert for Website Review and Optimization",
-      "slug": "3M6vPcPm-kajabi-expert-for-website-review-and-optimization",
-      "url": "https://contra.com/opportunity/3M6vPcPm-kajabi-expert-for-website-review-and-optimization",
-      "createdAt": "2026-09-11T20:44:25.571Z",
-      "approvedAt": "2026-09-11T20:58:05.247Z",
-      "category": null,
-      "organization": {
-        "name": "Clearly Aligned",
-        "isVerified": false
-      },
-      "country": null,
-      "hiringAsIndividual": false,
-      "description": null,
-      "budget": {
-        "type": "FIXED",
-        "feeMin": 3000,
-        "feeMax": 5000,
-        "estimatedHours": null
-      },
-      "duration": {
-        "amount": 1,
-        "interval": "MONTH"
-      },
-      "roles": [
-        "UI Designer"
-      ],
-      "tools": [
-        "Kajabi",
-        "Google Analytics",
-        "Figma"
-      ],
-      "timezone": {
-        "primaryUtcOffset": null,
-        "offsetTolerance": null
-      },
-      "visitor": {
-        "applied": false,
-        "bookmarked": false,
-        "dismissed": false,
-        "viewed": false,
-        "matched": false
-      },
-      "isNew": false,
-      "icp": {
-        "decision": "maybe",
-        "tier": "eddie",
-        "score": 0,
-        "reasons": [
-          "product / UI-UX design ask",
-          "⚠ budget $5,000 is below the $7,900 entry price",
-          "⚠ no evidence the client is a funded B2B software company"
-        ],
-        "signals": [
-          "service:product"
-        ],
-        "classifier": "regex"
-      }
     }
   ],
   "rejected": [
+    {
+      "title": "Influencer Marketing Specialist",
+      "url": "https://contra.com/opportunity/EM6YeLcQ-influencer-marketing-specialist",
+      "reasons": [
+        "not a service we sell — core ask is \"Influencer\" (Influencer Marketing Specialist)"
+      ]
+    },
+    {
+      "title": "Video Editor (Motion Graphics)",
+      "url": "https://contra.com/opportunity/qEUe6cZP-video-editor-motion-graphics",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Video Editor (Motion Graphics))"
+      ]
+    },
+    {
+      "title": "3D artist or motion designer",
+      "url": "https://contra.com/opportunity/lBqXNqEk-3-d-artist-or-motion-designer",
+      "reasons": [
+        "not a service we sell — core ask is \"3D\" (3D artist or motion designer)"
+      ]
+    },
     {
       "title": "Lead Editor with Taste: One of the Biggest AI Ads of the Year + Long-Term Role",
       "url": "https://contra.com/opportunity/sglXeUUb-lead-editor-with-taste-one-of-the-biggest-ai-ads-of-the-year-long-term-role",
@@ -3791,13 +3803,6 @@
       "url": "https://contra.com/opportunity/c6gqM723-marketing-execution-b2-c-travel-brand-launch-malaysia-singapore",
       "reasons": [
         "not a service we sell — core ask is \"Social Media\" (Marketing Execution - B2C Travel Brand Launch (Malaysia + Singapore))"
-      ]
-    },
-    {
-      "title": "UI/UX Designer for Food Delivery App",
-      "url": "https://contra.com/opportunity/7LPvsXUs-uiux-designer-for-food-delivery-app",
-      "reasons": [
-        "budget $2,000 is below the $2,500 floor"
       ]
     }
   ]
