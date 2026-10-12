@@ -2,7 +2,7 @@ import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { DATA_DIR, RAW_DIR, loadFeed, minimizeDetails, pruneDetails } from "./feed.ts";
 import { filterConfig, matchesFilters } from "./filters.ts";
-import { getClassifier } from "./icp/index.ts";
+import { LLM_FAILED, getClassifier } from "./icp/index.ts";
 import type { ClassifiedJob, IcpDecision, Job, RunResult } from "./types.ts";
 
 // Ingests the raw MCP feed pages (data/raw/) plus cached descriptions (data/details/)
@@ -50,6 +50,16 @@ async function main() {
   const counts: Record<IcpDecision, number> = { qualified: 0, maybe: 0, rejected: 0 };
   for (const j of classified) counts[j.icp.decision]++;
 
+  // Jobs the LLM couldn't check stay unseen so the next run retries them; if every call failed
+  // (bad key, outage), stop before anything is saved or posted to Slack.
+  const failed = new Set(classified.filter((j) => j.icp.signals.includes(LLM_FAILED)).map((j) => j.id));
+  const attempted = classified.filter((j) => !j.icp.classifier.endsWith("(regex prefilter)")).length;
+  if (failed.size && failed.size === attempted) {
+    const reason = classified.find((j) => failed.has(j.id))!.icp.reasons.at(-1);
+    throw new Error(`all ${failed.size} ${classifier.name} calls failed; nothing saved or sent. Last error: ${reason}`);
+  }
+  if (failed.size) console.warn(`[contra] ${failed.size} job(s) not checked by ${classifier.name}; they'll be retried next run`);
+
   const kept = classified.filter((j) => filterConfig.keepDecisions.includes(j.icp.decision));
   kept.sort(
     (a, b) =>
@@ -81,7 +91,7 @@ async function main() {
   // One file per run (UTC date + time), so twice-daily runs don't overwrite each other.
   await writeFile(path.join(DATA_DIR, "runs", `${ranAt.slice(0, 16).replace(":", "")}.json`), json);
   await writeFile(path.join(DATA_DIR, "latest.json"), json);
-  for (const j of feed.jobs) seen.add(j.id);
+  for (const j of feed.jobs) if (!failed.has(j.id)) seen.add(j.id);
   await writeFile(seenFile, JSON.stringify([...seen]));
   await rm(RAW_DIR, { recursive: true, force: true }); // consumed; next run starts clean (details stay cached)
   // Only the full feed tells us which jobs are gone; a BOOKMARKED/APPLIED run must not prune the rest.

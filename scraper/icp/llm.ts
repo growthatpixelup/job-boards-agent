@@ -111,6 +111,9 @@ async function readCached(file: string, key: string): Promise<IcpVerdict | null>
   }
 }
 
+/** Signal on a verdict whose LLM call failed; the job is retried on the next run. */
+export const LLM_FAILED = "llm-failed";
+
 export interface LlmClassifierOptions {
   /** Skip the LLM for jobs the regex classifier hard-rejects (out-of-scope, crypto, budget floor…). Default true. */
   regexPrefilter?: boolean;
@@ -140,9 +143,13 @@ export function createLlmClassifier(provider: LlmProvider, name: string, opts: L
       }
       return verdict;
     } catch (err) {
+      // Only jobs Claude has read may be "qualified" (and so reach Slack): cap the rubric's verdict at "maybe".
+      // run.ts leaves these jobs unseen, so the next run retries them and can still post them as new.
       return {
         ...regex,
-        reasons: [...regex.reasons, `⚠ ${name} failed, used regex verdict: ${(err as Error).message}`],
+        decision: regex.decision === "qualified" ? "maybe" : regex.decision,
+        reasons: [...regex.reasons, `⚠ ${name} failed, not checked by the LLM yet (retried next run): ${(err as Error).message}`],
+        signals: [...regex.signals, LLM_FAILED],
         classifier: `${name} (fell back to regex)`,
       };
     }

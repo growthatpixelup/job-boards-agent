@@ -46,3 +46,4 @@ export function getClassifier(env = process.env): IcpClassifier {
 }
 
 export { classifyRegex, prescreen } from "./regex.ts";
+export { LLM_FAILED } from "./llm.ts";

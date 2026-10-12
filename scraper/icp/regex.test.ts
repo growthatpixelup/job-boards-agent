@@ -5,7 +5,7 @@ import path from "node:path";
 import { describe, it } from "node:test";
 import { blocknoteToText } from "../contra.ts";
 import type { BudgetType, Job } from "../types.ts";
-import { createLlmClassifier, parseVerdict } from "./llm.ts";
+import { LLM_FAILED, createLlmClassifier, parseVerdict } from "./llm.ts";
 import { classifyRegex, prescreen, raisedMillions } from "./regex.ts";
 
 function job(p: Omit<Partial<Job>, "budget"> & { budget?: [BudgetType, number, number] | null } = {}): Job {
@@ -310,6 +310,8 @@ describe("LLM classifier plumbing (fake provider)", () => {
     const v = await failing(good);
     assert.equal(calls, 1);
     assert.match(v.classifier, /fell back to regex/);
+    assert.ok(v.signals.includes(LLM_FAILED));
+    assert.notEqual(v.decision, "qualified"); // only jobs the LLM has read may qualify (and reach Slack)
   });
 
   it("caps a qualified verdict below the $10,000 minimum at maybe", () => {
