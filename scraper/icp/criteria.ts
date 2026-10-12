@@ -11,11 +11,14 @@ export const icpCriteria = {
    * At/above `target` = budget fits. `premium` and up earns an extra point.
    */
   budget: {
-    FIXED: { floor: 2_500, target: 7_900, premium: 20_000 }, // $7,900 = Contra entry sprint; $25–30k mainline
+    FIXED: { floor: 5_000, target: 10_000, premium: 20_000 }, // $10k = smallest project we take; $25–30k mainline
     HOURLY: { floor: 50, target: 75, premium: 125 }, // a $25–30k, ~3-week sprint ≈ $100+/hr
     WEEKLY: { floor: 1_000, target: 2_000, premium: 5_000 },
     MONTHLY: { floor: 3_000, target: 4_000, premium: 8_000 }, // retainers from $4k/mo
   } satisfies Partial<Record<BudgetType, { floor: number; target: number; premium: number }>>,
+
+  /** Smallest project worth taking, in USD. The LLM classifier caps anything it sizes below this at "maybe" (see icp-brief.md). */
+  minProjectUsd: 10_000,
 
   /** Raised-amount bands in USD millions (doc §2 "Raised"). */
   raised: { excludeBelow: 2, bullseyeMin: 5, bullseyeMax: 60, acceptableMax: 150 },

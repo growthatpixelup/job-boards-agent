@@ -33,6 +33,7 @@ Repository secrets (Settings → Secrets and variables → Actions):
 |---|---|
 | `CONTRA_CLIENT_ID` | `.contra-auth.json` after `npm run contra:auth` |
 | `CONTRA_REFRESH_TOKEN` | same |
+| `ANTHROPIC_API_KEY` | Claude API key for the ICP classifier |
 | `GH_SECRETS_PAT` | Fine-grained PAT for this repo with **Secrets: Read and write**. Contra rotates the refresh token on every use; the workflow stores the new one with this. |
 
 ### Switching the Contra account (e.g. on another machine)
@@ -52,6 +53,11 @@ Needs Node 22.18+ (24 recommended) and a clone of this repo; no `npm install` ne
 `ICP_CLASSIFIER` picks the filter: `regex` (default, rules from `scraper/icp/icp-brief.md`),
 `none` (keep every job), `anthropic` or `openai`. Housekeeping filters are in
 `scraper/filters.ts`.
+
+The GitHub workflow uses `anthropic` with Claude Sonnet 5.5 (needs the `ANTHROPIC_API_KEY` repository
+secret). Claude reads each job against `icp-brief.md`, sizes it (which sprints it maps to, the actual
+scope, the estimated total value) and only qualifies jobs worth at least $10,000. Jobs the regex rules
+hard-reject skip Claude, and each verdict is cached in `data/verdicts/` so a job is only sent once.
 
 ## Local use
 

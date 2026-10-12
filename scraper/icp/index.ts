@@ -13,7 +13,7 @@ export interface IcpClassifier {
  * Picks the classifier from env:
  *   ICP_CLASSIFIER=none       no ICP filtering: every job is kept, no descriptions fetched
  *   ICP_CLASSIFIER=regex      (default) free, deterministic rules in regex.ts
- *   ICP_CLASSIFIER=anthropic  ICP_MODEL defaults to claude-opus-5-5; needs `npm i @anthropic-ai/sdk` + ANTHROPIC_API_KEY
+ *   ICP_CLASSIFIER=anthropic  ICP_MODEL defaults to claude-sonnet-5-5; needs `npm i @anthropic-ai/sdk` + ANTHROPIC_API_KEY
  *   ICP_CLASSIFIER=openai     ICP_MODEL required;                     needs `npm i openai` + OPENAI_API_KEY
  * LLM classifiers run the regex classifier first and skip jobs it hard-rejects
  * (set ICP_LLM_PREFILTER=false to send every job to the LLM).
@@ -30,7 +30,7 @@ export function getClassifier(env = process.env): IcpClassifier {
   if (kind === "regex") return { name: "regex", concurrency: 50, classify: async (job) => classifyRegex(job) };
 
   if (kind === "anthropic" || kind === "claude") {
-    const model = env.ICP_MODEL || "claude-opus-5-5";
+    const model = env.ICP_MODEL || "claude-sonnet-5-5";
     const name = `anthropic:${model}`;
     return { name, concurrency: 4, classify: createLlmClassifier(anthropicProvider(model), name, { regexPrefilter }) };
   }

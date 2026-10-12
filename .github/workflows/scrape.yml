@@ -21,7 +21,11 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: 24 # the scraper is plain TypeScript run natively; no npm install needed
+          node-version: 24 # the scraper is plain TypeScript run natively
+          cache: npm
+
+      - name: Install dependencies # for the Anthropic SDK used by the ICP classifier
+        run: npm ci --no-audit --no-fund
 
       # Job descriptions are cached between runs here rather than committed, so they never enter git history.
       # GitHub deletes the cache after 7 days without use.
@@ -32,11 +36,22 @@ jobs:
           key: contra-details-${{ github.run_id }}
           restore-keys: contra-details-
 
+      # Claude's verdicts, one per job, so each job is only sent to the API once (re-sent if the job or the brief changes).
+      - name: Restore cached ICP verdicts
+        uses: actions/cache@v4
+        with:
+          path: data/verdicts
+          key: contra-verdicts-${{ github.run_id }}
+          restore-keys: contra-verdicts-
+
       - name: Fetch jobs from the Contra MCP and classify
         env:
           CONTRA_CLIENT_ID: ${{ secrets.CONTRA_CLIENT_ID }}
           CONTRA_REFRESH_TOKEN: ${{ secrets.CONTRA_REFRESH_TOKEN }}
           CONTRA_REFRESH_TOKEN_OUT: ${{ runner.temp }}/contra-refresh-token
+          ICP_CLASSIFIER: anthropic
+          ICP_MODEL: claude-sonnet-5-5
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: npm run scrape:ci
 
       # Contra may issue a new refresh token on every use; store it for tomorrow's run.
@@ -59,7 +74,7 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898341+github-actions[bot]@users.noreply.github.com"
-          git add -A data # latest.json, runs/ and seen-ids.json (raw/ and details/ are gitignored)
+          git add -A data # latest.json, runs/ and seen-ids.json (raw/, details/ and verdicts/ are gitignored)
           git diff --cached --quiet && { echo "No changes."; exit 0; }
           git commit -m "data: Contra scrape $(TZ=Asia/Kolkata date "+%F %H:%M IST")"
           git push

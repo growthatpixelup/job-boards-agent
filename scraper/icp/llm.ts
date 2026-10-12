@@ -1,6 +1,9 @@
+import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 import type { IcpVerdict, Job } from "../types.ts";
+import { icpCriteria } from "./criteria.ts";
 import { classifyRegex } from "./regex.ts";
 
 /**
@@ -20,6 +23,7 @@ Decide whether each job fits Pixelup's ideal client profile, using only the brie
 ${BRIEF}
 
 Judge the client (who posted the job) and the core ask, not incidental words. Quote short evidence from the job in your reasons.
+Size the project from what the post actually asks for, not from its title or hourly rate.
 Do not assume facts the post does not support: if funding, stage or B2B status isn't stated, treat it as unknown rather than as a positive.
 Respond with JSON matching the schema.`;
 
@@ -28,11 +32,19 @@ export const VERDICT_SCHEMA = {
   properties: {
     decision: { type: "string", enum: ["qualified", "maybe", "rejected"] },
     tier: { anyOf: [{ type: "string", enum: ["carol", "diana", "eddie"] }, { type: "null" }] },
+    sprint_types: {
+      type: "array",
+      items: { type: "string", enum: ["brand", "website", "product-design-dev"] },
+      description: "Which of our sprints the work maps to; empty if none.",
+    },
+    scope: { type: "string", description: "One line: the deliverables the post actually asks for." },
+    estimated_value_usd: { type: "number", description: "Estimated total project value in USD (see Project size in the brief)." },
+    value_basis: { type: "string", description: "One line: how the estimate was reached, e.g. \"$100/hr × ~15 hrs for 3 screens\"." },
     confidence: { type: "number", description: "0 to 1" },
     reasons: { type: "array", items: { type: "string" }, description: "Most important first, each citing evidence from the post." },
     deal_breakers: { type: "array", items: { type: "string" }, description: "Deal-breakers from the brief that apply; empty if none." },
   },
-  required: ["decision", "tier", "confidence", "reasons", "deal_breakers"],
+  required: ["decision", "tier", "sprint_types", "scope", "estimated_value_usd", "value_basis", "confidence", "reasons", "deal_breakers"],
   additionalProperties: false,
 } as const;
 
@@ -53,32 +65,80 @@ export function jobPrompt(job: Job): string {
 
 export function parseVerdict(text: string, classifier: string): IcpVerdict {
   const json = JSON.parse(text.slice(text.indexOf("{"), text.lastIndexOf("}") + 1));
-  const decision = ["qualified", "maybe", "rejected"].includes(json.decision) ? json.decision : "maybe";
+  let decision = ["qualified", "maybe", "rejected"].includes(json.decision) ? json.decision : "maybe";
   const tier = decision !== "rejected" && ["carol", "diana", "eddie"].includes(json.tier) ? json.tier : null;
   const confidence = Math.min(1, Math.max(0, Number(json.confidence) || 0));
+  const value = Number.isFinite(json.estimated_value_usd) ? Math.round(json.estimated_value_usd) : null;
+  const reasons = [...(json.deal_breakers ?? []).map((d: string) => `deal-breaker: ${d}`), ...(json.reasons ?? [])];
+  // Guardrail: never "qualified" below the minimum project size, whatever the model decided.
+  if (decision === "qualified" && value != null && value < icpCriteria.minProjectUsd) {
+    decision = "maybe";
+    reasons.push(`⚠ estimated ~$${value.toLocaleString("en-US")} is below the $${icpCriteria.minProjectUsd.toLocaleString("en-US")} minimum`);
+  }
   return {
     decision,
     tier,
     score: Math.round(confidence * 10),
-    reasons: [...(json.deal_breakers ?? []).map((d: string) => `deal-breaker: ${d}`), ...(json.reasons ?? [])],
+    reasons,
     signals: (json.deal_breakers ?? []).map((d: string) => `llm-reject:${d}`),
     classifier,
+    project: {
+      sprintTypes: Array.isArray(json.sprint_types) ? json.sprint_types : [],
+      scope: json.scope ?? "",
+      estimatedValueUsd: value,
+      basis: json.value_basis ?? "",
+    },
   };
+}
+
+/**
+ * LLM verdicts cached per job, so each job is sent to the model once rather than on every run.
+ * Keyed on the exact prompt, so editing the brief or a change to the job re-classifies it.
+ * Gitignored; the GitHub workflow keeps it between runs with actions/cache.
+ */
+export const VERDICTS_DIR = path.resolve(import.meta.dirname, "..", "..", "data", "verdicts");
+
+function promptKey(name: string, user: string): string {
+  return createHash("sha256").update(`${name}\n${SYSTEM_PROMPT}\n${user}`).digest("hex");
+}
+
+async function readCached(file: string, key: string): Promise<IcpVerdict | null> {
+  try {
+    const cached = JSON.parse(await readFile(file, "utf8"));
+    return cached.key === key ? (cached.verdict as IcpVerdict) : null;
+  } catch {
+    return null;
+  }
 }
 
 export interface LlmClassifierOptions {
   /** Skip the LLM for jobs the regex classifier hard-rejects (out-of-scope, crypto, budget floor…). Default true. */
   regexPrefilter?: boolean;
+  /** Where to cache verdicts; null disables the cache. Default VERDICTS_DIR. */
+  cacheDir?: string | null;
 }
 
 export function createLlmClassifier(provider: LlmProvider, name: string, opts: LlmClassifierOptions = {}) {
   const prefilter = opts.regexPrefilter ?? true;
+  const cacheDir = opts.cacheDir === undefined ? VERDICTS_DIR : opts.cacheDir;
   return async (job: Job): Promise<IcpVerdict> => {
     const regex = classifyRegex(job);
     if (prefilter && regex.decision === "rejected") return { ...regex, classifier: `${name} (regex prefilter)` };
+    const user = jobPrompt(job);
+    const key = promptKey(name, user);
+    const file = cacheDir && path.join(cacheDir, `${job.id}.json`);
+    if (file) {
+      const cached = await readCached(file, key);
+      if (cached) return cached;
+    }
     try {
-      const text = await provider({ system: SYSTEM_PROMPT, user: jobPrompt(job), schema: VERDICT_SCHEMA });
-      return parseVerdict(text, name);
+      const text = await provider({ system: SYSTEM_PROMPT, user, schema: VERDICT_SCHEMA });
+      const verdict = parseVerdict(text, name);
+      if (cacheDir && file) {
+        await mkdir(cacheDir, { recursive: true });
+        await writeFile(file, JSON.stringify({ key, verdict }));
+      }
+      return verdict;
     } catch (err) {
       return {
         ...regex,
@@ -101,7 +161,7 @@ async function load(pkg: string): Promise<any> {
 }
 
 /** Claude via the official SDK. Reads ANTHROPIC_API_KEY (or an `ant auth login` profile). */
-export function anthropicProvider(model = "claude-opus-5-5"): LlmProvider {
+export function anthropicProvider(model = "claude-sonnet-5-5"): LlmProvider {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let client: any;
   return async ({ system, user, schema }) => {
@@ -111,13 +171,14 @@ export function anthropicProvider(model = "claude-opus-5-5"): LlmProvider {
     }
     const response = await client.beta.messages.create({
       model,
-      max_tokens: 4000,
+      max_tokens: 16000,
       // Re-runs on a fallback model if a safety classifier declines the request.
       betas: ["server-side-fallback-2026-07-01"],
       fallbacks: "default",
       system: [{ type: "text", text: system, cache_control: { type: "ephemeral" } }],
       messages: [{ role: "user", content: user }],
-      output_config: { effort: "low", format: { type: "json_schema", schema } },
+      // Medium effort: sizing a project from a loose brief needs some thought; classification alone ran fine at low.
+      output_config: { effort: "medium", format: { type: "json_schema", schema } },
     });
     if (response.stop_reason === "refusal") throw new Error("Claude declined to classify this job");
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

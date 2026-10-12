@@ -1,4 +1,7 @@
 import assert from "node:assert/strict";
+import { mkdtemp, rm } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
 import { describe, it } from "node:test";
 import { blocknoteToText } from "../contra.ts";
 import type { BudgetType, Job } from "../types.ts";
@@ -208,8 +211,8 @@ describe("maybe (service fits, evidence thin or budget below entry)", () => {
     const v = classifyRegex(job({ title: "Brand identity", roles: ["Brand Designer"], description: null }));
     assert.equal(v.decision, "maybe");
   });
-  it("budget below the $7,900 entry sprint", () => {
-    const v = classifyRegex(job({ title: "Product design for our SaaS", description: funded, budget: ["FIXED", 3_000, 5_000] }));
+  it("budget below the $10,000 minimum project", () => {
+    const v = classifyRegex(job({ title: "Product design for our SaaS", description: funded, budget: ["FIXED", 6_000, 8_000] }));
     assert.equal(v.decision, "maybe");
   });
   it("logo-only ask", () => {
@@ -307,5 +310,33 @@ describe("LLM classifier plumbing (fake provider)", () => {
     const v = await failing(good);
     assert.equal(calls, 1);
     assert.match(v.classifier, /fell back to regex/);
+  });
+
+  it("caps a qualified verdict below the $10,000 minimum at maybe", () => {
+    const v = parseVerdict(
+      '{"decision":"qualified","tier":"diana","sprint_types":["product-design-dev"],"scope":"3 screens","estimated_value_usd":1500,"value_basis":"$100/hr × 15 hrs","confidence":0.9,"reasons":["B2B"],"deal_breakers":[]}',
+      "test",
+    );
+    assert.equal(v.decision, "maybe");
+    assert.equal(v.project?.estimatedValueUsd, 1500);
+  });
+
+  it("caches verdicts per job and re-asks when the job changes", async () => {
+    const dir = await mkdtemp(path.join(tmpdir(), "verdicts-"));
+    let calls = 0;
+    const classify = createLlmClassifier(
+      async () => {
+        calls++;
+        return '{"decision":"qualified","tier":"diana","sprint_types":["brand"],"scope":"rebrand","estimated_value_usd":25000,"value_basis":"fixed","confidence":0.8,"reasons":[],"deal_breakers":[]}';
+      },
+      "fake",
+      { cacheDir: dir },
+    );
+    assert.equal((await classify(good)).decision, "qualified");
+    assert.equal((await classify(good)).decision, "qualified");
+    assert.equal(calls, 1);
+    await classify({ ...good, description: "Series A B2B SaaS. Now with a bigger scope." });
+    assert.equal(calls, 2);
+    await rm(dir, { recursive: true, force: true });
   });
 });

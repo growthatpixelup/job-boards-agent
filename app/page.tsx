@@ -77,6 +77,20 @@ async function JobList() {
                 .filter(Boolean)
                 .join(" · ")}
             </p>
+            {job.icp?.project && (
+              <p className="mt-2 text-sm">
+                <span className="font-medium">
+                  {job.icp.project.estimatedValueUsd != null
+                    ? `~$${job.icp.project.estimatedValueUsd.toLocaleString("en-US")}`
+                    : "Size unclear"}
+                  {job.icp.project.sprintTypes.length > 0 && ` · ${job.icp.project.sprintTypes.join(" + ")}`}
+                </span>
+                {job.icp.project.scope && ` — ${job.icp.project.scope}`}
+                {job.icp.project.basis && (
+                  <span className="block text-xs text-zinc-500">{job.icp.project.basis}</span>
+                )}
+              </p>
+            )}
             {(job.roles.length > 0 || job.tools.length > 0) && (
               <p className="mt-2 text-xs text-zinc-500">{[...job.roles, ...job.tools].join(", ")}</p>
             )}

@@ -9,7 +9,7 @@ Pixelup Labs is the **enterprise-readiness design partner for funded B2B (mostly
 We rebuild a startup's brand, website and product design around the opinion the founder holds about
 their market, so enterprise buyers stop hesitating. Founder-to-founder, senior team, ships in weeks
 (2-week brand sprints, ~3-week sites, ~5 weeks for brand + site). Mainline sprints are $25–30k; the
-Contra entry sprint is $7,900; retainers start at $4k/month. Bangalore-based, SF-calibrated.
+smallest project we take is **$10,000**; retainers start at $4k/month. Bangalore-based, SF-calibrated.
 
 ## Services that qualify a job (at least one must be the core of the job)
 
@@ -49,12 +49,12 @@ builds, virtual assistance.
 - Inciting events: rebrand, launch, conference/deadline, competitor out-branding them, site looks generic/template/outdated, outgrown current brand
 - Opinionated founder; positioning/messaging/narrative work welcome; founder-led decision (no committee)
 - Wants systems: design system, retainer, long-term partnership
-- Budget at or above our entry sprint ($7,900 fixed; ≥ $4k/month retainer)
+- Budget at or above our $10,000 minimum project (≥ $4k/month retainer for 3+ months)
 
 ## Deal-breakers (reject)
 
 - Pre-PMF / idea stage / pre-seed / unfunded / mid-pivot; equity-only, rev-share or unpaid work
-- Cost-shoppers: tight/low budget, "cheapest", "logo for $500"; budget far below our entry sprint
+- Cost-shoppers: tight/low budget, "cheapest", "logo for $500"; budget far below our $10,000 minimum
 - Procurement-driven or committee buyers: RFP/tender, steering/brand committee, vendor onboarding
 - On-site or US-domicile required, security clearance, local-only
 - Buyers expecting design to drive leads/SEO/ads ("make design drive our MQLs") — a growth-agency ask
@@ -65,13 +65,34 @@ builds, virtual assistance.
 - Crypto/web3/NFT/DeFi
 - Full-time employment / in-house hire (we are a studio, not a seat)
 
+## Project size (minimum $10,000)
+
+We take on sprints, not small tasks. A job is worth it only if it is (or clearly can become) one of:
+
+- **Brand sprint**: identity / rebrand / brand system, ~2 weeks
+- **Website sprint**: a full marketing site design and build (not a single page or a few edits), ~3 weeks
+- **Product design + development sprint**: designing and/or building a meaningful part of a SaaS or AI
+  product (a set of flows, a dashboard, an MVP, a design system), not 2–3 screens
+- or a combination of these
+
+Read the whole post and judge how big the work actually is, then estimate the **total project value in
+USD**: a fixed budget as stated; an hourly/weekly rate × the hours or duration the post states, or else
+the hours the described scope realistically needs; a monthly retainer × its stated or likely length.
+A high rate does not make a small scope worth it: $100/hr to design 2–3 screens is a ~$1–2k job.
+If the stated budget and the described scope disagree, go with what the scope realistically pays.
+
+Below $10,000 is too small (a logo, one landing page, a few screens, small fixes, a handful of hours),
+unless the post makes clear it is the first phase of a larger engagement.
+
 ## Decision rules
 
-- **qualified** — the core ask is one of our services, the client is (or very likely is) a funded B2B
-  software company, no deal-breaker applies, and the budget is at/above our entry price.
-- **maybe** — service fits but evidence of client fit is thin, the budget is below entry price but not
-  insulting, a minor negative applies (e.g. India-based, logo-only, a development job building from
-  finished designs), or the description is missing.
-- **rejected** — any deal-breaker, or the core ask is not a service we sell.
+- **qualified** — the core ask is one of our sprints (or a combination), the client is (or very likely
+  is) a funded B2B software company, no deal-breaker applies, and the estimated project value is at least
+  $10,000.
+- **maybe** — service fits but evidence of client fit is thin, the size is unclear but could plausibly
+  reach $10,000, a minor negative applies (e.g. India-based, a development job building from finished
+  designs), or the description is missing.
+- **rejected** — any deal-breaker, the core ask is not a service we sell, or the work is clearly smaller
+  than $10,000.
 
 When unsure between two decisions, pick the more conservative one (maybe over qualified).

@@ -51,6 +51,16 @@ export interface IcpVerdict {
   /** Machine-readable rule ids that fired, e.g. "reject:crypto", "+ai-native". */
   signals: string[];
   classifier: string;
+  /** LLM classifiers only: how big the work is. */
+  project?: {
+    sprintTypes: ("brand" | "website" | "product-design-dev")[];
+    /** The deliverables the post actually asks for. */
+    scope: string;
+    /** Estimated total project value in USD. */
+    estimatedValueUsd: number | null;
+    /** How the estimate was reached. */
+    basis: string;
+  };
 }
 
 export type ClassifiedJob = Job & { isNew: boolean; icp: IcpVerdict };

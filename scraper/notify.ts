@@ -21,9 +21,19 @@ function budget(b: ClassifiedJob["budget"]): string {
   return range + { FIXED: " fixed", HOURLY: "/hr", WEEKLY: "/wk", MONTHLY: "/mo", UNKNOWN: "" }[b.type];
 }
 
-/** Title, client and budget, plus the link — the reasons stay in the app. */
+/** Claude's size estimate, e.g. "~$25,000 · brand + website: rebrand and 8-page marketing site". */
+function size(j: ClassifiedJob): string | null {
+  const p = j.icp.project;
+  if (!p) return null;
+  const value = p.estimatedValueUsd != null ? `~${money(p.estimatedValueUsd)}` : "size unclear";
+  const kind = p.sprintTypes.join(" + ");
+  return `${value}${kind ? ` · ${kind}` : ""}${p.scope ? `: ${p.scope}` : ""}`;
+}
+
+/** Title, client, budget and estimated size, plus the link — the reasons stay in the app. */
 function line(j: ClassifiedJob): string {
-  return `• ${j.title}\n  ${[j.organization?.name, budget(j.budget)].filter(Boolean).join(" · ")}\n  ${j.url}`;
+  const est = size(j);
+  return `• ${j.title}\n  ${[j.organization?.name, budget(j.budget)].filter(Boolean).join(" · ")}\n${est ? `  ${est}\n` : ""}  ${j.url}`;
 }
 
 async function main() {
