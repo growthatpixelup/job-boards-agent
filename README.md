@@ -23,7 +23,7 @@ users' personal information. So:
 
 ## Automatic runs (GitHub Actions)
 
-`.github/workflows/scrape.yml` runs at **08:00 and 20:00 IST**, plus on demand from
+`.github/workflows/scrape.yml` runs once a day at **11:05 AM San Francisco time**, plus on demand from
 Actions → "Daily Contra scrape" → Run workflow. Each run commits `data/latest.json`,
 `data/runs/` and `data/seen-ids.json`.
 

@@ -2,7 +2,10 @@ name: Daily Contra scrape
 
 on:
   schedule:
-    - cron: "30 2,14 * * *" # 08:00 and 20:00 IST (02:30 / 14:30 UTC). GitHub may start scheduled runs a few minutes late.
+    # Once a day at 11:05 AM San Francisco time (follows daylight saving). Five past the hour, because GitHub
+    # delays scheduled runs most at the top of the hour; it can still start them late.
+    - cron: "5 11 * * *"
+      timezone: "America/Los_Angeles"
   workflow_dispatch: # "Run workflow" button in the Actions tab
 
 permissions:
