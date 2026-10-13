@@ -1,47 +1,46 @@
 {
-  "ranAt": "2026-10-12T09:31:08.539Z",
+  "ranAt": "2026-10-13T00:33:03.708Z",
   "preset": "ALL",
   "classifier": "anthropic:claude-sonnet-5-5",
-  "totalScraped": 221,
-  "totalMatched": 2,
-  "newSinceLastRun": 0,
+  "totalScraped": 226,
+  "totalMatched": 5,
+  "newSinceLastRun": 1,
   "counts": {
     "qualified": 0,
-    "maybe": 2,
-    "rejected": 219
+    "maybe": 5,
+    "rejected": 221
   },
   "accessLimited": false,
-  "boardTotal": 221,
+  "boardTotal": 226,
   "jobs": [
     {
-      "id": "WyJKb2IiLDk3NzAwXQ==",
-      "title": "UX/UI Designer for AI SaaS Token Usage Dashboard",
-      "slug": "PAE6r7Le-uxui-designer-for-ai-saa-s-token-usage-dashboard",
-      "url": "https://contra.com/opportunity/PAE6r7Le-uxui-designer-for-ai-saa-s-token-usage-dashboard",
-      "createdAt": "2026-09-24T10:37:45.712Z",
-      "approvedAt": "2026-09-24T11:07:01.309Z",
+      "id": "WyJKb2IiLDk5NDYxXQ==",
+      "title": "Product Designer",
+      "slug": "MYREbB3b-product-designer",
+      "url": "https://contra.com/opportunity/MYREbB3b-product-designer",
+      "createdAt": "2026-10-12T16:29:55.050Z",
+      "approvedAt": "2026-10-12T16:35:16.191Z",
       "category": null,
-      "organization": null,
+      "organization": {
+        "name": "SellerCrowd",
+        "isVerified": false
+      },
       "country": null,
-      "hiringAsIndividual": true,
+      "hiringAsIndividual": false,
       "description": null,
       "budget": {
         "type": "HOURLY",
-        "feeMin": 25,
-        "feeMax": 50,
-        "estimatedHours": 40
+        "feeMin": 50,
+        "feeMax": 100,
+        "estimatedHours": 30
       },
       "duration": null,
       "roles": [
+        "Product Designer",
         "UX Designer",
-        "AI Visual Design",
         "UI Designer"
       ],
-      "tools": [
-        "Figma",
-        "FigJam",
-        "Claude"
-      ],
+      "tools": [],
       "timezone": {
         "primaryUtcOffset": null,
         "offsetTolerance": null
@@ -53,30 +52,28 @@
         "viewed": false,
         "matched": false
       },
-      "isNew": false,
+      "isNew": true,
       "icp": {
         "decision": "maybe",
-        "tier": null,
-        "score": 6,
+        "tier": "eddie",
+        "score": 5,
         "reasons": [
-          "deal-breaker: Budget far below $10,000 minimum (~$25-50/hr, ~40 hrs)",
-          "Core ask is product design for an AI SaaS dashboard with flows, data viz and a design system, which matches our product-design sprint",
-          "Stated budget is $25-50/hr × ~40 hrs, roughly $1-2k, far below the $10,000 minimum, which suggests a cost-shopper",
-          "Scope (full dashboard, billing, limits, notifications, design system, prototypes) is meaningful and could plausibly be larger than 40 hrs",
-          "Client is unnamed and posted by an individual; funding, stage and B2B status are unknown",
-          "No signals of enterprise ambition, funding or founder-led positioning work"
+          "Core ask is product design with a design system: \"Establish the visual language and design system\" and design onboarding, profiles, discovery, messaging, engagement, which maps to our product design sprint",
+          "Scope is substantial (\"define the product from the ground up\", \"lots of hours available in the near and long term\"), so likely above $10k despite the small stated estimatedHours of 30",
+          "Client fit is thin: no funding, stage, or team info is stated; it is a social/marketplace platform for advertising professionals (B2B-ish) but possibly early or pre-launch",
+          "Hourly rate of $50-75 is low for us and hints at a cost-conscious buyer, and the hiring framing suggests an in-house style contract seat",
+          "Posted by a company (not an individual), but the scope is described as not fully detailed"
         ],
-        "signals": [
-          "llm-reject:Budget far below $10,000 minimum (~$25-50/hr, ~40 hrs)"
-        ],
+        "signals": [],
         "classifier": "anthropic:claude-sonnet-5-5",
         "project": {
           "sprintTypes": [
             "product-design-dev"
           ],
-          "scope": "UX/UI design of an AI token usage SaaS dashboard: user flows, dashboards, tables/charts, billing/account/notification screens, wireframes, hi-fi Figma, design system, prototypes",
-          "estimatedValueUsd": 2000,
-          "basis": "$25-50/hr × ~40 hrs stated = ~$1k-2k at the stated rate; scope is larger and realistically needs more, but budget is far below $10k"
+          "scope": "End-to-end product design for a new social platform for advertising professionals: onboarding, profiles, discovery, messaging, engagement, plus visual language and design system.",
+          "estimatedValueUsd": 30000,
+          "basis": "$50-75/hr × ~400 hrs (stated 'lots of hours' near and long term; core product from the ground up) ≈ $20-30k; Contra estimate of 30 hrs would only be ~$2k",
+          "fullTime": false
         }
       }
     },
@@ -131,14 +128,13 @@
       "icp": {
         "decision": "maybe",
         "tier": "diana",
-        "score": 5,
+        "score": 6,
         "reasons": [
-          "Client Vizit is an \"AI-powered conversion intelligence platform\", so likely B2B AI software, but funding, stage and team size are not stated",
-          "Core ask maps to brand refinement and website design: \"refining website typography, layouts\" and \"20 to 25+ website graphics across 10+ pages\"",
-          "Scope is a refinement of the existing identity rather than a full rebrand, and much of it is graphics and templates production, which lowers sprint fit",
-          "Size is unclear: the stated 6 estimated hours is far below $10k, but the 4-week duration and broad scope could plausibly reach about $8-10k",
-          "Hourly $50-100 range is low-to-mid for our rates, and the post reads like a hire (\"We're hiring\"), though it is not clearly full-time employment",
-          "Positive: wants \"sophisticated, credible\" feel and avoiding generic AI aesthetics, and also asks for reusable templates (a systems flavor)"
+          "Core ask is brand and website design for a B2B AI platform: \"refine the brand's visual identity and create polished design assets across the website and marketing channels\"",
+          "Client is an AI-powered conversion intelligence platform (B2B SaaS), but funding, stage and team size are not stated, so client fit is thin",
+          "Scope is graphics and templates rather than a full brand or site sprint; the stated budget (~6 hrs x $50-100/hr) is well under $10k, though the described scope could plausibly approach it",
+          "Positive tone signals: wants work to feel \"sophisticated, credible\" and to avoid generic AI aesthetics; reusable templates suggest a systems need",
+          "Possible growth-flavored angle (conversion intelligence) but the post does not ask design to drive leads, so no deal-breaker"
         ],
         "signals": [],
         "classifier": "anthropic:claude-sonnet-5-5",
@@ -147,24 +143,282 @@
             "brand",
             "website"
           ],
-          "scope": "Refine website typography/layouts, 20-25+ website graphics across 10+ pages, 5-10 product video graphics, reusable templates for social, case studies, reports, decks and sales collateral",
+          "scope": "Refine website typography/layouts, 20-25+ website graphics across 10+ pages, 5-10 product video graphics, reusable templates for social, case studies, reports, decks and sales collateral.",
           "estimatedValueUsd": 8000,
-          "basis": "$50-100/hr (~$75 mid) × ~100 hrs realistic for the scope over 4 weeks; post states only ~6 estimated hours"
+          "basis": "$50-100/hr; post states ~6 hrs/week over 4 weeks (~24 hrs) = ~$2k, but described scope (25+ graphics, 10+ pages, templates) realistically ~80-100 hrs at ~$75-100/hr = ~$8k",
+          "fullTime": false
+        }
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3NzAwXQ==",
+      "title": "UX/UI Designer for AI SaaS Token Usage Dashboard",
+      "slug": "PAE6r7Le-uxui-designer-for-ai-saa-s-token-usage-dashboard",
+      "url": "https://contra.com/opportunity/PAE6r7Le-uxui-designer-for-ai-saa-s-token-usage-dashboard",
+      "createdAt": "2026-09-24T10:37:45.712Z",
+      "approvedAt": "2026-09-24T11:07:01.309Z",
+      "category": null,
+      "organization": null,
+      "country": null,
+      "hiringAsIndividual": true,
+      "description": null,
+      "budget": {
+        "type": "HOURLY",
+        "feeMin": 25,
+        "feeMax": 50,
+        "estimatedHours": 40
+      },
+      "duration": null,
+      "roles": [
+        "UX Designer",
+        "AI Visual Design",
+        "UI Designer"
+      ],
+      "tools": [
+        "Figma",
+        "FigJam",
+        "Claude"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "eddie",
+        "score": 6,
+        "reasons": [
+          "Core ask is product design for an AI SaaS dashboard with a design system, which maps to our product design sprint: \"Build reusable components and establish a scalable design system\"",
+          "Scope is meaningful (flows, dashboards, billing, limits, notifications, prototypes), so it could plausibly grow into a real sprint",
+          "Stated budget is $25-50/hr × 40 hrs (~$1-2k), far below our $10,000 minimum, a cost-shopper signal",
+          "Client is an unnamed individual poster with no funding, stage, or company details, so B2B fit is unknown",
+          "Product appears to be an AI-powered B2B-ish platform, but nothing confirms funding or enterprise motion"
+        ],
+        "signals": [],
+        "classifier": "anthropic:claude-sonnet-5-5",
+        "project": {
+          "sprintTypes": [
+            "product-design-dev"
+          ],
+          "scope": "UX and UI design of an AI token/credit usage SaaS dashboard: user flows, dashboards, tables and charts, billing and account screens, wireframes, hi-fi Figma, design system and prototypes",
+          "estimatedValueUsd": 1500,
+          "basis": "Stated budget $25-50/hr × 40 estimated hours = ~$1-2k; the scope (a full dashboard plus design system) could realistically reach more, but the stated budget is far below $10k",
+          "fullTime": false
+        }
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3NTExXQ==",
+      "title": "Founding Product Designer",
+      "slug": "Xo3rmZOm-founding-product-designer",
+      "url": "https://contra.com/opportunity/Xo3rmZOm-founding-product-designer",
+      "createdAt": "2026-09-22T13:48:16.839Z",
+      "approvedAt": "2026-09-23T03:14:16.877Z",
+      "category": null,
+      "organization": {
+        "name": "Perflo.ai",
+        "isVerified": false
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "MONTHLY",
+        "feeMin": 4000,
+        "feeMax": 6000,
+        "estimatedHours": 0
+      },
+      "duration": null,
+      "roles": [
+        "Product Designer"
+      ],
+      "tools": [
+        "Figma"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": "diana",
+        "score": 6,
+        "reasons": [
+          "Core ask is product design (UI/UX, interaction design) for an AI product: \"full time founding product designer\", \"AI-driven workflows\", which maps to our product design sprint.",
+          "Client appears to be an AI-native infrastructure startup: \"next-generation infrastructure for the agentic economy\", backed by investors including the founder of Product Hunt, but no funding amount, stage, or team size is stated.",
+          "Full-time in-house role is not a deal-breaker; valued at $4-6k/month x ~6 months, about $30k, above the $10k minimum.",
+          "Client fit evidence is thin: B2B status, raise amount and enterprise motion are not stated, so tier is uncertain (diana, possibly carol if verified).",
+          "Establishing a design practice with autonomy suggests a long-term design partnership opportunity for a pitched sprint."
+        ],
+        "signals": [],
+        "classifier": "anthropic:claude-sonnet-5-5",
+        "project": {
+          "sprintTypes": [
+            "product-design-dev"
+          ],
+          "scope": "Full-time founding product designer: interaction and motion design for an AI/agentic payments infrastructure product, establishing design practice.",
+          "estimatedValueUsd": 30000,
+          "basis": "$4-6k/month (midpoint $5k) x ~6 months for a full-time role = ~$30k",
+          "fullTime": true
+        }
+      }
+    },
+    {
+      "id": "WyJKb2IiLDk3NzYxXQ==",
+      "title": "Design unicorn 🦄",
+      "slug": "qPsblYLq-design-unicorn",
+      "url": "https://contra.com/opportunity/qPsblYLq-design-unicorn",
+      "createdAt": "2026-09-25T00:34:47.754Z",
+      "approvedAt": "2026-09-25T00:39:36.846Z",
+      "category": null,
+      "organization": {
+        "name": "Ask Tony",
+        "isVerified": true
+      },
+      "country": null,
+      "hiringAsIndividual": false,
+      "description": null,
+      "budget": {
+        "type": "HOURLY",
+        "feeMin": 50,
+        "feeMax": 100,
+        "estimatedHours": 20
+      },
+      "duration": null,
+      "roles": [
+        "Brand Designer",
+        "UI Designer",
+        "Pitch Deck Designer"
+      ],
+      "tools": [
+        "Figma",
+        "FLORA"
+      ],
+      "timezone": {
+        "primaryUtcOffset": null,
+        "offsetTolerance": null
+      },
+      "visitor": {
+        "applied": false,
+        "bookmarked": false,
+        "dismissed": false,
+        "viewed": false,
+        "matched": false
+      },
+      "isNew": false,
+      "icp": {
+        "decision": "maybe",
+        "tier": null,
+        "score": 4,
+        "reasons": [
+          "Service fit is plausible: \"Design decks, websites, and product interfaces\" maps to brand, website and product design",
+          "Size is small as stated: hourly $50-100 with estimatedHours 20 is about $1-2k, well below the $10,000 minimum",
+          "No client information: \"Ask Tony\" with no stage, funding, B2B status or country, so client fit is unknown",
+          "Ongoing or generalist nature (\"business, science, and technology ideas\") hints at possible larger engagement, but no evidence of it",
+          "Cultural posturing (\"Do not apply unless you are exceptional\") signals a demanding buyer, not a clear sprint"
+        ],
+        "signals": [],
+        "classifier": "anthropic:claude-sonnet-5-5",
+        "project": {
+          "sprintTypes": [
+            "brand",
+            "website",
+            "product-design-dev"
+          ],
+          "scope": "Generalist designer for pitch decks, websites, product interfaces, data visualizations and illustrations; no specific project defined",
+          "estimatedValueUsd": 3000,
+          "basis": "$50-100/hr × ~20 estimated hours ≈ $1-2k; scope vague, could grow with ongoing work, so ~$3k at most",
+          "fullTime": false
         }
       }
     }
   ],
   "rejected": [
     {
+      "title": "Sr. Software Engineer (AI-Augmented)",
+      "url": "https://contra.com/opportunity/NLXQeAbr-sr-software-engineer-ai-augmented",
+      "reasons": [
+        "not a service we sell — core ask is \"Software Engineer\" (Sr. Software Engineer (AI-Augmented))"
+      ]
+    },
+    {
+      "title": "Shopify Maintenance Specialist",
+      "url": "https://contra.com/opportunity/mlLAclog-shopify-maintenance-specialist",
+      "reasons": [
+        "not a service we sell — core ask is \"Shopify Developer\" (Shopify Maintenance Specialist)"
+      ]
+    },
+    {
+      "title": "Senior full stack builder for a gaming beta (React, TypeScript, Supabase)",
+      "url": "https://contra.com/opportunity/kkZg3gF3-senior-full-stack-builder-for-a-gaming-beta-react-type-script-supabase",
+      "reasons": [
+        "deal-breaker: Budget far below $10,000 minimum",
+        "deal-breaker: B2C/consumer gaming product",
+        "deal-breaker: Design already complete, build from prototype",
+        "Budget is far below the $10,000 minimum: fixed $3,000-$6,000 over 4 weeks",
+        "Client is a gaming/consumer-facing platform (gamer profiles, online tournaments for players), not B2B software",
+        "Design is finished: \"The product is fully designed. You'll build from a clickable prototype\", a pixel-pusher style build",
+        "Backend-heavy Supabase/Postgres work and an early closed beta of ~100 players suggest pre-product/early stage with no funding evidence"
+      ]
+    },
+    {
+      "title": "Ecommerce Platform UI/UX Design Project",
+      "url": "https://contra.com/opportunity/EObq3egb-ecommerce-platform-uiux-design-project",
+      "reasons": [
+        "deal-breaker: Budget far below the $10,000 minimum (~$1.2k-$2.4k)",
+        "Budget is far below the $10,000 minimum: hourly $30-$60 with \"estimatedHours\": 40 and a 1-week duration, so roughly $1.2k-$2.4k",
+        "Cost-shopper signals: low hourly range and a request to \"share your quote\"",
+        "Service fits (product UI/UX and design system for an analytics platform), but the scope is a bounded redesign of a few components with a small pattern sheet, not a full sprint",
+        "Client fit is thin: Softify is an unknown-stage team with no funding, enterprise or upmarket signals, and the product serves ecommerce brands (B2B analytics, but no evidence of funding)"
+      ]
+    },
+    {
+      "title": "Project details needed",
+      "url": "https://contra.com/opportunity/ZXeEQmPc-project-details-needed",
+      "reasons": [
+        "not a service we sell — core ask is \"Motion Designer\" (Project details needed)"
+      ]
+    },
+    {
+      "title": "Short-Form Video Editor",
+      "url": "https://contra.com/opportunity/73qmevvM-short-form-video-editor",
+      "reasons": [
+        "not a service we sell — core ask is \"Video\" (Short-Form Video Editor)"
+      ]
+    },
+    {
+      "title": "Senior Creative Designer - Corporate Website UI/UX & Branding (Delhi NCR)",
+      "url": "https://contra.com/opportunity/EvXqsEbb-senior-creative-designer-corporate-website-uiux-and-branding-delhi-ncr",
+      "reasons": [
+        "budget $3,600 is below the $5,000 floor"
+      ]
+    },
+    {
       "title": "UI & UX Designer for Toy Website",
       "url": "https://contra.com/opportunity/mglPQElv-ui-and-ux-designer-for-toy-website",
       "reasons": [
-        "deal-breaker: B2C/consumer e-commerce brand (toys)",
-        "deal-breaker: Budget at or below the $10,000 minimum",
-        "Client is a B2C consumer/e-commerce brand: \"toy website\", \"online shopping context\", \"e-commerce design knowledge\"",
-        "Budget of $5,000–$10,000 is at or below our $10,000 minimum project size",
-        "No evidence of funded B2B software company, enterprise signals, or positioning/brand work",
-        "Scope and deliverables are unspecified, with a motion design emphasis"
+        "deal-breaker: B2C/consumer brand (toy e-commerce website)",
+        "deal-breaker: Budget below $10,000 minimum",
+        "Client is B2C/consumer: \"toy website\" with \"e-commerce\" focus is a consumer retail brand, an excluded category",
+        "Budget of $5,000-$10,000 is at or below our $10,000 minimum, so size is too small",
+        "No evidence of funding, B2B software, or enterprise ambition; client \"Something Great\" is unknown",
+        "Scope and deliverables were not provided, so nothing indicates a full sprint"
       ]
     },
     {
@@ -199,24 +453,23 @@
       "title": "Product Designer for 5 High-End UI Showcase Visuals",
       "url": "https://contra.com/opportunity/vZlWNvMv-product-designer-for-5-high-end-ui-showcase-visuals",
       "reasons": [
-        "deal-breaker: Budget far below the $10,000 minimum",
-        "Work is about $1.5-1.9k (\"estimatedHours\": 25 at $60-75/hr), far below the $10,000 minimum",
-        "Core ask is portfolio-style showcase visuals and mockup scenes (\"dramatic lighting\", \"realistic devices\"), not a real product design, brand or website sprint",
-        "Client CREADEVS is a community space for designers and developers, not a funded B2B software company; no funding or enterprise signals are stated",
-        "Concepts are speculative and standalone (\"modern SaaS dashboards, sleek mobile applications\"), with no actual product behind them"
+        "deal-breaker: Project far below the $10,000 minimum (~$1.7k)",
+        "Work is a small set of showcase visuals, not a sprint: \"5 High-Fidelity UI Concepts\" with stated estimatedHours of 25, about $1.5-1.9k, well below the $10,000 minimum",
+        "Visuals are marketing/portfolio content for the client's own community: \"featured across CREADEVS, a space for designers and developers\"; this is not product design for a real SaaS product",
+        "Concepts are generic and illustrative (\"modern SaaS dashboards, sleek mobile applications\"), with mockup scenes and dramatic lighting, closer to illustration/visual content than product design",
+        "No evidence of a funded B2B software client; CREADEVS appears to be a designer/developer community with no stated funding or enterprise motion"
       ]
     },
     {
       "title": "Framer Expert for B2B SaaS Homepage Updates in Framer",
       "url": "https://contra.com/opportunity/eEMEoFNv-framer-expert-for-b2-b-saa-s-homepage-updates-in-framer",
       "reasons": [
-        "deal-breaker: Project far below the $10,000 minimum (small edits, ~10 hours)",
-        "deal-breaker: Pixel-pusher: design is locked and the work is just implementing a spec on the existing design",
-        "Core ask is small edits to an existing site: \"keep the current design, fonts, and layout intact; this is copy, section, and screenshot work rather than a redesign\"",
-        "Estimated 10 hours at $50-100/hr gives roughly $500-1,000, far below the $10,000 minimum",
-        "Pixel-pusher work: implementing a written spec with supplied assets, with no design or strategy involved",
-        "Client is a B2B healthcare software company, which would fit, but there is no funding or stage evidence and the size makes it moot",
-        "Short 3-week deadline for \"live before October 28\" with no sign of a larger engagement or later phases"
+        "deal-breaker: Design already complete/locked: keep current design, fonts and layout; \"just implement\" a spec",
+        "deal-breaker: Project far below the $10,000 minimum (~$500-1,000, 10 hours)",
+        "Scope is small edits: \"this is copy, section, and screenshot work rather than a redesign\", with an estimated 10 hours, well below the $10,000 minimum",
+        "Design is locked: \"keep the current design, fonts, and layout intact\" and the work is implementing a written spec, which is pixel-pusher work",
+        "Client is a B2B healthcare software company, which is acceptable, but funding and stage are not stated and there is no upmarket signal",
+        "No sprint-level work (no brand, full site design or product design); there is no sign this is a first phase of a larger engagement"
       ]
     },
     {
@@ -352,13 +605,13 @@
       "title": "Webflow Technical SEO: Implement Audit Fixes on a 2,100-Page Localized Site",
       "url": "https://contra.com/opportunity/mskWekYW-webflow-technical-seo-implement-audit-fixes-on-a-2100-page-localized-site",
       "reasons": [
-        "deal-breaker: Core ask is SEO, not our service",
+        "deal-breaker: Core ask is SEO, which is not our service",
         "deal-breaker: Budget far below $10,000 minimum",
-        "deal-breaker: Implementation of an existing audit with no design work",
-        "Core ask is technical SEO, which is not a service we sell: \"Webflow Technical SEO: Implement Audit Fixes\".",
-        "Budget is far below our $10,000 minimum: fixed $2,500–$5,000 over ~1 month.",
-        "Work is implementing fixes from an existing audit, pixel-pusher style: \"This project has no visual design or copywriting\".",
-        "Client is a B2B-ish marketplace intelligence platform (SmartScout), but funding and stage are not stated, so client fit is unknown."
+        "deal-breaker: Pixel-pusher style implementation of predefined audit fixes, no design involved",
+        "Core ask is technical SEO: \"Webflow Technical SEO: Implement Audit Fixes\", which is not a service we sell",
+        "Pure implementation of audit findings: \"This project has no visual design or copywriting\", so no brand, site design or product design sprint",
+        "Budget of $2,500–$5,000 fixed is far below our $10,000 minimum",
+        "Client is a B2B-ish SaaS (marketplace intelligence for Amazon/TikTok sellers), but funding and stage are not stated, so client fit is unknown"
       ]
     },
     {
@@ -436,12 +689,12 @@
       "title": "AI Native Product Designer (React)",
       "url": "https://contra.com/opportunity/6EQqUeXQ-ai-native-product-designer-react",
       "reasons": [
-        "deal-breaker: Budget far below the $10,000 minimum ($4k–$8k)",
-        "deal-breaker: Pixel-pusher style work building on an existing locked design system and flows",
-        "Budget is $4,000–$8,000 fixed, entirely below the $10,000 minimum project size.",
-        "Work is creating variations of flows already built, \"using the same components/design system\", which is incremental and not a full sprint.",
-        "Client fit is unknown: no funding, stage, or B2B status is stated, and Inflight's business is not described.",
-        "Service itself (product design plus React build) fits, but the size is too small to pursue."
+        "deal-breaker: Project value well below $10,000 minimum",
+        "deal-breaker: Design largely locked: reuses existing components/design system",
+        "Budget is $4,000-$8,000 fixed, below the $10,000 minimum even at the top end",
+        "Scope is variations of existing flows: \"additional versions created to test... onboarding flows using the same components/design system\", which is a small, incremental task rather than a sprint",
+        "Work is built on an already-existing design system, which is closer to pixel-pushing than new design work",
+        "Client fit unknown: no funding, stage, or B2B status stated; Inflight country not given"
       ]
     },
     {
@@ -575,12 +828,11 @@
       "url": "https://contra.com/opportunity/6YQvAcPr-freelance-graphic-designer-needed",
       "reasons": [
         "deal-breaker: Agency / white-label work for someone else's clients",
-        "deal-breaker: Full-time employment / in-house hire (a seat, not a studio engagement)",
-        "deal-breaker: Illustration/graphic design generalist work with no B2B software client context",
-        "Client Growmodo is a design agency (\"our clients' projects\"), and the work is for the agency and its clients, which is agency/white-label work.",
-        "This is a full-time seat: \"Full-Time 8:00 AM – 5:00 PM (Central European Time)\" with fixed hours, effectively an in-house hire, not a studio engagement.",
-        "Core ask is generic graphic design (\"logos, illustrations, and layouts\", Adobe Illustrator/Photoshop/InDesign), not a brand, website or product sprint for a funded B2B software company.",
-        "No evidence of a funded B2B software client, enterprise-readiness need, or defined project scope; $4-4.5k/month is a salary-like rate for an embedded designer."
+        "deal-breaker: Core ask is graphic design/illustration, not one of our sprints",
+        "Client Growmodo is a design/creative agency (\"our clients' projects\"), and agencies are excluded from our ICP; this is work for someone else's clients.",
+        "Core ask is generic graphic design (\"logos, illustrations, and layouts\" with Adobe Illustrator/Photoshop/InDesign), not a brand, website or product design sprint.",
+        "No evidence of a funded B2B software client, enterprise-readiness need, or positioning work; the post is a staff-augmentation role with fixed CET hours.",
+        "Budget of $4,000-4,500/month is for a full-time seat, not a scoped project; we would not take the seat."
       ]
     },
     {
@@ -916,11 +1168,11 @@
       "title": "Website Designer",
       "url": "https://contra.com/opportunity/LLQcBvbr-website-designer",
       "reasons": [
-        "deal-breaker: Budget far below $10,000 minimum ($3k–$6k)",
-        "Budget is far below the $10,000 minimum: fixed fee $3,000–$6,000 for a 3-week website job.",
-        "Service fits (website redesign) and the client is a B2B SaaS (\"SaaS platform for Amazon and Walmart third-party sellers\"), but funding, stage and team size are not stated, so client fit is unknown.",
-        "Scope hints at a pixel-pusher element: \"Use our refreshed designs in the site\" suggests implementing existing designs rather than owning positioning.",
-        "Emphasis on being \"first an artist\" and a more \"artistic, creative visual direction\" points to aesthetic work rather than enterprise-readiness or positioning, a weak match with our approach."
+        "deal-breaker: Budget far below the $10,000 minimum ($3k-$6k)",
+        "Budget of $3,000-$6,000 is below the $10,000 minimum project size and the scope is a website refresh, not a larger multi-part sprint",
+        "Service fits: website redesign for \"a SaaS platform for Amazon and Walmart third-party sellers\" (B2B software)",
+        "No funding, stage or enterprise signals stated, so client fit is unknown",
+        "Ask is stylistic (\"first an artist\") and includes applying refreshed designs, with no positioning or strategy work, with no sign of a larger engagement"
       ]
     },
     {
@@ -969,14 +1221,12 @@
       "title": "Part-Time Remote UX/UI Designer for Philanthropic Website",
       "url": "https://contra.com/opportunity/2LbecPZY-part-time-remote-uxui-designer-for-philanthropic-website",
       "reasons": [
-        "deal-breaker: Budget far below the $10,000 minimum (~$5–7k estimated)",
-        "deal-breaker: Client is a non-profit foundation, not a funded B2B software company",
-        "deal-breaker: Hourly contractor-seat style engagement rather than a sprint",
-        "Client is a nonprofit philanthropic foundation, not a funded B2B software startup: \"small, family-run philanthropic foundation that provides grants to nonprofit organizations\".",
-        "Budget is far below our $10,000 minimum: \"approximately $40–$65 USD per hour\" for 15-25 hrs/week over 3-6 weeks totals roughly $5-7k.",
-        "Low hourly rates signal a cost-conscious buyer, not a studio-sprint buyer: \"$40–$65 USD per hour, depending on experience\".",
-        "Work is a UX/UI and design system refresh, which maps to product design, but it is an incremental polish: \"This is not a ground-up website build\".",
-        "Working style is hourly contractor augmentation alongside \"two independent developers\" and a project lead, not an opinionated founder-led sprint."
+        "deal-breaker: Budget far below the $10,000 minimum",
+        "deal-breaker: Not a B2B software company (nonprofit foundation)",
+        "Budget is far below the $10,000 minimum: \"approximately $40–$65 USD per hour\" for \"15-25 hours per week for 3-6 weeks\" comes to roughly $2-10k, most likely ~$4-5k.",
+        "Client is a small, family-run philanthropic foundation that gives grants to nonprofits, not a funded B2B software startup, so there is no enterprise-readiness or upmarket motive.",
+        "Cost-conscious, hourly, part-time engagement with low rates and an informal, small-organization style, which points to a cost-shopper rather than a sprint buyer.",
+        "The work is partly a fit (UX/UI, design system, dashboards, forms), but it is an incremental refinement of an existing app with developers already in place, not a full sprint."
       ]
     },
     {
@@ -997,26 +1247,24 @@
       "title": "Product engineer to take a vibe-coded events platform from 70% to launched",
       "url": "https://contra.com/opportunity/E2mXPl3r-product-engineer-to-take-a-vibe-coded-events-platform-from-70percent-to-launched",
       "reasons": [
-        "deal-breaker: Budget far below the $10,000 minimum ($500-1,000 trial, \"don't have a huge budget\")",
-        "deal-breaker: Pre-launch / unfunded, pre-PMF product",
-        "deal-breaker: Consumer/community ticketing marketplace rather than enterprise B2B software",
-        "Low budget: \"i don't have a huge budget\" and $25-50/hr x ~20 hrs is about $500-1,000, far below the $10,000 minimum.",
-        "Pre-launch, unfunded solo-founder product: \"from 70% to launched\", with no funding or investors mentioned, so likely pre-PMF.",
-        "Likely B2C/community marketplace, not enterprise B2B software: an events platform that makes money from \"a cut of paid tickets\", competing with Luma/Meetup/Eventbrite.",
-        "Cost-shopper signals and an unpaid-style audition: a small trial scoped by the freelancer and \"no interviews\".",
-        "Work is partly a finish-out of an existing AI-built product, so scope is unclear and open-ended rather than a defined sprint."
+        "deal-breaker: Budget far below $10,000 minimum (\"i don't have a huge budget\", $500-1,000 trial)",
+        "deal-breaker: Unfunded / pre-launch product with no stated funding",
+        "deal-breaker: Cost-shopper rates ($25-50/hr)",
+        "Budget is far below our $10,000 minimum: $25-50/hr, ~20 hrs, and a \"small paid trial - $500-1,000\"",
+        "Explicit cost-shopper signal: \"i don't have a huge budget, but it can grow over time\"",
+        "Client is a solo founder running a community (techunited:nj) with a self-built product; no funding, stage, or team evidence, and the platform is arguably a consumer/community events marketplace earning a cut of ticket sales rather than clearly B2B SaaS",
+        "Product is a founder-built, vibe-coded app seeking a finisher, not a brand, site, or enterprise-readiness engagement"
       ]
     },
     {
       "title": "Motion Designer for Premium SaaS Product Marketing Videos",
       "url": "https://contra.com/opportunity/QM6MrWWB-motion-designer-for-premium-saa-s-product-marketing-videos",
       "reasons": [
-        "deal-breaker: Core ask is motion/animation/video, not a service we sell",
-        "deal-breaker: Budget far below $10,000 minimum",
-        "Core ask is motion design and video production: \"hiring a motion designer to create premium product marketing videos\". Motion-only and animation-only work is not a service we sell.",
-        "Size is far below the $10,000 minimum: hourly $35–70 with \"estimatedHours\": 15 implies roughly $500–$1,050, with no sign it is the first phase of a larger engagement.",
-        "The low hourly rate suggests a cost-conscious buyer, and the post does not ask for brand, website or product design work.",
-        "Client fit is thin: Onlo is an AI customer service platform with a Shopify support angle, but no funding, stage or enterprise signals are stated."
+        "deal-breaker: Core service is video/motion/animation, not brand, website or product design",
+        "deal-breaker: Budget far below the $10,000 minimum",
+        "Core ask is motion design and video production: \"hiring a motion designer to create premium product marketing videos\", which is not a service we sell",
+        "Budget is small: $35–70/hr for ~15 hrs over 4 weeks, far below our $10,000 minimum",
+        "No funding, stage or B2B enterprise signals; Onlo is an AI customer service platform, but the post mentions Shopify support, which suggests a possible e-commerce focus"
       ]
     },
     {
@@ -1030,14 +1278,13 @@
       "title": "Replo Designer Needed for Landing Page Creation",
       "url": "https://contra.com/opportunity/bQBObFWE-replo-designer-needed-for-landing-page-creation",
       "reasons": [
-        "deal-breaker: Budget far below the $10,000 minimum",
-        "deal-breaker: Design already locked: apply existing brand guidelines",
-        "deal-breaker: Likely B2C/e-commerce brand (Replo/Shopify landing pages)",
-        "Value is well below the $10,000 minimum: budget is \"feeMin\": 2500 to \"feeMax\": 5000 for four landing pages over a 5-day duration.",
-        "Pixel-pusher signal: pages must \"align with our brand's aesthetics\" and \"meet brand guidelines\", so the brand is already set and we would only be applying it.",
-        "Replo is a Shopify/e-commerce page builder, which points to a DTC/B2C brand rather than funded B2B software.",
-        "Client fit is unknown: Belliwelli gives no funding, stage or B2B information, and the post gives no upmarket or enterprise signal.",
-        "Post emphasizes optimizing for \"performance and user engagement\", leaning toward conversion-focused page work rather than brand or positioning."
+        "deal-breaker: Budget far below $10,000 minimum",
+        "deal-breaker: Likely B2C/e-commerce (Replo/Shopify landing pages)",
+        "deal-breaker: Pixel-pushing against existing brand guidelines",
+        "Work is four landing pages built in Replo over 5 days, with a budget of $2,500-$5,000, which is well below the $10,000 minimum project size.",
+        "Replo is a Shopify page builder, which points to an e-commerce/DTC brand rather than a B2B software company; Belliwelli reads as a consumer brand.",
+        "Pages must 'meet brand guidelines', meaning the brand is already locked and this is implementation work, not a brand/site sprint.",
+        "No funding, stage, or B2B/enterprise signals in the post."
       ]
     },
     {
@@ -1055,17 +1302,6 @@
       ]
     },
     {
-      "title": "Design unicorn 🦄",
-      "url": "https://contra.com/opportunity/qPsblYLq-design-unicorn",
-      "reasons": [
-        "deal-breaker: Budget far below the $10,000 minimum (~$1-2k at 20 hours)",
-        "Budget is $50-100/hr with estimatedHours 20, so about $1-2k, far below the $10,000 minimum",
-        "No defined sprint or scoped project; it reads as an open-ended ongoing designer call (\"rare designer who can move from pitch decks to apps\")",
-        "Client fit is unknown: no funding, stage or B2B status stated, and \"Ask Tony\" gives no evidence of a funded B2B software company",
-        "Positive: work spans decks, websites and product interfaces, which overlaps our services, but nothing indicates a large engagement"
-      ]
-    },
-    {
       "title": "Freelance Social Creative Coordinator for Baddie Pops",
       "url": "https://contra.com/opportunity/MoromgY2-freelance-social-creative-coordinator-for-baddie-pops",
       "reasons": [
@@ -1076,13 +1312,13 @@
       "title": "tiktok creative person",
       "url": "https://contra.com/opportunity/cLMvURQm-tiktok-creative-person",
       "reasons": [
-        "deal-breaker: Not our service: video editing / social media content is the core of the job",
-        "deal-breaker: Budget far below the $10,000 minimum",
-        "deal-breaker: US time zone requirement",
-        "Core ask is video editing for social media: \"Edit engaging videos for TikTok, Instagram Reels, and Facebook\", which is not a service we sell.",
-        "Value is far below the $10,000 minimum: $30-60/hr × ~40 hrs ≈ $1.8k.",
-        "Client FlexWash looks like a consumer/services business with no B2B software or funding signal; client fit is unknown at best.",
-        "Requires a US time zone, and the role is an ongoing social content editor rather than a brand, website or product sprint."
+        "deal-breaker: Core service is video editing, not one of our services",
+        "deal-breaker: Project value far below the $10,000 minimum",
+        "deal-breaker: Marketing and social content ask, not a brand, website or product design sprint",
+        "Core ask is video editing, which is not a service we sell: \"Edit engaging videos for TikTok, Instagram Reels, and Facebook\"",
+        "Social media content for a company with no stated funding, B2B status or enterprise signals; FlexWash appears to be a consumer/service brand",
+        "Budget of $30-60/hr × 40 hrs is roughly $1.2k-2.4k, far below the $10,000 minimum",
+        "Tools are CapCut and Canva, and the roles are Video Editor and Creative Director, with no brand, website or product design scope"
       ]
     },
     {
@@ -1145,12 +1381,13 @@
       "title": "Versatile Digital Designer for Diverse Projects",
       "url": "https://contra.com/opportunity/qLO2PeXg-versatile-digital-designer-for-diverse-projects",
       "reasons": [
-        "deal-breaker: Full-time employment / in-house hire",
-        "deal-breaker: Budget far below $10,000 minimum / below $4k/month retainer",
-        "Framed as an in-house hire: \"join our dynamic in-house team\", which is a seat, not a studio engagement",
-        "Budget of $2,500–$3,000/month is below our $4k/month retainer floor and far below the $10,000 minimum project",
-        "Scope is a scattered mix of content, events and launch assets with no defined sprint-sized brand, site or product deliverable",
-        "Client Salty Fruit has no stated B2B, funding or stage information, so client fit is unknown"
+        "deal-breaker: Budget well below our $4k/month retainer floor",
+        "deal-breaker: Possible B2C/consumer brand (unconfirmed)",
+        "Core ask is a generalist in-house seat spanning content, events, launch assets and some web/brand, not a defined brand, website or product sprint",
+        "Budget of $2,500-$3,000/month is below our $4k/month retainer minimum, which signals a cost-conscious buyer",
+        "No client information: funding, stage, B2B status and product are all unknown, and the name 'Salty Fruit' hints at a consumer brand",
+        "Tools such as Canva suggest light content-design work rather than enterprise-grade brand or product design",
+        "No inciting event, upmarket signal or opinionated founder is stated"
       ]
     },
     {
@@ -1199,39 +1436,26 @@
       "title": "Graphic Designer for Google Play Store Assets and Promotional Banner",
       "url": "https://contra.com/opportunity/cNYA2gFA-graphic-designer-for-google-play-store-assets-and-promotional-banner",
       "reasons": [
-        "deal-breaker: Budget and scope far below the $10,000 minimum",
-        "deal-breaker: Adapting already-completed designs (pixel-pusher work)",
-        "deal-breaker: Client fit unknown, likely a consumer mobile app",
-        "Core ask is app store graphics: \"create professional Google Play Store assets\" and \"a new promotional banner\", which is not a brand, website, or product design sprint",
-        "Work is small: about 10 hours over 1 week at $25-50/hr, far below the $10,000 minimum",
-        "Most of the creative is reused: \"Apple App Store assets that can serve as the starting point\", so this is pixel-pushing adaptation of locked designs",
-        "Client is an unnamed individual with no funding, B2B status, or stage information, and the app looks consumer-oriented"
+        "deal-breaker: Project far below the $10,000 minimum",
+        "deal-breaker: Pixel-pushing adaptation of already-complete creative",
+        "Work is small asset adaptation: \"Android assets should be thoughtfully adapted\" from existing Apple assets plus \"a new promotional banner\", not a brand, website or product design sprint",
+        "Budget is $25-50/hr for ~10 hours over 1 week, roughly $250-500, far below the $10,000 minimum",
+        "Client is an unnamed individual with no funding, B2B or stage evidence; the app appears consumer-oriented",
+        "No sign of this being the first phase of a larger engagement"
       ]
     },
     {
       "title": "Brand Strategist for Branding Workshop",
       "url": "https://contra.com/opportunity/XbR67gQg-brand-strategist-for-branding-workshop",
       "reasons": [
-        "deal-breaker: Cost-shopper: small, low-cost engagement requested",
-        "deal-breaker: Budget far below $10,000 minimum",
-        "deal-breaker: B2C/consumer interior design brand",
-        "deal-breaker: Design/brand work not delegated: client does the workshop and brand book themselves",
-        "Scope is a few advisory calls, not a brand sprint: \"We are not looking for someone to do that work for us\"; estimated 3 hours.",
-        "Far below the $10,000 minimum: $75-150/hr × ~3 hrs is roughly $225-450.",
-        "Explicitly low budget: \"Happy with a small, low cost engagement... keep this lean\".",
-        "Client is a Swedish interior design brand (consumer product), not a B2B software company, and is a two-person startup with no funding stated.",
-        "Only vague hope of ongoing work (\"If it clicks...\"), which is not a clear larger engagement."
-      ]
-    },
-    {
-      "title": "Founding Product Designer",
-      "url": "https://contra.com/opportunity/Xo3rmZOm-founding-product-designer",
-      "reasons": [
-        "deal-breaker: Full-time employment / in-house hire",
-        "Post explicitly says \"Full Time Founding Product Designer\" – an in-house hire, which is a deal-breaker (we are a studio, not a seat)",
-        "Core ask is establishing a design practice and embedding with the product team (\"establish and drive design practices\", \"collaborating closely with product development teams\"), not a bounded sprint",
-        "Client seems AI-native B2B-ish infra and is backed by notable investors (founder of Product Hunt), which would otherwise be positive, but cannot offset the employment structure",
-        "Monthly $4–6k budget reads as full-time compensation rather than a project or retainer scope"
+        "deal-breaker: Budget far below $10,000 minimum / cost-shopper (\"small, low cost engagement\")",
+        "deal-breaker: B2C/consumer brand (interior design objects)",
+        "deal-breaker: Client does the branding work itself; no sprint-sized deliverable",
+        "Scope is a handful of advisory calls, not a brand sprint: \"We are not looking for someone to do that work for us\"",
+        "Estimated ~3 hours at $75-150/hr is far below the $10,000 minimum",
+        "Explicitly a low-budget ask: \"Happy with a small, low cost engagement... keep this lean\"",
+        "Client is a Swedish interior design brand, which is likely B2C/consumer and not B2B software",
+        "Two-person startup with no funding or enterprise signals; the ongoing work is only a vague \"if it clicks\""
       ]
     },
     {
@@ -1245,14 +1469,14 @@
       "title": "Framer Website Developer for AI Searchability",
       "url": "https://contra.com/opportunity/mBsRBqk2-framer-website-developer-for-ai-searchability",
       "reasons": [
-        "deal-breaker: Design already complete (Canva design to Framer implementation)",
-        "deal-breaker: Budget and scope far below the $10,000 minimum",
-        "deal-breaker: Client is a recruiting/services firm, not a software startup",
-        "deal-breaker: SEO/searchability is the main goal",
-        "Pixel-pushing job: \"convert an existing design created in Canva into a fully functional Framer site\" and \"predefined Canva designs\" means the design is already done, which is a deal-breaker.",
-        "Estimated value is about $2.8k (40 hrs × $50-70/hr), far below the $10,000 minimum; future work is only \"ad hoc\" and no larger engagement is described.",
-        "Core focus on AI searchability, schema and crawlability is SEO-type work, which is not our service.",
-        "Client is a recruiting company (a services business, not funded B2B software); no funding or stage is stated."
+        "deal-breaker: Design already complete (Canva-to-Framer implementation)",
+        "deal-breaker: Client is a recruiting/services company, not B2B software",
+        "deal-breaker: Project value well below $10,000 minimum",
+        "deal-breaker: Core ask is SEO/AI-search optimization",
+        "Pixel-pusher job: \"convert an existing design created in Canva into a fully functional Framer site\" means the design is already complete and locked.",
+        "Client is a recruiting company (\"recruiting company specializing in robotics and hard tech\"), which is a services business, not a funded B2B software startup.",
+        "Project is far below the $10,000 minimum: $50-70/hr × ~40 hrs over 1 week is about $2-3k.",
+        "Core focus is SEO/AI-searchability (schema, crawlability), which is not our service."
       ]
     },
     {
@@ -1343,31 +1567,37 @@
       "title": "Web Designer for AI-Driven Home Services Websites",
       "url": "https://contra.com/opportunity/l3rvcQkX-web-designer-for-ai-driven-home-services-websites",
       "reasons": [
-        "deal-breaker: Agency / subcontract work for someone else's clients",
-        "deal-breaker: Home services clients are local/consumer businesses, not B2B software",
+        "deal-breaker: Agency / white-label work for someone else's client",
+        "deal-breaker: B2C/local home services clients",
         "deal-breaker: Budget far below $10,000 minimum",
-        "Client is an agency: \"Lizard Marketing\" wants a designer for \"websites for home services businesses\", so this is subcontract work for the agency's clients",
-        "End clients are home services businesses (local service/B2C-type), not funded B2B software startups",
-        "Budget is $55–74/hr × 20 hrs over 1 week, roughly $1.1–1.5k, far below the $10,000 minimum",
-        "Ongoing production-style freelance seat for an agency rather than a founder-led sprint"
+        "Client is an agency (Lizard Marketing) building sites for its own home services clients, which is white-label/subcontract work for someone else's client",
+        "End clients are home services businesses (local B2C services), not funded B2B software",
+        "Budget is hourly $55-74 with ~20 hours over 1 week, well below the $10,000 minimum",
+        "No funding, stage, or enterprise-upmarket signals in the post"
       ]
     },
     {
       "title": "Brand Identity Designer (B2B SaaS Rebrand) - STARTING NEXT WEEK",
       "url": "https://contra.com/opportunity/RYWo2v6r-brand-identity-designer-b2-b-saa-s-rebrand-starting-next-week",
       "reasons": [
-        "deal-breaker: Budget far below the $10,000 minimum ($2,500–$5,000)",
-        "Budget is \"feeMin\": 2500 to \"feeMax\": 5000 fixed, far below our $10,000 minimum project size.",
-        "Scope is an \"up-branding\" with logo mark and core colors fixed and positioning/messaging already defined, so it is a limited extension rather than a full brand sprint.",
-        "Service fits (brand identity for a B2B SaaS, energy/water management platform), and a Head of Marketing/Head of UX contact suggests a team buyer, but funding stage and size are not stated.",
-        "Large list of applied examples (social, ads, print, merch, slides) is production-heavy work for a small budget."
+        "deal-breaker: Budget far below the $10,000 minimum ($2.5k–$5k)",
+        "Budget \"feeMin\": 2500, \"feeMax\": 5000 is far below the $10,000 minimum project size.",
+        "Scope is a constrained \"up-branding\": \"logo mark and two core colors... stay\", with positioning and messaging already defined, so it is not a full brand sprint.",
+        "Client fit is plausible (\"B2B SaaS platform for energy and water management\") but there is no funding, stage or enterprise signal, so no upside offsets the small size.",
+        "Work leans toward applied marketing assets (social, ads, merch, print) rather than core brand/site/product sprints."
       ]
     },
     {
       "title": "Front End Designer (Website Design Expert)",
       "url": "https://contra.com/opportunity/lebFoPom-front-end-designer-website-design-expert",
       "reasons": [
-        "full-time / in-house employment (\"full-time employment\")"
+        "deal-breaker: Budget far below $10,000 minimum",
+        "deal-breaker: Likely agency/subcontract work for someone else's clients",
+        "Budget is $25–50/hr with ~20 estimated hours, so total value is about $500–$1,000, far below the $10,000 minimum",
+        "Low hourly rate suggests a cost-shopper or staffing-style engagement rather than a sprint",
+        "Client is unidentified (client null, posted by an individual) with no funding, stage, or B2B evidence",
+        "Copy refers to 'client needs' and 'our team', suggesting an agency or subcontract seat for someone else's clients",
+        "Service (website design in Figma/Framer) fits in principle, but scope is generic with no defined site or sprint"
       ]
     },
     {
@@ -1571,25 +1801,28 @@
       "title": "Experienced E-commerce Web Designer/Developer for Premium Mattress Brand",
       "url": "https://contra.com/opportunity/kNlgm7Ye-experienced-e-commerce-web-designerdeveloper-for-premium-mattress-brand",
       "reasons": [
-        "deal-breaker: B2C/consumer brand (premium mattress, e-commerce/DTC)",
+        "deal-breaker: B2C/consumer brand (e-commerce mattress DTC)",
         "deal-breaker: Shopify build is not our service",
-        "deal-breaker: Budget far below $10,000 minimum",
-        "deal-breaker: SEO included in the ask",
-        "Client is a B2C consumer brand: \"premium mattress brand\" selling products directly to consumers, which is an e-commerce/DTC deal-breaker",
-        "Core work is a Shopify e-commerce build/integration (tools list Shopify, Stripe), which is not our service",
-        "Budget is low and the scope small: \"$35-70/hr\", \"estimatedHours\": 20 over 2 months, far below the $10,000 minimum",
-        "It is a refinement of an existing site with SEO and ongoing support, so it is not a brand, website or product design sprint"
+        "deal-breaker: Project value far below $10,000 minimum",
+        "deal-breaker: Low budget hourly rate",
+        "Client is a B2C consumer brand: \"premium mattress brand\" with e-commerce checkout and product customization",
+        "Core work is a Shopify e-commerce build/integration, not one of our services (Shopify builds are excluded)",
+        "Scope is refining an existing site plus integrations and small fixes, not a full site design sprint",
+        "Budget of $35-70/hr × 20 estimated hours is far below the $10,000 minimum",
+        "Includes SEO improvement, which is outside our services"
       ]
     },
     {
       "title": "Senior Motion Designer / Animation Director – Technology Brand Film",
       "url": "https://contra.com/opportunity/L2OOZkNm-senior-motion-designer-animation-director-technology-brand-film",
       "reasons": [
-        "deal-breaker: Core ask is video/motion/animation, which is not our service",
+        "deal-breaker: Core ask is video/motion/3D animation, which is not our service",
         "deal-breaker: Budget far below the $10,000 minimum",
-        "Core ask is a motion/animation brand film: \"Senior Motion Designer / Animation Director\", \"60–90 second brand film\". Animation-only, motion-only and 3D work is not a service we sell.",
-        "Budget is \"feeMin\": 3500, \"feeMax\": 6500, far below our $10,000 minimum project size.",
-        "Client fit is unclear: Relove Technology is an e-waste/device recovery and resale business with no funding or stage stated. No evidence of a funded B2B software startup."
+        "deal-breaker: Client is a services business, not a software company",
+        "Core ask is a motion/animation brand film: \"turn that mission into an emotive, cinematic 60–90 second brand film\". Motion and animation-only work is not a service we sell.",
+        "Budget of $3,500–$6,500 is well below the $10,000 minimum project size.",
+        "Client is an e-waste and device recovery services company, not a funded B2B software startup. No funding or stage is stated.",
+        "No brand identity, website or product design work is requested, so the job does not map to any of our sprints."
       ]
     },
     {
@@ -1652,12 +1885,12 @@
       "title": "Senior UX/UI Designer – Swim Training App (Flutter) – Full UX, UI & Design System",
       "url": "https://contra.com/opportunity/eoome6cR-senior-uxui-designer-swim-training-app-flutter-full-ux-ui-and-design-system",
       "reasons": [
-        "deal-breaker: B2C/consumer app (fitness/training for recreational swimmers)",
-        "deal-breaker: Budget ($3.5k–$7k) far below $10,000 minimum",
-        "Client is B2C consumer fitness app: \"dryland and strength training app for recreational swimmers\" with no enterprise ambition",
-        "Budget \"feeMin\": 3500, \"feeMax\": 7000 is below our $10,000 minimum project",
-        "Service fit is product design plus design system, but no funded B2B software signals; the mobile-only Flutter focus is weak fit",
-        "Cost-conscious framing: \"open to quotes\", 2–4 week timeline, milestone payments, in-house implementation"
+        "deal-breaker: B2C/consumer fitness app",
+        "deal-breaker: Budget far below $10,000 minimum",
+        "Client is B2C: \"dryland and strength training app for recreational swimmers\" is a consumer fitness app, not B2B software",
+        "Budget is below the $10,000 minimum: fixed $3,500–$7,000, and \"open to quotes\" with a 2–4 week timeline",
+        "Mobile-only (Flutter, iOS/Android) product design for a consumer app, with no funding or enterprise signals; \"Catch Swim Ltd\" is a small founder-run app",
+        "Design-system and product-design work would fit our services, but client fit and size do not"
       ]
     },
     {
@@ -1720,12 +1953,11 @@
       "title": "Senior AI Product Designer (Consumer mobile)",
       "url": "https://contra.com/opportunity/FBBPOWsL-senior-ai-product-designer-consumer-mobile",
       "reasons": [
-        "deal-breaker: B2C/consumer mobile app client",
-        "deal-breaker: In-house/embedded role rather than a studio sprint",
-        "Client is a consumer product: title says \"Consumer mobile\" and the post asks for \"consumer mobile products\" with subscription/paywall, habit formation and gamification. B2C is excluded.",
-        "The role is an embedded, in-house-style seat (\"Work directly with engineers\", \"working closely with product, engineering, growth, and leadership\") rather than a brand, website or product sprint from a studio.",
-        "Core work is mobile app design, not a SaaS or web product, brand or marketing site. No B2B or funding signals appear in the post.",
-        "The budget of $6k-$12k/month could clear our minimum, but that does not outweigh the client fit and the seat-style engagement."
+        "deal-breaker: B2C/consumer brand: \"consumer mobile experience\", consumer subscription app",
+        "Client is B2C: the post repeatedly says \"consumer mobile products\" and \"consumer subscription apps\", with consumer-app concerns such as paywalls, habit formation and gamification, so it is not B2B software.",
+        "Mobile-app product design with no enterprise or B2B signal, so it falls outside our client fit even though it is a product design service.",
+        "No funding, stage or enterprise-motion evidence is given: no investors, raise, or upmarket signal.",
+        "Budget ($6k-$12k/month) would clear the $10k minimum, and the role reads as full-time, but neither offsets the B2C deal-breaker."
       ]
     },
     {
@@ -1803,27 +2035,6 @@
       "url": "https://contra.com/opportunity/YgAeL3Oc-freelance-social-media-marketercontent-creator-for-telehealth-startup",
       "reasons": [
         "not a service we sell — core ask is \"Social Media\" (Freelance Social Media Marketer/Content Creator for Telehealth Startup)"
-      ]
-    },
-    {
-      "title": "DaVinci Resolve Editor for Business/Leadership Podcast Episode",
-      "url": "https://contra.com/opportunity/slgsWvZg-da-vinci-resolve-editor-for-businessleadership-podcast-episode",
-      "reasons": [
-        "not a service we sell — core ask is \"Editor\" (DaVinci Resolve Editor for Business/Leadership Podcast Episode)"
-      ]
-    },
-    {
-      "title": "KAJABI Expert for Website and App Development",
-      "url": "https://contra.com/opportunity/l7rLbXqO-kajabi-expert-for-website-and-app-development",
-      "reasons": [
-        "not a service we sell — core ask is \"SEO\" (KAJABI Expert for Website and App Development)"
-      ]
-    },
-    {
-      "title": "Marketing Execution - B2C Travel Brand Launch (Malaysia + Singapore)",
-      "url": "https://contra.com/opportunity/c6gqM723-marketing-execution-b2-c-travel-brand-launch-malaysia-singapore",
-      "reasons": [
-        "not a service we sell — core ask is \"Social Media\" (Marketing Execution - B2C Travel Brand Launch (Malaysia + Singapore))"
       ]
     }
   ]
