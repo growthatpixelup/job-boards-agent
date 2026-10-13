@@ -1,9 +1,13 @@
-// Optional password for a hosted copy: set DASHBOARD_PASSWORD and the browser asks for it (any username).
+// Password for a hosted copy: set DASHBOARD_PASSWORD and the browser asks for it (any username).
 // proxy.ts checks every request; the stage action checks again, since server actions can be POSTed directly.
 
 export const PASSWORD = process.env.DASHBOARD_PASSWORD || null;
 
+/** On Vercel without a password every page stays locked: the short *.vercel.app address isn't behind Vercel login. */
+export const LOCKED = !PASSWORD && !!process.env.VERCEL;
+
 export function isAuthorized(authorization: string | null): boolean {
+  if (LOCKED) return false;
   if (!PASSWORD) return true;
   if (!authorization?.startsWith("Basic ")) return false;
   const decoded = atob(authorization.slice(6));
