@@ -1,17 +1,14 @@
-import { icpCriteria } from "./icp/criteria.ts";
 import { LLM_FAILED } from "./icp/llm.ts";
 import type { ClassifiedJob, IcpVerdict, Job, Lane } from "./types.ts";
 
 /** What to do with a job that fits (see Lane); null for rejected jobs. */
 export function laneOf(icp: IcpVerdict): Lane | null {
   if (icp.decision === "rejected") return null;
-  if (icp.project?.fullTime || icp.signals.includes("flag:full-time")) return "outreach";
-  const value = icp.project?.estimatedValueUsd;
-  return value != null && value <= icpCriteria.minProjectUsd ? "entry" : "project";
+  return icp.project?.fullTime || icp.signals.includes("flag:full-time") ? "outreach" : "project";
 }
 
 /**
- * Worth acting on now: qualified projects and entry projects, plus full-time roles at companies that fit even
+ * Worth acting on now: qualified projects, plus full-time roles at companies that fit even
  * as a "maybe" (the role shows they're spending on design, and reaching out costs little).
  */
 export function isActionable(job: Pick<ClassifiedJob, "icp" | "lane">): boolean {

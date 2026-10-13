@@ -27,11 +27,6 @@ const DECISION_STYLE: Record<IcpDecision, string> = {
 };
 
 const LANE_BADGE: Partial<Record<Lane, { label: string; title: string; style: string }>> = {
-  entry: {
-    label: "entry",
-    title: "Small now, from a client that could grow into a sprint",
-    style: "bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-100",
-  },
   outreach: {
     label: "full-time",
     title: "Reach out on a different platform instead of applying on Contra",

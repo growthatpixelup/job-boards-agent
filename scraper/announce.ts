@@ -9,7 +9,6 @@ const MAX_PER_LANE = 10; // keep the message readable; the rest are summarized
 
 const SECTIONS: { lane: Lane; title: string; noun: string }[] = [
   { lane: "project", title: "🎯 Apply on Contra: projects ($50/hr+, over $3,500)", noun: "project" },
-  { lane: "entry", title: "🌱 Apply on Contra: entry projects (small now, could grow)", noun: "entry project" },
   { lane: "outreach", title: "📇 Full-time roles: don't apply, reach out off Contra and pitch a project", noun: "full-time lead" },
 ];
 
@@ -49,7 +48,6 @@ function line(j: ClassifiedJob): string {
   const rows = [`• ${j.title}`, `  ${[j.organization?.name, budget(j.budget)].filter(Boolean).join(" · ")}`];
   const est = size(j);
   if (est) rows.push(`  ${est}`);
-  if (j.lane === "entry" && j.icp.project?.growthPath) rows.push(`  Could grow: ${j.icp.project.growthPath}`);
   const concerns = j.icp.project?.concerns ?? [];
   if (concerns.length) rows.push(`  ⚠ ${concerns.join(" · ")}`);
   if (j.lane === "outreach") rows.push(`  ${companyLinks(j)}`);

@@ -40,16 +40,17 @@ export interface Job {
 export type IcpDecision = "qualified" | "maybe" | "rejected";
 /** Positioning doc rings: carol = bullseye (isolate), diana = whey (10x), eddie = general protein (100x). */
 export type IcpTier = "carol" | "diana" | "eddie";
-/** How likely a job is to grow into a sprint or retainer (icp-brief.md, "Entry projects"). */
+/** How likely a job is to grow into a sprint or retainer (icp-brief.md, "Growth potential"). */
 export type GrowthPotential = "high" | "medium" | "low" | "none";
+/** Who the client sells to; for agency or white-label work, the end client. */
+export type ClientType = "b2b" | "b2c" | "unknown";
 
 /**
  * What we do with a job that fits:
  *   project  apply on Contra: meets the money rule ($50/hr+, more than $3,500 total)
- *   entry    apply on Contra: small now ($3,500 or less), from a client that could grow (land and expand)
  *   outreach full-time role: don't apply; reach out to the company off Contra and pitch a project
  */
-export type Lane = "project" | "entry" | "outreach";
+export type Lane = "project" | "outreach";
 
 /** Public links for the company behind an outreach job. People found by the lookup go only to the lead sheet. */
 export interface CompanyLinks {
@@ -81,13 +82,15 @@ export interface IcpVerdict {
     estimatedValueUsd: number | null;
     /** How the estimate was reached. */
     basis: string;
+    /** Who the client sells to (for agency work, the end client). B2C clients are rejected. */
+    clientType: ClientType;
     /** Full-time / in-house role: we don't apply on Contra, we reach out on a different platform. */
     fullTime: boolean;
     /** How likely the work grows into a sprint or retainer. */
     growthPotential: GrowthPotential;
     /** The likely path, e.g. "logo → brand sprint → marketing site"; empty when there is none. */
     growthPath: string;
-    /** Flags for the team (B2C, crypto, agency, on-site…); they don't change the decision. */
+    /** Flags for the team (crypto, agency, on-site, B2B not confirmed…); they don't change the decision. */
     concerns: string[];
   };
 }

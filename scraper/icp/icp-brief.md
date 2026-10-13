@@ -13,8 +13,8 @@ their market, so enterprise buyers stop hesitating. Founder-to-founder, senior t
 (2-week brand sprints, ~3-week sites, ~5 weeks for brand + site). Mainline sprints are $25–30k and
 retainers start at $4k/month. Bangalore-based, SF-calibrated.
 
-On Contra we qualify **any job for work we sell that meets the money rule**, whoever the client is.
-Who the client is still matters for how we pitch, so you also rate client fit and flag concerns.
+On Contra we qualify **any job from a B2B client for work we sell that meets the money rule**. Beyond being
+B2B, who the client is matters only for how we pitch, so you also rate client fit and flag concerns.
 
 ## Services that qualify a job (at least one must be the core of the job)
 
@@ -33,13 +33,27 @@ generation, social media management, sales/BD/customer success, engineering outs
 builds, virtual assistance, and pixel-pushing: turning a design someone else has finished into a
 Webflow/Framer/no-code site ("convert our Figma to Webflow", "just implement").
 
+## The client must be B2B
+
+Set `client_type` from what the post shows about who the client's business sells to:
+
+- **b2b**: it sells mainly to businesses: B2B software/SaaS, AI and developer tools, platforms for merchants or
+  sellers, B2B2C, professional services and other companies serving businesses.
+- **b2c**: it sells mainly to consumers: consumer apps, DTC/e-commerce brands, CPG, food & drink, fashion,
+  wellness, games, personal brands, coaches and creators selling to individuals, real estate for home buyers…
+- **unknown**: the post doesn't show which.
+
+For agency, white-label or subcontract work, judge the **end client** the work is for, not the agency: an
+agency job for a consumer brand is b2c. A b2c client is rejected whatever the work and the money; an unknown
+one can still qualify. Don't call a client B2C on a hunch: use b2c only when the post shows it.
+
 ## The money rule
 
 A job qualifies on money when both hold:
 
-- **Rate: at least $50/hour.** For an hourly job, that is the stated rate (the top of its range). For a
+- **Rate: at least $50/hour.** For an hourly job, that is the stated rate (the middle of its range). For a
   fixed-price, weekly or monthly budget, it is the effective rate: the budget ÷ the hours the scope
-  realistically needs.
+  realistically needs, using the middle of a budget range ($2,500–$5,000 counts as $3,750).
 - **Total: more than $3,500**, the rate × the hours: the hours the post states, or else the hours the
   described scope realistically needs. A retainer counts its fee over its stated or likely length.
 
@@ -51,27 +65,24 @@ of a range) and show the working in `value_basis`, e.g. "$60/hr × ~80 hrs for a
 Always estimate the hours. Only if the post states no budget, set the rate and value to null: the money
 can't be judged.
 
-No cash pay (equity-only, revenue share, unpaid, "exposure") fails the money rule.
+A job totalling $3,500 or less fails, however promising the client. No cash pay (equity-only, revenue share,
+unpaid, "exposure") fails the money rule.
 
-## Entry projects (small now, could grow)
+## Growth potential (informs the pitch; never the decision)
 
-Some clients test the waters with a small first project before they hand over the bigger work: we have had
-a client start with a logo and grow into a full engagement. A job that pays at least $50/hr but totals
-$3,500 or less still qualifies as an entry project when its growth potential is high and it pays at least
-$1,000. Rate `growth_potential` for every job:
+Rate `growth_potential` for every job:
 
 - **high**: a client that can afford more (a funded or clearly well-resourced company, ideally B2B and
-  AI-native) whose small ask is the first piece of work we sell: a logo or landing page for a funded startup
-  with no real brand or site yet, a brand refresh that will need a site to match, a few screens of a product
-  that is clearly growing, or the post says more work follows ("first phase", "trial project", "ongoing",
-  "long-term", "if this goes well").
+  AI-native) whose ask is the first piece of bigger work we sell: a brand for a funded startup with no real
+  site yet, a brand refresh that will need a site to match, screens of a product that is clearly growing, or
+  the post says more work follows ("first phase", "ongoing", "long-term", "if this goes well").
 - **medium**: a plausible but unstated path to bigger work.
 - **low**: a self-contained one-off (a logo for a side project, small fixes, a single asset), or a client
   unlikely to spend more.
 - **none**: the work isn't something we sell.
 
 Write `growth_path` as the likely next steps (e.g. "logo → brand sprint → marketing site"), or leave it
-empty. For a larger job it says whether the work could become a retainer or more projects.
+empty: whether the work could become a retainer or more projects.
 
 ## Full-time roles
 
@@ -80,11 +91,11 @@ hourly equivalent (an annual salary ÷ 2,080 hours, a monthly one ÷ 173), its h
 full-time) and its total the rate × those hours, unless the post says otherwise. We won't take the seat;
 we'll reach out to the company on a different platform and pitch a project instead.
 
-## Client fit (sets the tier, informs growth and the pitch; never the decision)
+## Client fit (sets the tier, informs growth and the pitch; beyond B2B, never the decision)
 
 | | Bullseye — "Carol" | Acceptable — "Diana/Eddie" | Outside our ICP |
 |---|---|---|---|
-| Category | AI-native B2B software (infra, devtools, vertical AI, applied AI) | Any B2B software/SaaS; fintech-, healthcare-, legal-serving tech | B2C, agencies, services, crypto/web3, pre-product |
+| Category | AI-native B2B software (infra, devtools, vertical AI, applied AI) | Any B2B software/SaaS; fintech-, healthcare-, legal-serving tech | Agencies, services, crypto/web3, pre-product (B2C is rejected) |
 | Stage | Series A – Series B (incl. fast seed→A breakouts) | Late seed with $3M+ raised; Series C | Pre-seed, unraised, mid-pivot |
 | Raised | $5M–$60M | $3M–$150M | < $2M |
 | Team | 10–80 | 5–200 | > 500 |
@@ -99,15 +110,13 @@ we'll reach out to the company on a different platform and pitch a project inste
 Positive signals: funding (Series A/B, a named top-tier investor or YC, "just raised", $5M–$60M raised);
 going upmarket (enterprise buyers, Fortune 500, SOC 2, "contact sales", needs to look credible);
 inciting events (rebrand, launch, conference, site looks generic or outdated, outgrown the brand); an
-opinionated, founder-led buyer; wanting systems, a retainer or a long-term partnership; testing the
-waters with a small first project.
+opinionated, founder-led buyer; wanting systems, a retainer or a long-term partnership.
 
 ## Concerns (flag them; they don't change the decision)
 
 Put the id of each that applies in `concerns`, so the team sees them before applying. Nothing else counts:
 not unknown funding or stage, timelines, the role being full-time, or how sure you are of an estimate.
 
-- `b2c`: B2C/consumer brand (e-commerce, DTC, CPG, food & drink, coaches, personal brands, real estate, fashion…)
 - `crypto`: crypto/web3/NFT/DeFi
 - `pre-pmf`: the post says it is pre-PMF, idea stage, unfunded or mid-pivot
 - `agency`: agency, white-label or subcontract work for someone else's client
@@ -119,13 +128,13 @@ not unknown funding or stage, timelines, the role being full-time, or how sure y
 
 ## Decision rules
 
-The decision depends on the service and the money only:
+The decision depends on the service, the money and the client being B2B only:
 
-- **qualified** — the core ask is a service we sell and the money rule holds (at least $50/hr and more than
-  $3,500 total), or it is an entry project (at least $50/hr, $1,000–$3,500, high growth potential).
+- **qualified** — the client isn't B2C (b2b or unknown), the core ask is a service we sell and the money rule holds (at least $50/hr and more than
+  $3,500 total).
 - **maybe** — the core ask is a service we sell but the money can't be judged (no budget stated, or the
-  scope too vague to estimate the hours), or a small job with medium growth potential.
-- **rejected** — the core ask is not a service we sell, or the money rule clearly fails: under $50/hr, or
-  $3,500 or less without high growth potential, or no cash pay.
+  scope too vague to estimate the hours).
+- **rejected** — the client is B2C (for agency work, the end client), or the core ask is not a service we sell, or the money rule clearly fails: under $50/hr, or
+  $3,500 or less, or no cash pay.
 
 When unsure between two decisions, pick the more conservative one (maybe over qualified).

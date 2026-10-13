@@ -20,12 +20,11 @@ export const icpCriteria = {
   /**
    * The money rule (icp-brief.md). A job qualifies when it pays at least `minHourlyUsd` per hour (for fixed,
    * weekly and monthly budgets: the budget ÷ the hours the scope needs) and more than `minProjectUsd` in total
-   * (rate × hours). Below that total, only an entry project (high growth potential, at least `entryMinUsd`)
-   * qualifies. The LLM classifier enforces these on whatever the model decided.
+   * (rate × hours). A budget range counts at its middle. The LLM classifier enforces these on whatever the
+   * model decided.
    */
   minHourlyUsd: 50,
   minProjectUsd: 3_500,
-  entryMinUsd: 1_000,
 
   /** Raised-amount bands in USD millions (doc §2 "Raised"). */
   raised: { excludeBelow: 2, bullseyeMin: 5, bullseyeMax: 60, acceptableMax: 150 },

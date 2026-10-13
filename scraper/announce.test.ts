@@ -21,7 +21,7 @@ function verdict(
     classifier: "test",
     project: {
       sprintTypes: ["brand"], scope: "rebrand", hourlyRateUsd: 100, estimatedHours: value == null ? null : value / 100,
-      estimatedValueUsd: value, basis: "fixed", fullTime, growthPotential: growthPath ? "high" : "none", growthPath, concerns,
+      estimatedValueUsd: value, basis: "fixed", clientType: "b2b", fullTime, growthPotential: growthPath ? "high" : "none", growthPath, concerns,
     },
     ...rest,
   };
@@ -57,20 +57,17 @@ const run = (jobs: ClassifiedJob[]): RunResult => ({
 });
 
 describe("lanes", () => {
-  it("sorts fitting jobs into project, entry and outreach", () => {
+  it("sorts fitting jobs into project and outreach", () => {
     assert.equal(laneOf(verdict()), "project");
     assert.equal(laneOf(verdict({ value: 3_600 })), "project");
-    assert.equal(laneOf(verdict({ value: 3_500 })), "entry"); // the money rule needs more than $3,500
-    assert.equal(laneOf(verdict({ value: 2_500 })), "entry");
     assert.equal(laneOf(verdict({ fullTime: true, value: 60_000 })), "outreach");
     assert.equal(laneOf(verdict({ decision: "rejected" })), null);
     assert.equal(laneOf({ ...verdict(), project: undefined, signals: ["flag:full-time"] }), "outreach"); // regex verdicts
   });
 
-  it("acts on qualified projects and entry projects, and on full-time roles even as a maybe", () => {
+  it("acts on qualified projects, and on full-time roles even as a maybe", () => {
     assert.ok(isActionable({ icp: verdict(), lane: "project" }));
     assert.ok(!isActionable({ icp: verdict({ decision: "maybe" }), lane: "project" }));
-    assert.ok(!isActionable({ icp: verdict({ decision: "maybe", value: 2_500 }), lane: "entry" }));
     assert.ok(isActionable({ icp: verdict({ decision: "maybe", fullTime: true }), lane: "outreach" }));
   });
 
@@ -86,22 +83,20 @@ describe("lanes", () => {
 });
 
 describe("Slack message", () => {
-  const sprint = toClassified(job("s", { title: "Rebrand for AI infra startup" }), verdict({ concerns: ["B2C brand", "on-site in NYC"] }), none, none);
-  const entry = toClassified(job("e", { title: "Logo for funded devtool" }), verdict({ value: 2_500, growthPath: "logo → brand sprint → site" }), none, none);
+  const sprint = toClassified(job("s", { title: "Rebrand for AI infra startup" }), verdict({ concerns: ["crypto / web3", "on-site in NYC"] }), none, none);
   const outreach = {
     ...toClassified(job("o", { title: "Founding product designer" }), verdict({ fullTime: true, value: 60_000 }), none, none),
     companyLinks: { website: "https://acme.ai/", linkedin: "https://www.linkedin.com/company/acme-ai/", x: null },
   };
   const old = toClassified(job("x"), verdict(), none, new Set(["x"]));
 
-  it("groups announced jobs by lane, with the growth path and company links", () => {
-    const { summary, jobs } = slackMessage(run([outreach, old, entry, sprint]), "https://docs.google.com/spreadsheets/d/abc");
-    assert.match(summary, /^3 Contra jobs to act on \(1 project, 1 entry project, 1 full-time lead\)/);
-    const order = ["Apply on Contra: projects", "entry projects", "Full-time roles"].map((t) => jobs.indexOf(t));
+  it("groups announced jobs by lane, with company links", () => {
+    const { summary, jobs } = slackMessage(run([outreach, old, sprint]), "https://docs.google.com/spreadsheets/d/abc");
+    assert.match(summary, /^2 Contra jobs to act on \(1 project, 1 full-time lead\)/);
+    const order = ["Apply on Contra: projects", "Full-time roles"].map((t) => jobs.indexOf(t));
     assert.ok(order.every((i, n) => i >= 0 && (n === 0 || i > order[n - 1])), "sections in lane order");
     assert.match(jobs, /~\$25,000 \(\$100\/hr × ~250 hrs\) · brand: rebrand/);
-    assert.match(jobs, /⚠ B2C brand · on-site in NYC/);
-    assert.match(jobs, /Could grow: logo → brand sprint → site/);
+    assert.match(jobs, /⚠ crypto \/ web3 · on-site in NYC/);
     assert.match(jobs, /Site: https:\/\/acme\.ai\/ · LinkedIn: https:\/\/www\.linkedin\.com\/company\/acme-ai\//);
     assert.match(jobs, /lead sheet: https:\/\/docs\.google\.com/);
     assert.ok(!jobs.includes("Job x"), "already-announced jobs aren't repeated");

@@ -325,7 +325,7 @@ describe("LLM classifier plumbing (fake provider)", () => {
       "fake",
       { cacheDir: null },
     );
-    // A small budget the regex floor rejects outright still reaches the LLM: it could be an entry project.
+    // A small budget the regex floor rejects outright still reaches the LLM (it sizes the hours itself).
     await failing(job({ title: "Logo for our Series A AI startup", roles: ["Logo Designer"], budget: ["FIXED", 1_500, 2_000] }));
     await failing(job({ title: "Video editor", roles: ["Video Editor"] }));
     assert.equal(calls, 2);
@@ -337,18 +337,30 @@ describe("LLM classifier plumbing (fake provider)", () => {
 
   const verdict = (fields: object) =>
     JSON.stringify({
-      decision: "qualified", tier: "diana", sprint_types: ["brand"], scope: "logo", hourly_rate_usd: 100, estimated_hours: 25,
+      decision: "qualified", tier: "diana", client_type: "b2b", sprint_types: ["brand"], scope: "logo", hourly_rate_usd: 100, estimated_hours: 25,
       estimated_value_usd: 2_500, value_basis: "fixed", full_time: false, growth_potential: "none", growth_path: "",
       confidence: 0.8, reasons: ["B2B"], concerns: [], ...fields,
     });
   const decisionOf = (fields: object, j?: Job) => parseVerdict(verdict(fields), "test", j);
 
-  it("qualifies on the money rule whoever the client is: concerns are flagged, not rejected", () => {
-    const v = decisionOf({ hourly_rate_usd: 60, estimated_hours: 80, estimated_value_usd: 4_800, concerns: ["b2c", "on-site", "b2c", "funding unknown"] });
+  it("qualifies a B2B client on the money rule: concerns are flagged, not rejected", () => {
+    const v = decisionOf({ hourly_rate_usd: 60, estimated_hours: 80, estimated_value_usd: 4_800, concerns: ["crypto", "on-site", "crypto", "funding unknown"] });
     assert.equal(v.decision, "qualified");
-    assert.deepEqual(v.project?.concerns, ["B2C / consumer brand", "on-site or local only"]); // known ids only, once each
-    assert.ok(v.reasons.includes("⚠ B2C / consumer brand") && v.signals.includes("concern:b2c"));
+    assert.deepEqual(v.project?.concerns, ["crypto / web3", "on-site or local only"]); // known ids only, once each
+    assert.ok(v.reasons.includes("⚠ crypto / web3") && v.signals.includes("concern:crypto"));
     assert.equal(decisionOf({ hourly_rate_usd: 50, estimated_hours: 71, estimated_value_usd: 3_550 }).decision, "qualified"); // $50/hr counts
+  });
+
+  it("rejects a B2C client whatever the model decided; an unclear one still qualifies, flagged", () => {
+    const money = { hourly_rate_usd: 100, estimated_hours: 80, estimated_value_usd: 8_000 };
+    const b2c = decisionOf({ ...money, client_type: "b2c" });
+    assert.deepEqual([b2c.decision, b2c.tier, b2c.project?.clientType], ["rejected", null, "b2c"]);
+    assert.match(b2c.reasons.at(-1)!, /B2C client/);
+    const unclear = decisionOf({ ...money, client_type: "unknown" });
+    assert.equal(unclear.decision, "qualified");
+    assert.deepEqual(unclear.project?.concerns, ["B2B not confirmed"]);
+    assert.equal(decisionOf(money).project?.concerns.length, 0); // b2b: no flag
+    assert.equal(decisionOf({ ...money, client_type: undefined }).project?.clientType, "unknown"); // missing → unknown
   });
 
   it("caps a qualified verdict that fails the money rule at maybe", () => {
@@ -359,6 +371,7 @@ describe("LLM classifier plumbing (fake provider)", () => {
     };
     capped({ hourly_rate_usd: 40, estimated_hours: 200, estimated_value_usd: 8_000 }, /below the \$50\/hr minimum/);
     capped({ estimated_value_usd: 3_500 }, /isn't more than \$3,500/); // more than $3,500, not equal
+    capped({ estimated_value_usd: 2_500, growth_potential: "high" }, /isn't more than \$3,500/); // no small "entry" jobs
     capped({ hourly_rate_usd: null, estimated_value_usd: null }, /couldn't be worked out/);
     // Older verdict shape without the new fields: the money can't be judged.
     const old = parseVerdict('{"decision":"qualified","tier":"diana","estimated_value_usd":1500,"confidence":0.9,"reasons":["B2B"]}', "test");
@@ -370,30 +383,26 @@ describe("LLM classifier plumbing (fake provider)", () => {
     const fixed = (budget: [number, number], fields: object) => decisionOf(fields, job({ title: "Website redesign", budget: ["FIXED", ...budget] }));
     // The model left its numbers empty (it does, with ranges): the posted budget and its hours still decide.
     const big = fixed([30_000, 40_000], { hourly_rate_usd: null, estimated_hours: 250, estimated_value_usd: null });
-    assert.deepEqual([big.decision, big.project?.hourlyRateUsd, big.project?.estimatedValueUsd], ["qualified", 160, 40_000]);
+    assert.deepEqual([big.decision, big.project?.hourlyRateUsd, big.project?.estimatedValueUsd], ["qualified", 140, 35_000]);
+    // A range counts at its middle: $2,500–$4,500 is $3,500, not more than $3,500.
+    const vubo = fixed([2_500, 4_500], { hourly_rate_usd: 78, estimated_hours: 50, estimated_value_usd: 4_500 });
+    assert.deepEqual([vubo.decision, vubo.project?.estimatedValueUsd], ["maybe", 3_500]);
     const cheap = fixed([4_000, 4_000], { hourly_rate_usd: 90, estimated_hours: 160, estimated_value_usd: 4_000 });
     assert.deepEqual([cheap.decision, cheap.project?.hourlyRateUsd], ["maybe", 25]);
   });
 
-  it("uses an hourly job's posted rate (the top of its range) over the model's figure", () => {
-    const hourly = job({ title: "Website redesign", budget: ["HOURLY", 30, 45] });
-    const v = decisionOf({ hourly_rate_usd: 80, estimated_hours: 100, estimated_value_usd: 8_000 }, hourly);
+  it("uses an hourly job's posted rate (the middle of its range) over the model's figure", () => {
+    const softify = job({ title: "Dashboard redesign", budget: ["HOURLY", 30, 60] });
+    const v = decisionOf({ hourly_rate_usd: 60, estimated_hours: 100, estimated_value_usd: 6_000 }, softify);
     assert.deepEqual([v.decision, v.project?.hourlyRateUsd, v.project?.estimatedValueUsd], ["maybe", 45, 4_500]);
-    const fair = decisionOf({ hourly_rate_usd: 40, estimated_hours: 100, estimated_value_usd: 4_000 }, job({ budget: ["HOURLY", 40, 60] }));
+    const fair = decisionOf({ hourly_rate_usd: 40, estimated_hours: 100, estimated_value_usd: 4_000 }, job({ budget: ["HOURLY", 50, 70] }));
     assert.deepEqual([fair.decision, fair.project?.hourlyRateUsd, fair.project?.estimatedValueUsd], ["qualified", 60, 6_000]);
   });
 
-  it("keeps a small entry project qualified when growth potential is high", () => {
-    const v = parseVerdict(verdict({ growth_potential: "high", growth_path: "logo → brand sprint → site" }), "test");
+  it("keeps the growth path on a qualified job", () => {
+    const v = decisionOf({ estimated_value_usd: 8_000, estimated_hours: 80, growth_potential: "high", growth_path: "brand → site → retainer" });
     assert.equal(v.decision, "qualified");
-    assert.deepEqual([v.project?.growthPotential, v.project?.growthPath], ["high", "logo → brand sprint → site"]);
-  });
-
-  it("caps small jobs at maybe unless growth potential is high and the entry minimum is met", () => {
-    assert.equal(parseVerdict(verdict({ growth_potential: "medium" }), "test").decision, "maybe");
-    const tiny = parseVerdict(verdict({ growth_potential: "high", estimated_value_usd: 600 }), "test");
-    assert.equal(tiny.decision, "maybe");
-    assert.match(tiny.reasons.at(-1)!, /entry project/);
+    assert.deepEqual([v.project?.growthPotential, v.project?.growthPath], ["high", "brand → site → retainer"]);
   });
 
   it("caches verdicts per job and re-asks when the job changes", async () => {

@@ -69,21 +69,23 @@ The GitHub workflow uses `ICP_CLASSIFIER=anthropic`: Claude Sonnet 5.5 is the on
 It reads every job on the board, with its description, against `scraper/icp/icp-brief.md`. No rules
 pre-filter it.
 
-A job qualifies on two things only: it's **work we sell** (brand, website, product design, design
-systems, decks, Next.js/React), and it meets the **money rule**: at least **$50/hour** and more than
-**$3,500** in total (rate × the hours the scope needs). For fixed-price, weekly and monthly budgets the
-rate is the budget ÷ the hours Claude estimates the scope needs; for hourly jobs it's the posted rate.
-Who the client is doesn't change the decision: B2C, crypto, agency, on-site and similar concerns are
+A job qualifies on three things only: the client is **B2B**, it's **work we sell** (brand, website,
+product design, design systems, decks, Next.js/React), and it meets the **money rule**: at least **$50/hour** and more than
+**$3,500** in total (rate × the hours the scope needs). A budget range counts at its middle ($2,500–$5,000
+is $3,750). For fixed-price, weekly and monthly budgets the rate is the budget ÷ the hours Claude estimates
+the scope needs; for hourly jobs it's the posted rate. Jobs of $3,500 or less are rejected.
+Claude marks each client `b2b`, `b2c` or `unknown` (for agency or white-label work, the end client), and
+the code rejects every B2C client; an unknown one can still qualify, flagged "B2B not confirmed". Beyond
+that, who the client is doesn't change the decision: crypto, agency, on-site and similar concerns are
 flagged in Slack and the app instead (a fixed list, `CONCERNS` in `scraper/icp/llm.ts`). Claude's
 judgment is the hours the scope needs; the code works out the rate and total from the posted budget
 (hourly: rate × hours; fixed: budget ÷ hours) and enforces the money rule on whatever Claude decides.
 
-Claude also rates how likely each job is to grow and sorts the jobs that fit into lanes:
+Claude also rates how likely each job is to grow (shown in the app), and the jobs that fit go into two lanes:
 
 | Lane | What it is | Posted to Slack |
 |---|---|---|
 | project | meets the money rule | when qualified |
-| entry | a small first job ($1,000–$3,500 at $50/hr+) that could grow, e.g. logo → brand sprint → site | when qualified: high growth potential |
 | outreach | a full-time role for work we sell: don't apply, reach out off Contra and pitch a project | when qualified or maybe, whatever the pay, with the company's links; founders go to the lead sheet |
 
 Each job is posted once, the first run it fits (`data/announced-ids.json`), so an older job that a
@@ -95,7 +97,7 @@ in, capped at maybe, and the job is retried next run.
 Other `ICP_CLASSIFIER` values: `regex` (the local default: free rules, an older and stricter version of
 the brief, which also decide which descriptions to fetch), `none` (keep every job) and `openai`.
 Housekeeping filters are in `scraper/filters.ts`; the money rule's numbers (`minHourlyUsd`,
-`minProjectUsd`, `entryMinUsd`) are in `scraper/icp/criteria.ts`.
+`minProjectUsd`) are in `scraper/icp/criteria.ts`.
 
 ## Lead sheet
 
