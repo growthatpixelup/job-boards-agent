@@ -13,8 +13,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Contra jobs",
-  description: "Daily filtered Contra job list",
+  title: "Pixelup leads",
+  description: "Qualified Contra leads and their stages",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {

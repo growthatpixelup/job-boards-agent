@@ -16,7 +16,7 @@
     "notify": "node --env-file-if-exists=.env.local scraper/notify.ts",
     "sheet": "node --env-file-if-exists=.env.local scraper/sheet.ts",
     "contra:auth": "node scripts/contra-auth.ts",
-    "test": "node --test \"scraper/**/*.test.ts\""
+    "test": "node --test \"scraper/**/*.test.ts\" \"lib/**/*.test.ts\""
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.133.0",

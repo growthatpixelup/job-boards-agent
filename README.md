@@ -3,7 +3,7 @@
 Pulls the Contra job feed through Contra's official MCP server (read-only tools only:
 `whoami`, `list_job_feed`, `get_job_by_slug`), has Claude judge every job against the Pixelup ICP
 (`scraper/icp/`), posts the ones worth acting on to Slack, sends full-time roles to a Google Sheet as
-outreach leads, and shows the result in a small Next.js app.
+outreach leads, and shows the leads in a small Next.js dashboard where the team tracks each one's stage.
 
 ## Rules for using Contra
 
@@ -119,9 +119,28 @@ To connect the sheet, once:
 Until then the step logs how many leads it would have sent and skips. `LEAD_LOOKUP=anthropic` turns the
 lookup on (the workflow sets it); `LEAD_MODEL` picks the model (default `claude-sonnet-5-5`).
 
+## Lead dashboard
+
+`npm run dev` → http://localhost:3000. It lists every job the AI layer qualified, from every scrape
+(`data/runs/` and `data/latest.json`): qualified projects, and full-time roles that fit (the same rule as
+Slack). A job keeps its newest verdict, so one a later run rejects drops out, unless it already has a stage.
+Jobs that have left Contra's board stay, marked "off the board". `/latest` shows the latest scrape as before.
+
+- **Stages:** New → Applied → Talking → Won / Lost / Passed, picked per lead. They're saved in
+  `data/pipeline.json` (job id → stage, title, time), so git keeps the history.
+- **Apply on Contra** opens the job post on contra.com to apply by hand. Full-time roles get
+  **View post** instead, plus the company's links: those are for outreach off Contra, not applying.
+
+Running locally, a stage change writes `data/pipeline.json`; commit and push it to share. A hosted copy
+(e.g. Vercel) can't keep files, so set `PIPELINE_GITHUB_TOKEN` (fine-grained PAT for this repo, Contents:
+Read and write) and each change is committed to the repo instead (`PIPELINE_GITHUB_REPO` and
+`PIPELINE_GITHUB_BRANCH` default to `growthatpixelup/job-boards-agent` and `main`). It refuses to save until
+`DASHBOARD_PASSWORD` is set, which puts a password on every page (any username). The scrape workflow rebases
+onto those commits before pushing its own. New scrape data reaches a hosted copy when it redeploys.
+
 ## Local use
 
-- `npm run dev`: the jobs app at http://localhost:3000 (reads `data/latest.json`)
+- `npm run dev`: the lead dashboard at http://localhost:3000 (see "Lead dashboard")
 - `/contra-scrape` in Claude Code: scrape through Claude Code's own Contra MCP login
 - `SLACK_DRY_RUN=1 npm run notify` / `SHEET_DRY_RUN=1 npm run sheet`: print what would be posted
-- `npm test`: ICP rule, lane and Contra-rules tests
+- `npm test`: ICP rule, lane, Contra-rules and lead dashboard tests
