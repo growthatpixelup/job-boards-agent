@@ -2,11 +2,12 @@ name: Daily Contra scrape
 
 on:
   schedule:
-    # Once a day at 11:05 AM San Francisco time (follows daylight saving). Five past the hour, because GitHub
-    # delays scheduled runs most at the top of the hour; it can still start them late.
-    - cron: "5 11 * * *"
+    # Once a day from 11 AM San Francisco time (follows daylight saving). GitHub starts this repo's scheduled
+    # runs hours late (4.5–7 h in Oct 2026), so it wakes the workflow every hour and the `gate` job lets one
+    # scrape through per SF day: the first wake-up at or after 11 AM SF. A failed scrape tries again next hour.
+    - cron: "5 * * * *"
       timezone: "America/Los_Angeles"
-  workflow_dispatch: # "Run workflow" button in the Actions tab
+  workflow_dispatch: # "Run workflow" button in the Actions tab; always scrapes
 
 permissions:
   contents: write # commit the refreshed data/ files
@@ -16,7 +17,31 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # A few seconds per hourly wake-up. The daily scrape's data commit is tagged "(daily)", so finding one since
+  # SF midnight means today's scrape is done.
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      go: ${{ steps.check.outputs.go }}
+    steps:
+      - id: check
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          decide() { echo "go=$1" >> "$GITHUB_OUTPUT"; echo "$2"; }
+          [ "$EVENT" = "schedule" ] || { decide true "Started by hand: scraping."; exit 0; }
+          hour=$(TZ=America/Los_Angeles date +%-H)
+          [ "$hour" -ge 11 ] || { decide false "Before 11 AM in San Francisco ($(TZ=America/Los_Angeles date +%H:%M)): not yet."; exit 0; }
+          since=$(TZ=America/Los_Angeles date +%Y-%m-%dT00:00:00%:z) # SF midnight, e.g. 2026-10-13T00:00:00-07:00
+          daily=$(gh api "repos/$GITHUB_REPOSITORY/commits?path=data/latest.json&since=$since&per_page=100" \
+            --jq '[.[] | select(.commit.message | contains("(daily)"))] | length')
+          if [ "$daily" -gt 0 ]; then decide false "Today's daily scrape already ran."; else decide true "First wake-up after 11 AM SF today: scraping."; fi
+
   scrape:
+    needs: gate
+    if: needs.gate.outputs.go == 'true'
     runs-on: ubuntu-latest
     # Claude reads every job once. After a change to the brief it re-reads the whole board (~230 jobs, the slow
     # case); otherwise only the few new ones.
@@ -92,7 +117,8 @@ jobs:
           git config user.email "41898341+github-actions[bot]@users.noreply.github.com"
           git add -A data # latest.json, runs/, seen-ids.json, announced-ids.json (raw/, details/, verdicts/, leads/ are gitignored)
           git diff --cached --quiet && { echo "No changes."; exit 0; }
-          git commit -m "data: Contra scrape $(TZ=Asia/Kolkata date "+%F %H:%M IST")"
+          # "(daily)" marks the scheduled scrape; the gate job looks for it.
+          git commit -m "data: Contra scrape $(TZ=Asia/Kolkata date "+%F %H:%M IST")${{ github.event_name == 'schedule' && ' (daily)' || '' }}"
           git push
 
       # The two announcement steps run only after a successful scrape and commit, and each runs even if the other fails.

@@ -27,9 +27,15 @@ users' personal information. So:
 
 ## Automatic runs (GitHub Actions)
 
-`.github/workflows/scrape.yml` runs once a day at **11:05 AM San Francisco time**, plus on demand from
-Actions → "Daily Contra scrape" → Run workflow. Each run commits `data/latest.json`,
+`.github/workflows/scrape.yml` scrapes once a day from **11 AM San Francisco time**, plus on demand from
+Actions → "Daily Contra scrape" → Run workflow. Each scrape commits `data/latest.json`,
 `data/runs/`, `data/seen-ids.json` and `data/announced-ids.json`, then posts to Slack and the lead sheet.
+
+GitHub starts this repo's scheduled runs hours late (4.5–7 hours in October 2026), so the workflow wakes
+every hour and a quick `gate` job decides: the first wake-up at or after 11 AM SF scrapes, and its data
+commit is tagged "(daily)"; later wake-ups that day find that commit and stop within seconds. If the
+scrape fails, the next hour tries again. Manual runs always scrape and don't count as the daily one. The
+hourly checks show up as short runs in the Actions tab.
 
 Repository secrets (Settings → Secrets and variables → Actions):
 
