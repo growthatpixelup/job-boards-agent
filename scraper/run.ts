@@ -1,10 +1,10 @@
-import { mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { DATA_DIR, RAW_DIR, loadFeed, minimizeDetails, pruneDetails } from "./feed.ts";
 import { filterConfig, matchesFilters } from "./filters.ts";
 import { LLM_FAILED, getClassifier } from "./icp/index.ts";
-import { toClassified } from "./lanes.ts";
-import { LEADS_DIR, getLeadFinder } from "./leads.ts";
+import { isOutreachLead, toClassified } from "./lanes.ts";
+import { LEADS_DIR, getLeadFinder, type Lead } from "./leads.ts";
 import type { ClassifiedJob, IcpDecision, Job, Lane, RunResult } from "./types.ts";
 
 // Ingests the raw MCP feed pages (data/raw/) plus cached descriptions (data/details/)
@@ -35,22 +35,32 @@ async function mapPool<T, R>(items: T[], limit: number, fn: (item: T) => Promise
 
 const RANK: Record<IcpDecision, number> = { qualified: 0, maybe: 1, rejected: 2 };
 
-/** Adds the company's public links to each announced full-time role; founders go to data/leads/ for the lead sheet. */
-async function lookUpLeads(jobs: ClassifiedJob[]): Promise<void> {
-  await rm(LEADS_DIR, { recursive: true, force: true }); // only this run's leads; sheet.ts sends them on
-  const findLead = getLeadFinder();
-  const leads = jobs.filter((j) => j.announce && j.lane === "outreach" && j.organization?.name);
-  if (!findLead || !leads.length) return;
+/**
+ * Adds the company's public links to each full-time lead. Each company is looked up once: the result, with
+ * the founders for the lead sheet, is cached in data/leads/ (gitignored; the workflow keeps it with
+ * actions/cache). `feedIds` set: drop cached leads for jobs no longer in the feed.
+ */
+async function lookUpLeads(jobs: ClassifiedJob[], feedIds: Set<string> | null): Promise<void> {
   await mkdir(LEADS_DIR, { recursive: true });
-  for (const j of leads) {
-    try {
-      const lead = await findLead(j);
-      j.companyLinks = { website: lead.website, linkedin: lead.linkedin, x: lead.x };
-      await writeFile(path.join(LEADS_DIR, `${j.id}.json`), JSON.stringify(lead));
-      console.log(`[contra] lead: ${j.organization!.name} (${lead.found ? `${lead.confidence} confidence` : "not found"}, ${lead.people.length} people)`);
-    } catch (err) {
-      console.warn(`[contra] lead lookup failed for ${j.organization!.name}: ${err instanceof Error ? err.message : err}`);
+  if (feedIds) {
+    for (const f of await readdir(LEADS_DIR)) {
+      if (f.endsWith(".json") && !feedIds.has(f.slice(0, -5))) await rm(path.join(LEADS_DIR, f), { force: true });
     }
+  }
+  const findLead = getLeadFinder();
+  for (const j of jobs.filter(isOutreachLead)) {
+    const file = path.join(LEADS_DIR, `${j.id}.json`);
+    let lead = await readJson<Lead | null>(file, null);
+    if (!lead && findLead) {
+      try {
+        lead = await findLead(j);
+        await writeFile(file, JSON.stringify(lead));
+        console.log(`[contra] lead: ${j.organization!.name} (${lead.found ? `${lead.confidence} confidence` : "not found"}, ${lead.people.length} people)`);
+      } catch (err) {
+        console.warn(`[contra] lead lookup failed for ${j.organization!.name}, retried next run: ${err instanceof Error ? err.message : err}`);
+      }
+    }
+    if (lead) j.companyLinks = { website: lead.website, linkedin: lead.linkedin, x: lead.x };
   }
 }
 
@@ -92,12 +102,14 @@ async function main() {
       b.icp.score - a.icp.score ||
       (b.createdAt ?? "").localeCompare(a.createdAt ?? ""),
   );
-  await lookUpLeads(kept);
+  const preset = process.argv[2] || "ALL";
+  // Only the full feed tells us which jobs are gone; a BOOKMARKED/APPLIED run must not prune the rest.
+  await lookUpLeads(kept, preset === "ALL" ? new Set(feed.jobs.map((j) => j.id)) : null);
 
   const ranAt = new Date().toISOString();
   const result: RunResult = {
     ranAt,
-    preset: process.argv[2] || "ALL",
+    preset,
     classifier: classifier.name,
     totalScraped: feed.jobs.length,
     totalMatched: kept.length,

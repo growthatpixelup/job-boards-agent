@@ -20,6 +20,15 @@ export function isActionable(job: Pick<ClassifiedJob, "icp" | "lane">): boolean 
 }
 
 /**
+ * A full-time role at a company worth reaching out to, checked by the LLM. These get the company lookup and
+ * a lead sheet row; unlike Slack, the sheet gets every current one (it skips those it already has), so a
+ * sheet connected late, or a failed send, catches up on the next run.
+ */
+export function isOutreachLead(job: Pick<ClassifiedJob, "icp" | "lane" | "organization">): boolean {
+  return job.lane === "outreach" && isActionable(job) && !!job.organization?.name && !job.icp.signals.includes(LLM_FAILED);
+}
+
+/**
  * Attaches the verdict, lane and announce flag. A job is announced once, the first run it's actionable: a
  * new job, or an older one a rubric change now qualifies. Never before the LLM has actually read it.
  */

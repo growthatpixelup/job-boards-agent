@@ -115,10 +115,15 @@ describe("lead sheet", () => {
     confidence: "high", notes: "Matched on the product described in the post",
   };
 
-  it("writes one row per announced full-time role, in header order and formula-safe", () => {
+  it("writes one row per current full-time lead, in header order and formula-safe", () => {
     const sprint = toClassified(job("s"), verdict(), none, none);
-    const rows = sheetRows(run([outreach, sprint]), new Map([["o", lead]]));
-    assert.equal(rows.length, 1);
+    const fullTime = verdict({ fullTime: true, value: 60_000 });
+    // Posted to Slack before the sheet was connected: still sent, and the sheet skips it if it's there.
+    const earlier = toClassified(job("e"), fullTime, none, new Set(["e"]));
+    const individual = toClassified(job("i", { organization: null, hiringAsIndividual: true }), fullTime, none, none);
+    const unchecked = toClassified(job("u"), { ...fullTime, signals: [LLM_FAILED] }, none, none);
+    const rows = sheetRows(run([outreach, sprint, earlier, individual, unchecked]), new Map([["o", lead]]));
+    assert.deepEqual(rows.map((r) => r[SHEET_HEADERS.indexOf("Contra job")]), ["https://contra.com/opportunity/o", "https://contra.com/opportunity/e"]);
     const row = Object.fromEntries(SHEET_HEADERS.map((h, i) => [h, rows[0][i]]));
     assert.equal(row["Role"], "'=HYPERLINK(evil)");
     assert.equal(row["Contra job"], "https://contra.com/opportunity/o");

@@ -2,26 +2,28 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { SHEET_HEADERS, SHEET_KEY, sheetRows } from "./announce.ts";
 import { DATA_DIR } from "./feed.ts";
+import { isOutreachLead } from "./lanes.ts";
 import { LEADS_DIR, type Lead } from "./leads.ts";
 import type { RunResult } from "./types.ts";
 
-// Appends the latest run's full-time leads (company links + founders from data/leads/) to the Google Sheet,
-// through the Apps Script web app in scripts/leads-sheet.gs, which skips jobs already in the sheet.
+// Sends the latest run's full-time leads (company links + founders from data/leads/) to the Google Sheet,
+// through the Apps Script web app in scripts/leads-sheet.gs. It sends every current lead and the script
+// skips jobs already in the sheet, so a sheet connected late, or a failed send, catches up next run.
 // Env: LEADS_WEBHOOK_URL + LEADS_WEBHOOK_TOKEN (skips quietly when the URL is unset),
 //      SHEET_DRY_RUN=1 prints the rows instead.
 
 async function main() {
   const run = JSON.parse(await readFile(path.join(DATA_DIR, "latest.json"), "utf8")) as RunResult;
   const leads = new Map<string, Lead>();
-  for (const j of run.jobs.filter((j) => j.announce && j.lane === "outreach")) {
+  for (const j of run.jobs.filter(isOutreachLead)) {
     try {
       leads.set(j.id, JSON.parse(await readFile(path.join(LEADS_DIR, `${j.id}.json`), "utf8")) as Lead);
     } catch {
-      // not looked up (lookup off or failed): the row still goes in, without links
+      // not looked up (lookup off, or failed and retried next run): the row still goes in, without links
     }
   }
   const rows = sheetRows(run, leads);
-  if (!rows.length) return void console.log("[sheet] no new full-time leads");
+  if (!rows.length) return void console.log("[sheet] no full-time leads");
   if (process.env.SHEET_DRY_RUN) return void console.log(JSON.stringify({ headers: SHEET_HEADERS, rows }, null, 2));
   const url = process.env.LEADS_WEBHOOK_URL;
   if (!url) return void console.log(`[sheet] LEADS_WEBHOOK_URL not set; skipping ${rows.length} lead(s)`);

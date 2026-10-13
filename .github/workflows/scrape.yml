@@ -32,22 +32,18 @@ jobs:
       - name: Install dependencies # for the Anthropic SDK used by the ICP classifier
         run: npm ci --no-audit --no-fund
 
-      # Job descriptions are cached between runs here rather than committed, so they never enter git history.
-      # GitHub deletes the cache after 7 days without use.
-      - name: Restore cached job descriptions
-        uses: actions/cache@v4
+      # Cached between runs rather than committed, so they never enter git history: job descriptions, Claude's
+      # verdicts (each job is only sent to the API once; again if the job or the brief changes) and the full-time
+      # lead lookups (founders included). GitHub deletes the cache after 7 days without use.
+      - name: Restore cached descriptions, verdicts and leads
+        uses: actions/cache/restore@v4
         with:
-          path: data/details
-          key: contra-details-${{ github.run_id }}
-          restore-keys: contra-details-
-
-      # Claude's verdicts, one per job, so each job is only sent to the API once (re-sent if the job or the brief changes).
-      - name: Restore cached ICP verdicts
-        uses: actions/cache@v4
-        with:
-          path: data/verdicts
-          key: contra-verdicts-${{ github.run_id }}
-          restore-keys: contra-verdicts-
+          path: |
+            data/details
+            data/verdicts
+            data/leads
+          key: contra-data-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: contra-data-
 
       - name: Fetch jobs from the Contra MCP and classify
         env:
@@ -60,6 +56,18 @@ jobs:
           LEAD_LOOKUP: anthropic
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: npm run scrape:ci
+
+      # Saved straight away, even if the scrape failed partway, so a later failing step can't throw away a run's
+      # paid-for verdicts and lookups (a cache saved at the end of the job is lost when any step fails).
+      - name: Save cached descriptions, verdicts and leads
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: |
+            data/details
+            data/verdicts
+            data/leads
+          key: contra-data-${{ github.run_id }}-${{ github.run_attempt }}
 
       # Contra may issue a new refresh token on every use; store it for tomorrow's run.
       # Writing secrets needs a fine-grained PAT with "Secrets: read and write" on this repo.

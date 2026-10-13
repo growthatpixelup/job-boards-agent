@@ -83,9 +83,11 @@ decide which descriptions to fetch), `none` (keep every job) and `openai`. House
 ## Lead sheet
 
 Full-time roles from companies (not private individuals) get a lookup: Claude with web search finds
-the company's website, LinkedIn page and X account, and its founders. The company links appear in
-Slack and the app; each lead is added as a row in the Google Sheet's "Leads" tab, with a blank Status
-column for the team.
+the company's website, LinkedIn page and X account, and its founders. Each company is looked up once
+(cached in `data/leads/`, kept between runs by the Actions cache, never committed). The company links
+appear in Slack and the app; each lead becomes a row in the Google Sheet's "Leads" tab, with a blank
+Status column for the team. Every run sends all current leads and the sheet skips ones it already has,
+so connecting the sheet later, or a failed send, catches up on the next run.
 
 To connect the sheet, once:
 
@@ -95,7 +97,7 @@ To connect the sheet, once:
 4. Add the repository secrets `LEADS_WEBHOOK_URL` (the URL) and `LEADS_WEBHOOK_TOKEN` (the string),
    and optionally the variable `LEADS_SHEET_URL`.
 
-Until then the step logs the leads it would have sent and skips. `LEAD_LOOKUP=anthropic` turns the
+Until then the step logs how many leads it would have sent and skips. `LEAD_LOOKUP=anthropic` turns the
 lookup on (the workflow sets it); `LEAD_MODEL` picks the model (default `claude-sonnet-5-5`).
 
 ## Local use

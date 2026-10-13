@@ -1,3 +1,4 @@
+import { isOutreachLead } from "./lanes.ts";
 import type { Lead } from "./leads.ts";
 import type { ClassifiedJob, Lane, RunResult } from "./types.ts";
 
@@ -90,11 +91,14 @@ const cell = (v: string | number | null | undefined) => {
   return /^[=+\-@]/.test(s) ? `'${s}` : s;
 };
 
-/** One row per announced full-time role, in SHEET_HEADERS order. `leads` holds this run's lookups by job id. */
+/**
+ * One row per current full-time lead (see isOutreachLead), in SHEET_HEADERS order; the sheet skips jobs it
+ * already has. `leads` holds the lookups by job id.
+ */
 export function sheetRows(run: RunResult, leads: Map<string, Lead>): string[][] {
   const found = new Date(run.ranAt).toLocaleDateString("en-CA", { timeZone: "Asia/Kolkata" }); // YYYY-MM-DD
   return run.jobs
-    .filter((j) => j.announce && j.lane === "outreach")
+    .filter(isOutreachLead)
     .map((j) => {
       const lead = leads.get(j.id);
       const people = (lead?.people ?? [])

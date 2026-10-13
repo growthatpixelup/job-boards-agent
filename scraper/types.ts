@@ -91,7 +91,7 @@ export type ClassifiedJob = Job & {
   icp: IcpVerdict;
   /** null for rejected jobs. */
   lane: Lane | null;
-  /** Posted to Slack (and the lead sheet, for outreach) by this run: the job fits and hasn't been announced before. */
+  /** Posted to Slack by this run: the job fits and hasn't been posted before. */
   announce: boolean;
   /** Outreach jobs, when the lead lookup ran. */
   companyLinks?: CompanyLinks;
