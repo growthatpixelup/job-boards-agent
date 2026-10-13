@@ -11,19 +11,20 @@ export const icpCriteria = {
    * At/above `target` = budget fits. `premium` and up earns an extra point.
    */
   budget: {
-    FIXED: { floor: 5_000, target: 10_000, premium: 20_000 }, // $10k = smallest project we take; $25–30k mainline
-    HOURLY: { floor: 50, target: 75, premium: 125 }, // a $25–30k, ~3-week sprint ≈ $100+/hr
+    FIXED: { floor: 1_000, target: 3_500, premium: 20_000 }, // jobs qualify above $3,500 total
+    HOURLY: { floor: 50, target: 50, premium: 125 }, // and at $50/hr or more
     WEEKLY: { floor: 1_000, target: 2_000, premium: 5_000 },
     MONTHLY: { floor: 3_000, target: 4_000, premium: 8_000 }, // retainers from $4k/mo
   } satisfies Partial<Record<BudgetType, { floor: number; target: number; premium: number }>>,
 
   /**
-   * Smallest sprint worth taking, in USD. The LLM classifier caps anything it sizes below this at "maybe",
-   * unless it's an entry project with high growth potential (see icp-brief.md).
+   * The money rule (icp-brief.md). A job qualifies when it pays at least `minHourlyUsd` per hour (for fixed,
+   * weekly and monthly budgets: the budget ÷ the hours the scope needs) and more than `minProjectUsd` in total
+   * (rate × hours). Below that total, only an entry project (high growth potential, at least `entryMinUsd`)
+   * qualifies. The LLM classifier enforces these on whatever the model decided.
    */
-  minProjectUsd: 10_000,
-
-  /** Smallest entry project (a first project that could grow into a sprint) the LLM classifier may qualify, in USD. */
+  minHourlyUsd: 50,
+  minProjectUsd: 3_500,
   entryMinUsd: 1_000,
 
   /** Raised-amount bands in USD millions (doc §2 "Raised"). */

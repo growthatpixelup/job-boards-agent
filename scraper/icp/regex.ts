@@ -240,7 +240,12 @@ export function budgetStatus(job: Job): { status: BudgetStatus; label: string } 
   const unit = { FIXED: "", HOURLY: "/hr", WEEKLY: "/wk", MONTHLY: "/mo" }[b.type];
   const shown = `$${amount.toLocaleString("en-US")}${unit}`;
   if (amount < t.floor) return { status: "below-floor", label: `budget ${shown} is below the $${t.floor.toLocaleString("en-US")}${unit} floor` };
-  if (amount < t.target) return { status: "below-target", label: `budget ${shown} is below the $${t.target.toLocaleString("en-US")}${unit} entry price` };
+  if (amount < t.target) return { status: "below-target", label: `budget ${shown} is below the $${t.target.toLocaleString("en-US")}${unit} minimum` };
+  // An hourly job that states its hours must also clear the minimum total (rate × hours).
+  if (b.type === "HOURLY" && b.estimatedHours && amount * b.estimatedHours <= C.minProjectUsd) {
+    const total = (amount * b.estimatedHours).toLocaleString("en-US");
+    return { status: "below-target", label: `${shown} × ${b.estimatedHours} hrs is ~$${total}, not more than $${C.minProjectUsd.toLocaleString("en-US")}` };
+  }
   if (amount >= t.premium) return { status: "premium", label: `premium budget ${shown}` };
   return { status: "ok", label: `budget ${shown} fits` };
 }
@@ -291,6 +296,8 @@ export function classifyRegex(job: Job, opts: RegexOptions = {}): IcpVerdict {
     serviceLabel = services.map((s) => s.label).join(" + ");
     signals.push(...services.map((s) => `service:${s.id}`));
     if (MIXED_TITLE.test(title)) caps.push(`title mixes design with production/implementation work ("${title}")`);
+    // A logo-only title with a service only in the roles ("Brand Designer") is still a small job.
+    if (WEAK_SERVICES[0].re.test(title) && !SERVICES.some((r) => r.re.test(title))) caps.push(`logo-only title, likely under the $${C.minProjectUsd.toLocaleString("en-US")} minimum`);
     if (services.length >= 2) add({ id: "multi-service", label: "multi-service scope", weight: 1 });
   } else if (weak.length && !OUT_OF_SCOPE.test(head)) {
     serviceLabel = weak.map((w) => w.label).join(" + ");

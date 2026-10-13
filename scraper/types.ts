@@ -45,11 +45,11 @@ export type GrowthPotential = "high" | "medium" | "low" | "none";
 
 /**
  * What we do with a job that fits:
- *   sprint   apply on Contra: a $10k+ sprint
- *   entry    apply on Contra: small now, from a client that could grow into a sprint (land and expand)
- *   outreach full-time role: don't apply; reach out to the company off Contra and pitch a sprint
+ *   project  apply on Contra: meets the money rule ($50/hr+, more than $3,500 total)
+ *   entry    apply on Contra: small now ($3,500 or less), from a client that could grow (land and expand)
+ *   outreach full-time role: don't apply; reach out to the company off Contra and pitch a project
  */
-export type Lane = "sprint" | "entry" | "outreach";
+export type Lane = "project" | "entry" | "outreach";
 
 /** Public links for the company behind an outreach job. People found by the lookup go only to the lead sheet. */
 export interface CompanyLinks {
@@ -68,12 +68,16 @@ export interface IcpVerdict {
   /** Machine-readable rule ids that fired, e.g. "reject:crypto", "+ai-native". */
   signals: string[];
   classifier: string;
-  /** LLM classifiers only: how big the work is. */
+  /** LLM classifiers only: what the work is and what it pays (the money rule in icp-brief.md). */
   project?: {
     sprintTypes: ("brand" | "website" | "product-design-dev")[];
     /** The deliverables the post actually asks for. */
     scope: string;
-    /** Estimated total project value in USD. */
+    /** The posted hourly rate, or the budget ÷ the hours the scope needs. */
+    hourlyRateUsd: number | null;
+    /** The hours the post states, or the hours the scope realistically needs. */
+    estimatedHours: number | null;
+    /** Total in USD: rate × hours. */
     estimatedValueUsd: number | null;
     /** How the estimate was reached. */
     basis: string;
@@ -83,6 +87,8 @@ export interface IcpVerdict {
     growthPotential: GrowthPotential;
     /** The likely path, e.g. "logo → brand sprint → marketing site"; empty when there is none. */
     growthPath: string;
+    /** Flags for the team (B2C, crypto, agency, on-site…); they don't change the decision. */
+    concerns: string[];
   };
 }
 

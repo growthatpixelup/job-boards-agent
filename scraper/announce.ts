@@ -8,9 +8,9 @@ import type { ClassifiedJob, Lane, RunResult } from "./types.ts";
 const MAX_PER_LANE = 10; // keep the message readable; the rest are summarized
 
 const SECTIONS: { lane: Lane; title: string; noun: string }[] = [
-  { lane: "sprint", title: "🎯 Apply on Contra: sprints", noun: "sprint" },
+  { lane: "project", title: "🎯 Apply on Contra: projects ($50/hr+, over $3,500)", noun: "project" },
   { lane: "entry", title: "🌱 Apply on Contra: entry projects (small now, could grow)", noun: "entry project" },
-  { lane: "outreach", title: "📇 Full-time roles: don't apply, reach out off Contra and pitch a sprint", noun: "full-time lead" },
+  { lane: "outreach", title: "📇 Full-time roles: don't apply, reach out off Contra and pitch a project", noun: "full-time lead" },
 ];
 
 function money(n: number): string {
@@ -25,11 +25,15 @@ function budget(b: ClassifiedJob["budget"]): string {
   return range + { FIXED: " fixed", HOURLY: "/hr", WEEKLY: "/wk", MONTHLY: "/mo", UNKNOWN: "" }[b.type];
 }
 
-/** Claude's size estimate, e.g. "~$25,000 · brand + website: rebrand and 8-page marketing site". */
+/** Claude's sizing, e.g. "~$4,800 ($60/hr × ~80 hrs) · website: 10-page marketing site". */
 function size(j: ClassifiedJob): string | null {
   const p = j.icp.project;
   if (!p) return null;
-  const value = p.estimatedValueUsd != null ? `~${money(p.estimatedValueUsd)}` : "size unclear";
+  const { hourlyRateUsd: rate, estimatedHours: hours, estimatedValueUsd: total } = p;
+  // Shown only when it adds up, so a mismatched estimate never reads as arithmetic.
+  const adds = rate != null && hours != null && total != null && Math.abs(rate * hours - total) <= 0.1 * total;
+  const working = adds ? ` (${money(rate)}/hr × ~${hours.toLocaleString("en-US")} hrs)` : "";
+  const value = total != null ? `~${money(total)}${working}` : "size unclear";
   const kind = p.sprintTypes.join(" + ");
   return `${value}${kind ? ` · ${kind}` : ""}${p.scope ? `: ${p.scope}` : ""}`;
 }
@@ -46,6 +50,8 @@ function line(j: ClassifiedJob): string {
   const est = size(j);
   if (est) rows.push(`  ${est}`);
   if (j.lane === "entry" && j.icp.project?.growthPath) rows.push(`  Could grow: ${j.icp.project.growthPath}`);
+  const concerns = j.icp.project?.concerns ?? [];
+  if (concerns.length) rows.push(`  ⚠ ${concerns.join(" · ")}`);
   if (j.lane === "outreach") rows.push(`  ${companyLinks(j)}`);
   rows.push(`  ${j.url}`);
   return rows.join("\n");

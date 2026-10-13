@@ -141,7 +141,7 @@ async function main() {
 
   const unfiltered = classifier.name === "none";
   const toAnnounce = kept.filter((j) => j.announce);
-  const byLane = (["sprint", "entry", "outreach"] as Lane[])
+  const byLane = (["project", "entry", "outreach"] as Lane[])
     .map((l) => [l, toAnnounce.filter((j) => j.lane === l).length] as const)
     .filter(([, n]) => n)
     .map(([l, n]) => `${n} ${l}`);

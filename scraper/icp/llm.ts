@@ -19,14 +19,29 @@ const BRIEF = readFileSync(path.join(import.meta.dirname, "icp-brief.md"), "utf8
 
 export const SYSTEM_PROMPT = `You qualify freelance job posts from Contra for Pixelup Labs, a design studio.
 You see every job on the Contra board, unfiltered, and most are not for us: reject those quickly and save your judgment for the ones that could be.
-Decide whether each job is worth Pixelup's time, using only the brief below and the job you are given.
+Decide whether each job qualifies, using only the brief below and the job you are given.
 
 ${BRIEF}
 
-Judge the client (who posted the job) and the core ask, not incidental words. Quote short evidence from the job in your reasons.
-Size the project from what the post actually asks for, not from its title or hourly rate.
+Decide on the core ask and the money, not incidental words; judge the client only for the tier, growth potential and concerns.
+Quote short evidence from the job in your reasons. Estimate the hours from what the post actually asks for, not from its title.
 Do not assume facts the post does not support: if funding, stage or B2B status isn't stated, treat it as unknown rather than as a positive.
 Respond with JSON matching the schema.`;
+
+const nullableNumber = { anyOf: [{ type: "number" }, { type: "null" }] } as const;
+
+/** The concerns the model can flag (icp-brief.md, "Concerns"), by id, with how Slack and the app show them. */
+export const CONCERNS = {
+  b2c: "B2C / consumer brand",
+  crypto: "crypto / web3",
+  "pre-pmf": "pre-PMF or unfunded",
+  agency: "agency / white-label work",
+  committee: "RFP or committee buyer",
+  "on-site": "on-site or local only",
+  "growth-ask": "expects design to drive leads/SEO/ads",
+  "cost-shopper": "cost-shopper language",
+  "locked-design": "locked brand or finished designs",
+} as const;
 
 export const VERDICT_SCHEMA = {
   type: "object",
@@ -36,11 +51,19 @@ export const VERDICT_SCHEMA = {
     sprint_types: {
       type: "array",
       items: { type: "string", enum: ["brand", "website", "product-design-dev"] },
-      description: "Which of our sprints the work maps to; empty if none.",
+      description: "Which kinds of our work the job is; empty if none.",
     },
     scope: { type: "string", description: "One line: the deliverables the post actually asks for." },
-    estimated_value_usd: { type: "number", description: "Estimated total project value in USD (see Project size in the brief)." },
-    value_basis: { type: "string", description: "One line: how the estimate was reached, e.g. \"$100/hr × ~15 hrs for 3 screens\"." },
+    hourly_rate_usd: {
+      ...nullableNumber,
+      description: "The stated hourly rate (top of the range), or the budget ÷ estimated_hours; null only if no budget is stated.",
+    },
+    estimated_hours: {
+      type: "number",
+      description: "The hours the post states, or else the hours the described scope realistically needs. Always one number (the middle of a range).",
+    },
+    estimated_value_usd: { ...nullableNumber, description: "The total in USD: hourly_rate_usd × estimated_hours; null only if no budget is stated." },
+    value_basis: { type: "string", description: "One line: the working, e.g. \"$60/hr × ~80 hrs for a 10-page marketing site\"." },
     full_time: { type: "boolean", description: "True if the post is for a full-time / in-house role." },
     growth_potential: {
       type: "string",
@@ -50,11 +73,15 @@ export const VERDICT_SCHEMA = {
     growth_path: { type: "string", description: "The likely next steps, e.g. \"logo → brand sprint → marketing site\"; empty if none." },
     confidence: { type: "number", description: "0 to 1" },
     reasons: { type: "array", items: { type: "string" }, description: "Most important first, each citing evidence from the post." },
-    deal_breakers: { type: "array", items: { type: "string" }, description: "Deal-breakers from the brief that apply; empty if none." },
+    concerns: {
+      type: "array",
+      items: { type: "string", enum: Object.keys(CONCERNS) },
+      description: "Ids of the concerns from the brief that apply; empty if none.",
+    },
   },
   required: [
-    "decision", "tier", "sprint_types", "scope", "estimated_value_usd", "value_basis", "full_time",
-    "growth_potential", "growth_path", "confidence", "reasons", "deal_breakers",
+    "decision", "tier", "sprint_types", "scope", "hourly_rate_usd", "estimated_hours", "estimated_value_usd", "value_basis",
+    "full_time", "growth_potential", "growth_path", "confidence", "reasons", "concerns",
   ],
   additionalProperties: false,
 } as const;
@@ -74,41 +101,69 @@ export function jobPrompt(job: Job): string {
   return `Classify this Contra job post:\n\n${JSON.stringify(post, null, 2)}`;
 }
 
-export function parseVerdict(text: string, classifier: string): IcpVerdict {
+const usd = (n: number) => `$${n.toLocaleString("en-US", { maximumFractionDigits: 2 })}`;
+const num = (v: unknown, digits = 0) => (typeof v === "number" && Number.isFinite(v) ? Number(v.toFixed(digits)) : null);
+
+/** Why a job fails the money rule (icp-brief.md), or null when it meets it or is an entry project. */
+export function moneyShortfall(rate: number | null, value: number | null, growth: GrowthPotential): string | null {
+  const C = icpCriteria;
+  if (rate == null || value == null) return "the rate or total couldn't be worked out from the post";
+  if (rate < C.minHourlyUsd) return `~${usd(rate)}/hr is below the ${usd(C.minHourlyUsd)}/hr minimum`;
+  if (value > C.minProjectUsd) return null;
+  if (growth !== "high") return `~${usd(value)} total isn't more than ${usd(C.minProjectUsd)} and growth potential is ${growth}`;
+  if (value < C.entryMinUsd) return `~${usd(value)} is below the ${usd(C.entryMinUsd)} minimum for an entry project`;
+  return null;
+}
+
+/**
+ * The money rule's numbers. The model's judgment is the hours the scope needs; the arithmetic is done here from
+ * the posted budget (the top of its range) where it can be: an hourly job's rate × hours, a fixed budget ÷ hours.
+ * Weekly, monthly and full-time pay keep the model's own rate and total.
+ */
+function money(json: Record<string, unknown>, job?: Job): { rate: number | null; hours: number | null; value: number | null } {
+  const hours = num(json.estimated_hours);
+  const b = job?.budget;
+  const posted = b ? (b.feeMax ?? b.feeMin) : null;
+  if (b?.type === "HOURLY" && posted != null) return { rate: posted, hours, value: hours != null ? Math.round(posted * hours) : null };
+  if (b?.type === "FIXED" && posted != null) return { rate: hours ? num(posted / hours, 2) : null, hours, value: posted };
+  return { rate: num(json.hourly_rate_usd, 2), hours, value: num(json.estimated_value_usd) };
+}
+
+/** `job` (when given) supplies the posted budget, which the money rule is worked out from (see money()). */
+export function parseVerdict(text: string, classifier: string, job?: Job): IcpVerdict {
   const json = JSON.parse(text.slice(text.indexOf("{"), text.lastIndexOf("}") + 1));
   let decision = ["qualified", "maybe", "rejected"].includes(json.decision) ? json.decision : "maybe";
   const tier = decision !== "rejected" && ["carol", "diana", "eddie"].includes(json.tier) ? json.tier : null;
   const confidence = Math.min(1, Math.max(0, Number(json.confidence) || 0));
-  const value = Number.isFinite(json.estimated_value_usd) ? Math.round(json.estimated_value_usd) : null;
   const growth: GrowthPotential = ["high", "medium", "low", "none"].includes(json.growth_potential) ? json.growth_potential : "none";
-  const reasons = [...(json.deal_breakers ?? []).map((d: string) => `deal-breaker: ${d}`), ...(json.reasons ?? [])];
-  // Guardrail, whatever the model decided: below the minimum project size, only an entry project
-  // (high growth potential, at least the entry minimum) may stay "qualified".
-  const usd = (n: number) => `$${n.toLocaleString("en-US")}`;
-  if (decision === "qualified" && value != null && value < icpCriteria.minProjectUsd) {
-    if (growth !== "high") {
-      decision = "maybe";
-      reasons.push(`⚠ estimated ~${usd(value)} is below the ${usd(icpCriteria.minProjectUsd)} minimum and growth potential is ${growth}`);
-    } else if (value < icpCriteria.entryMinUsd) {
-      decision = "maybe";
-      reasons.push(`⚠ estimated ~${usd(value)} is below the ${usd(icpCriteria.entryMinUsd)} minimum for an entry project`);
-    }
+  const { rate, hours, value } = money(json, job);
+  const ids = [...new Set<string>(Array.isArray(json.concerns) ? json.concerns : [])].filter((c) => Object.hasOwn(CONCERNS, c));
+  const concerns = ids.map((c) => CONCERNS[c as keyof typeof CONCERNS]);
+  const reasons = [...(json.reasons ?? []), ...concerns.map((c) => `⚠ ${c}`)];
+  // The money rule, whatever the model decided: only a job that meets it, or an entry project, stays "qualified".
+  const shortfall = decision === "qualified" ? moneyShortfall(rate, value, growth) : null;
+  if (shortfall) {
+    decision = "maybe";
+    reasons.push(`⚠ ${shortfall}`);
   }
   return {
     decision,
     tier,
     score: Math.round(confidence * 10),
     reasons,
-    signals: (json.deal_breakers ?? []).map((d: string) => `llm-reject:${d}`),
+    signals: ids.map((c) => `concern:${c}`),
     classifier,
     project: {
       sprintTypes: Array.isArray(json.sprint_types) ? json.sprint_types : [],
       scope: json.scope ?? "",
+      hourlyRateUsd: rate,
+      estimatedHours: hours,
       estimatedValueUsd: value,
       basis: json.value_basis ?? "",
       fullTime: json.full_time === true,
       growthPotential: growth,
       growthPath: typeof json.growth_path === "string" ? json.growth_path : "",
+      concerns,
     },
   };
 }
@@ -154,7 +209,7 @@ export function createLlmClassifier(provider: LlmProvider, name: string, opts: L
     }
     try {
       const text = await provider({ system: SYSTEM_PROMPT, user, schema: VERDICT_SCHEMA });
-      const verdict = parseVerdict(text, name);
+      const verdict = parseVerdict(text, name, job);
       if (cacheDir && file) {
         await mkdir(cacheDir, { recursive: true });
         await writeFile(file, JSON.stringify({ key, verdict }));

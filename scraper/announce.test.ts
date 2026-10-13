@@ -8,8 +8,10 @@ import type { ClassifiedJob, IcpVerdict, Job, RunResult } from "./types.ts";
 
 // Lanes, the announce-once rule, and what reaches Slack and the lead sheet.
 
-function verdict(p: Partial<IcpVerdict> & { value?: number | null; fullTime?: boolean; growthPath?: string } = {}): IcpVerdict {
-  const { value = 25_000, fullTime = false, growthPath = "", ...rest } = p;
+function verdict(
+  p: Partial<IcpVerdict> & { value?: number | null; fullTime?: boolean; growthPath?: string; concerns?: string[] } = {},
+): IcpVerdict {
+  const { value = 25_000, fullTime = false, growthPath = "", concerns = [], ...rest } = p;
   return {
     decision: "qualified",
     tier: "diana",
@@ -18,8 +20,8 @@ function verdict(p: Partial<IcpVerdict> & { value?: number | null; fullTime?: bo
     signals: [],
     classifier: "test",
     project: {
-      sprintTypes: ["brand"], scope: "rebrand", estimatedValueUsd: value, basis: "fixed", fullTime,
-      growthPotential: growthPath ? "high" : "none", growthPath,
+      sprintTypes: ["brand"], scope: "rebrand", hourlyRateUsd: 100, estimatedHours: value == null ? null : value / 100,
+      estimatedValueUsd: value, basis: "fixed", fullTime, growthPotential: growthPath ? "high" : "none", growthPath, concerns,
     },
     ...rest,
   };
@@ -55,17 +57,19 @@ const run = (jobs: ClassifiedJob[]): RunResult => ({
 });
 
 describe("lanes", () => {
-  it("sorts fitting jobs into sprint, entry and outreach", () => {
-    assert.equal(laneOf(verdict()), "sprint");
+  it("sorts fitting jobs into project, entry and outreach", () => {
+    assert.equal(laneOf(verdict()), "project");
+    assert.equal(laneOf(verdict({ value: 3_600 })), "project");
+    assert.equal(laneOf(verdict({ value: 3_500 })), "entry"); // the money rule needs more than $3,500
     assert.equal(laneOf(verdict({ value: 2_500 })), "entry");
     assert.equal(laneOf(verdict({ fullTime: true, value: 60_000 })), "outreach");
     assert.equal(laneOf(verdict({ decision: "rejected" })), null);
     assert.equal(laneOf({ ...verdict(), project: undefined, signals: ["flag:full-time"] }), "outreach"); // regex verdicts
   });
 
-  it("acts on qualified sprints and entry projects, and on full-time roles even as a maybe", () => {
-    assert.ok(isActionable({ icp: verdict(), lane: "sprint" }));
-    assert.ok(!isActionable({ icp: verdict({ decision: "maybe" }), lane: "sprint" }));
+  it("acts on qualified projects and entry projects, and on full-time roles even as a maybe", () => {
+    assert.ok(isActionable({ icp: verdict(), lane: "project" }));
+    assert.ok(!isActionable({ icp: verdict({ decision: "maybe" }), lane: "project" }));
     assert.ok(!isActionable({ icp: verdict({ decision: "maybe", value: 2_500 }), lane: "entry" }));
     assert.ok(isActionable({ icp: verdict({ decision: "maybe", fullTime: true }), lane: "outreach" }));
   });
@@ -82,7 +86,7 @@ describe("lanes", () => {
 });
 
 describe("Slack message", () => {
-  const sprint = toClassified(job("s", { title: "Rebrand for AI infra startup" }), verdict(), none, none);
+  const sprint = toClassified(job("s", { title: "Rebrand for AI infra startup" }), verdict({ concerns: ["B2C brand", "on-site in NYC"] }), none, none);
   const entry = toClassified(job("e", { title: "Logo for funded devtool" }), verdict({ value: 2_500, growthPath: "logo → brand sprint → site" }), none, none);
   const outreach = {
     ...toClassified(job("o", { title: "Founding product designer" }), verdict({ fullTime: true, value: 60_000 }), none, none),
@@ -92,13 +96,23 @@ describe("Slack message", () => {
 
   it("groups announced jobs by lane, with the growth path and company links", () => {
     const { summary, jobs } = slackMessage(run([outreach, old, entry, sprint]), "https://docs.google.com/spreadsheets/d/abc");
-    assert.match(summary, /^3 Contra jobs to act on \(1 sprint, 1 entry project, 1 full-time lead\)/);
-    const order = ["Apply on Contra: sprints", "entry projects", "Full-time roles"].map((t) => jobs.indexOf(t));
+    assert.match(summary, /^3 Contra jobs to act on \(1 project, 1 entry project, 1 full-time lead\)/);
+    const order = ["Apply on Contra: projects", "entry projects", "Full-time roles"].map((t) => jobs.indexOf(t));
     assert.ok(order.every((i, n) => i >= 0 && (n === 0 || i > order[n - 1])), "sections in lane order");
+    assert.match(jobs, /~\$25,000 \(\$100\/hr × ~250 hrs\) · brand: rebrand/);
+    assert.match(jobs, /⚠ B2C brand · on-site in NYC/);
     assert.match(jobs, /Could grow: logo → brand sprint → site/);
     assert.match(jobs, /Site: https:\/\/acme\.ai\/ · LinkedIn: https:\/\/www\.linkedin\.com\/company\/acme-ai\//);
     assert.match(jobs, /lead sheet: https:\/\/docs\.google\.com/);
     assert.ok(!jobs.includes("Job x"), "already-announced jobs aren't repeated");
+  });
+
+  it("shows rate × hours only when it adds up to the total", () => {
+    const v = verdict({ fullTime: true, value: 60_000 });
+    const mismatched = toClassified(job("m", { title: "FT designer" }), { ...v, project: { ...v.project!, hourlyRateUsd: 58, estimatedHours: 173 } }, none, none);
+    const { jobs } = slackMessage(run([mismatched]));
+    assert.match(jobs, /~\$60,000 · brand/);
+    assert.ok(!jobs.includes("/hr ×"), jobs);
   });
 
   it("says so when there is nothing to act on", () => {

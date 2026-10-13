@@ -7,11 +7,11 @@ export function laneOf(icp: IcpVerdict): Lane | null {
   if (icp.decision === "rejected") return null;
   if (icp.project?.fullTime || icp.signals.includes("flag:full-time")) return "outreach";
   const value = icp.project?.estimatedValueUsd;
-  return value != null && value < icpCriteria.minProjectUsd ? "entry" : "sprint";
+  return value != null && value <= icpCriteria.minProjectUsd ? "entry" : "project";
 }
 
 /**
- * Worth acting on now: qualified sprints and entry projects, plus full-time roles at companies that fit even
+ * Worth acting on now: qualified projects and entry projects, plus full-time roles at companies that fit even
  * as a "maybe" (the role shows they're spending on design, and reaching out costs little).
  */
 export function isActionable(job: Pick<ClassifiedJob, "icp" | "lane">): boolean {
