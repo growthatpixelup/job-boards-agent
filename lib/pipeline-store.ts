@@ -13,7 +13,7 @@ const PIPELINE_PATH = "data/pipeline.json";
 const github = process.env.PIPELINE_GITHUB_TOKEN
   ? {
       token: process.env.PIPELINE_GITHUB_TOKEN,
-      repo: process.env.PIPELINE_GITHUB_REPO ?? "growthatpixelup/job-boards-agent",
+      repo: process.env.PIPELINE_GITHUB_REPO ?? "PIXELUPLABS/contra-scrapper",
       branch: process.env.PIPELINE_GITHUB_BRANCH ?? "main",
     }
   : null;

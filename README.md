@@ -134,7 +134,7 @@ Jobs that have left Contra's board stay, marked "off the board". `/latest` shows
 Running locally, a stage change writes `data/pipeline.json`; commit and push it to share. A hosted copy
 (e.g. Vercel) can't keep files, so set `PIPELINE_GITHUB_TOKEN` (fine-grained PAT for this repo, Contents:
 Read and write) and each change is committed to the repo instead (`PIPELINE_GITHUB_REPO` and
-`PIPELINE_GITHUB_BRANCH` default to `growthatpixelup/job-boards-agent` and `main`). It refuses to save until
+`PIPELINE_GITHUB_BRANCH` default to `PIXELUPLABS/contra-scrapper` and `main`). It refuses to save until
 `DASHBOARD_PASSWORD` is set, which puts a password on every page (any username). The scrape workflow rebases
 onto those commits before pushing its own. New scrape data reaches a hosted copy when it redeploys.
 
