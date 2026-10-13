@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { readFileSync } from "node:fs";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
-import type { IcpVerdict, Job } from "../types.ts";
+import type { GrowthPotential, IcpVerdict, Job } from "../types.ts";
 import { icpCriteria } from "./criteria.ts";
 import { classifyRegex } from "./regex.ts";
 
@@ -18,7 +18,8 @@ export type LlmProvider = (req: { system: string; user: string; schema: Record<s
 const BRIEF = readFileSync(path.join(import.meta.dirname, "icp-brief.md"), "utf8");
 
 export const SYSTEM_PROMPT = `You qualify freelance job posts from Contra for Pixelup Labs, a design studio.
-Decide whether each job fits Pixelup's ideal client profile, using only the brief below and the job you are given.
+You see every job on the Contra board, unfiltered, and most are not for us: reject those quickly and save your judgment for the ones that could be.
+Decide whether each job is worth Pixelup's time, using only the brief below and the job you are given.
 
 ${BRIEF}
 
@@ -41,11 +42,20 @@ export const VERDICT_SCHEMA = {
     estimated_value_usd: { type: "number", description: "Estimated total project value in USD (see Project size in the brief)." },
     value_basis: { type: "string", description: "One line: how the estimate was reached, e.g. \"$100/hr × ~15 hrs for 3 screens\"." },
     full_time: { type: "boolean", description: "True if the post is for a full-time / in-house role." },
+    growth_potential: {
+      type: "string",
+      enum: ["high", "medium", "low", "none"],
+      description: "How likely this grows into a sprint or retainer (see Entry projects in the brief).",
+    },
+    growth_path: { type: "string", description: "The likely next steps, e.g. \"logo → brand sprint → marketing site\"; empty if none." },
     confidence: { type: "number", description: "0 to 1" },
     reasons: { type: "array", items: { type: "string" }, description: "Most important first, each citing evidence from the post." },
     deal_breakers: { type: "array", items: { type: "string" }, description: "Deal-breakers from the brief that apply; empty if none." },
   },
-  required: ["decision", "tier", "sprint_types", "scope", "estimated_value_usd", "value_basis", "full_time", "confidence", "reasons", "deal_breakers"],
+  required: [
+    "decision", "tier", "sprint_types", "scope", "estimated_value_usd", "value_basis", "full_time",
+    "growth_potential", "growth_path", "confidence", "reasons", "deal_breakers",
+  ],
   additionalProperties: false,
 } as const;
 
@@ -70,11 +80,19 @@ export function parseVerdict(text: string, classifier: string): IcpVerdict {
   const tier = decision !== "rejected" && ["carol", "diana", "eddie"].includes(json.tier) ? json.tier : null;
   const confidence = Math.min(1, Math.max(0, Number(json.confidence) || 0));
   const value = Number.isFinite(json.estimated_value_usd) ? Math.round(json.estimated_value_usd) : null;
+  const growth: GrowthPotential = ["high", "medium", "low", "none"].includes(json.growth_potential) ? json.growth_potential : "none";
   const reasons = [...(json.deal_breakers ?? []).map((d: string) => `deal-breaker: ${d}`), ...(json.reasons ?? [])];
-  // Guardrail: never "qualified" below the minimum project size, whatever the model decided.
+  // Guardrail, whatever the model decided: below the minimum project size, only an entry project
+  // (high growth potential, at least the entry minimum) may stay "qualified".
+  const usd = (n: number) => `$${n.toLocaleString("en-US")}`;
   if (decision === "qualified" && value != null && value < icpCriteria.minProjectUsd) {
-    decision = "maybe";
-    reasons.push(`⚠ estimated ~$${value.toLocaleString("en-US")} is below the $${icpCriteria.minProjectUsd.toLocaleString("en-US")} minimum`);
+    if (growth !== "high") {
+      decision = "maybe";
+      reasons.push(`⚠ estimated ~${usd(value)} is below the ${usd(icpCriteria.minProjectUsd)} minimum and growth potential is ${growth}`);
+    } else if (value < icpCriteria.entryMinUsd) {
+      decision = "maybe";
+      reasons.push(`⚠ estimated ~${usd(value)} is below the ${usd(icpCriteria.entryMinUsd)} minimum for an entry project`);
+    }
   }
   return {
     decision,
@@ -89,6 +107,8 @@ export function parseVerdict(text: string, classifier: string): IcpVerdict {
       estimatedValueUsd: value,
       basis: json.value_basis ?? "",
       fullTime: json.full_time === true,
+      growthPotential: growth,
+      growthPath: typeof json.growth_path === "string" ? json.growth_path : "",
     },
   };
 }
@@ -117,18 +137,14 @@ async function readCached(file: string, key: string): Promise<IcpVerdict | null>
 export const LLM_FAILED = "llm-failed";
 
 export interface LlmClassifierOptions {
-  /** Skip the LLM for jobs the regex classifier hard-rejects (out-of-scope, crypto, budget floor…). Default true. */
-  regexPrefilter?: boolean;
   /** Where to cache verdicts; null disables the cache. Default VERDICTS_DIR. */
   cacheDir?: string | null;
 }
 
+/** The LLM judges every job itself: no regex pre-cut. The regex rules only stand in when a call fails. */
 export function createLlmClassifier(provider: LlmProvider, name: string, opts: LlmClassifierOptions = {}) {
-  const prefilter = opts.regexPrefilter ?? true;
   const cacheDir = opts.cacheDir === undefined ? VERDICTS_DIR : opts.cacheDir;
   return async (job: Job): Promise<IcpVerdict> => {
-    const regex = classifyRegex(job);
-    if (prefilter && regex.decision === "rejected") return { ...regex, classifier: `${name} (regex prefilter)` };
     const user = jobPrompt(job);
     const key = promptKey(name, user);
     const file = cacheDir && path.join(cacheDir, `${job.id}.json`);
@@ -146,7 +162,8 @@ export function createLlmClassifier(provider: LlmProvider, name: string, opts: L
       return verdict;
     } catch (err) {
       // Only jobs Claude has read may be "qualified" (and so reach Slack): cap the rubric's verdict at "maybe".
-      // run.ts leaves these jobs unseen, so the next run retries them and can still post them as new.
+      // run.ts leaves these jobs unseen and unannounced, so the next run retries them.
+      const regex = classifyRegex(job);
       return {
         ...regex,
         decision: regex.decision === "qualified" ? "maybe" : regex.decision,

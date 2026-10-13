@@ -304,20 +304,32 @@ describe("LLM classifier plumbing (fake provider)", () => {
     assert.deepEqual([v.decision, v.tier, v.score], ["qualified", "diana", 8]);
   });
 
-  it("skips the LLM for regex hard-rejects and falls back to regex on errors", async () => {
+  it("sends every job to the LLM (one layer, no regex pre-cut) and falls back to regex on errors", async () => {
     let calls = 0;
-    const failing = createLlmClassifier(async () => {
-      calls++;
-      throw new Error("boom");
-    }, "fake");
-    assert.equal((await failing(job({ title: "Video editor", roles: ["Video Editor"] }))).decision, "rejected");
-    assert.equal(calls, 0);
+    const failing = createLlmClassifier(
+      async () => {
+        calls++;
+        throw new Error("boom");
+      },
+      "fake",
+      { cacheDir: null },
+    );
+    // A small budget the regex floor rejects outright still reaches the LLM: it could be an entry project.
+    await failing(job({ title: "Logo for our Series A AI startup", roles: ["Logo Designer"], budget: ["FIXED", 1_500, 2_000] }));
+    await failing(job({ title: "Video editor", roles: ["Video Editor"] }));
+    assert.equal(calls, 2);
     const v = await failing(good);
-    assert.equal(calls, 1);
     assert.match(v.classifier, /fell back to regex/);
     assert.ok(v.signals.includes(LLM_FAILED));
     assert.notEqual(v.decision, "qualified"); // only jobs the LLM has read may qualify (and reach Slack)
   });
+
+  const verdict = (fields: object) =>
+    JSON.stringify({
+      decision: "qualified", tier: "diana", sprint_types: ["brand"], scope: "logo", estimated_value_usd: 2_500,
+      value_basis: "fixed", full_time: false, growth_potential: "none", growth_path: "", confidence: 0.8,
+      reasons: ["B2B"], deal_breakers: [], ...fields,
+    });
 
   it("caps a qualified verdict below the $10,000 minimum at maybe", () => {
     const v = parseVerdict(
@@ -326,6 +338,20 @@ describe("LLM classifier plumbing (fake provider)", () => {
     );
     assert.equal(v.decision, "maybe");
     assert.equal(v.project?.estimatedValueUsd, 1500);
+    assert.equal(v.project?.growthPotential, "none");
+  });
+
+  it("keeps a small entry project qualified when growth potential is high", () => {
+    const v = parseVerdict(verdict({ growth_potential: "high", growth_path: "logo → brand sprint → site" }), "test");
+    assert.equal(v.decision, "qualified");
+    assert.deepEqual([v.project?.growthPotential, v.project?.growthPath], ["high", "logo → brand sprint → site"]);
+  });
+
+  it("caps small jobs at maybe unless growth potential is high and the entry minimum is met", () => {
+    assert.equal(parseVerdict(verdict({ growth_potential: "medium" }), "test").decision, "maybe");
+    const tiny = parseVerdict(verdict({ growth_potential: "high", estimated_value_usd: 600 }), "test");
+    assert.equal(tiny.decision, "maybe");
+    assert.match(tiny.reasons.at(-1)!, /entry project/);
   });
 
   it("caches verdicts per job and re-asks when the job changes", async () => {

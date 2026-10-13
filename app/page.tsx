@@ -2,7 +2,7 @@ import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { connection } from "next/server";
 import { Suspense } from "react";
-import type { IcpDecision, Job, RunResult } from "@/scraper/types.ts";
+import type { ClassifiedJob, IcpDecision, Job, Lane, RunResult } from "@/scraper/types.ts";
 
 async function loadLatest(): Promise<RunResult | null> {
   try {
@@ -25,6 +25,31 @@ const DECISION_STYLE: Record<IcpDecision, string> = {
   maybe: "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100",
   rejected: "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300",
 };
+
+const LANE_BADGE: Partial<Record<Lane, { label: string; title: string; style: string }>> = {
+  entry: {
+    label: "entry",
+    title: "Small now, from a client that could grow into a sprint",
+    style: "bg-teal-100 text-teal-800 dark:bg-teal-900 dark:text-teal-100",
+  },
+  outreach: {
+    label: "full-time",
+    title: "Reach out on a different platform instead of applying on Contra",
+    style: "bg-violet-100 text-violet-800 dark:bg-violet-900 dark:text-violet-100",
+  },
+};
+
+function LaneBadge({ job }: { job: ClassifiedJob }) {
+  // Runs from before lanes existed only flagged full-time roles.
+  const lane = job.lane ?? (job.icp?.project?.fullTime ? "outreach" : null);
+  const badge = lane && LANE_BADGE[lane];
+  if (!badge) return null;
+  return (
+    <span className={`rounded px-2 py-0.5 text-xs ${badge.style}`} title={badge.title}>
+      {badge.label}
+    </span>
+  );
+}
 
 async function JobList() {
   await connection();
@@ -65,14 +90,7 @@ async function JobList() {
                     {job.icp.tier && ` · ${job.icp.tier}`}
                   </span>
                 )}
-                {job.icp?.project?.fullTime && (
-                  <span
-                    className="rounded bg-violet-100 px-2 py-0.5 text-xs text-violet-800 dark:bg-violet-900 dark:text-violet-100"
-                    title="Reach out on a different platform instead of applying on Contra"
-                  >
-                    full-time
-                  </span>
-                )}
+                <LaneBadge job={job} />
                 {job.isNew && (
                   <span className="rounded bg-emerald-100 px-2 py-0.5 text-xs text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100">
                     new
@@ -97,6 +115,22 @@ async function JobList() {
                 {job.icp.project.basis && (
                   <span className="block text-xs text-zinc-500">{job.icp.project.basis}</span>
                 )}
+                {job.icp.project.growthPath && job.icp.project.growthPotential !== "none" && (
+                  <span className="block text-xs text-zinc-500">
+                    Could grow ({job.icp.project.growthPotential}): {job.icp.project.growthPath}
+                  </span>
+                )}
+              </p>
+            )}
+            {job.companyLinks && (
+              <p className="mt-2 flex gap-3 text-xs">
+                {([["Website", job.companyLinks.website], ["LinkedIn", job.companyLinks.linkedin], ["X", job.companyLinks.x]] as const)
+                  .filter(([, href]) => href)
+                  .map(([label, href]) => (
+                    <a key={label} href={href!} target="_blank" rel="noreferrer" className="underline hover:no-underline">
+                      {label}
+                    </a>
+                  ))}
               </p>
             )}
             {(job.roles.length > 0 || job.tools.length > 0) && (

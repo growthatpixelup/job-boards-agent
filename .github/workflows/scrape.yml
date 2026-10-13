@@ -18,7 +18,9 @@ concurrency:
 jobs:
   scrape:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # Claude reads every job once. After a change to the brief it re-reads the whole board (~230 jobs, the slow
+    # case); otherwise only the few new ones.
+    timeout-minutes: 45
     steps:
       - uses: actions/checkout@v4
 
@@ -54,6 +56,8 @@ jobs:
           CONTRA_REFRESH_TOKEN_OUT: ${{ runner.temp }}/contra-refresh-token
           ICP_CLASSIFIER: anthropic
           ICP_MODEL: claude-sonnet-5-5
+          # Full-time roles: find the company's site, LinkedIn, X and founders (web search, contra.com blocked).
+          LEAD_LOOKUP: anthropic
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: npm run scrape:ci
 
@@ -74,15 +78,27 @@ jobs:
           echo "Stored the new refresh token."
 
       - name: Commit updated job data
+        id: commit
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898341+github-actions[bot]@users.noreply.github.com"
-          git add -A data # latest.json, runs/ and seen-ids.json (raw/, details/ and verdicts/ are gitignored)
+          git add -A data # latest.json, runs/, seen-ids.json, announced-ids.json (raw/, details/, verdicts/, leads/ are gitignored)
           git diff --cached --quiet && { echo "No changes."; exit 0; }
           git commit -m "data: Contra scrape $(TZ=Asia/Kolkata date "+%F %H:%M IST")"
           git push
 
+      # The two announcement steps run only after a successful scrape and commit, and each runs even if the other fails.
       - name: Notify Slack
+        if: ${{ !cancelled() && steps.commit.outcome == 'success' }}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          LEADS_SHEET_URL: ${{ vars.LEADS_SHEET_URL }} # optional repository variable: the lead sheet's link
         run: npm run notify --silent
+
+      # Skips until the LEADS_WEBHOOK_URL secret is set (README → "Lead sheet").
+      - name: Add full-time leads to the Google Sheet
+        if: ${{ !cancelled() && steps.commit.outcome == 'success' }}
+        env:
+          LEADS_WEBHOOK_URL: ${{ secrets.LEADS_WEBHOOK_URL }}
+          LEADS_WEBHOOK_TOKEN: ${{ secrets.LEADS_WEBHOOK_TOKEN }}
+        run: npm run sheet --silent

@@ -45,5 +45,7 @@ next-env.d.ts
 /data/raw/
 /data/details/
 /data/verdicts/
+# founders / company links for full-time leads; they go only to the lead sheet, never into git
+/data/leads/
 .contra-auth.json
 /logs/

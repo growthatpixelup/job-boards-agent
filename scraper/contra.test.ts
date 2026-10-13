@@ -1,6 +1,9 @@
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
+import path from "node:path";
 import { describe, it } from "node:test";
 import { minimalDetail, normalize, redactContact } from "./contra.ts";
+import { LEAD_TOOLS, LEADS_DIR, cleanLead } from "./leads.ts";
 import { ContraMcp } from "./mcp-client.ts";
 
 // Guards for how we use Contra: read-only MCP access, and no other users' personal information stored.
@@ -53,5 +56,19 @@ describe("Contra rules", () => {
 
   it("leaves budgets, years and short numbers alone", () => {
     assert.equal(redactContact("Budget $12,000 for 2026, team of 25"), "Budget $12,000 for 2026, team of 25");
+  });
+
+  it("keeps contra.com out of the lead lookup's web search, web fetch and results", () => {
+    assert.deepEqual(LEAD_TOOLS.map((t) => [t.name, t.blocked_domains]), [["web_search", ["contra.com"]], ["web_fetch", ["contra.com"]]]);
+    const lead = cleanLead({ website: "https://contra.com/acme", linkedin: "https://contra.com/in/jane", people: [] });
+    assert.equal(lead.website, null);
+    assert.equal(lead.linkedin, null);
+  });
+
+  it("never commits the people the lead lookup finds", () => {
+    const repo = path.resolve(import.meta.dirname, "..");
+    const ignored = readFileSync(path.join(repo, ".gitignore"), "utf8").split("\n").map((l) => l.trim());
+    assert.equal(path.relative(repo, LEADS_DIR), path.join("data", "leads"));
+    assert.ok(ignored.includes("/data/leads/"), "data/leads/ must be gitignored");
   });
 });

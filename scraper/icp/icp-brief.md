@@ -1,7 +1,8 @@
 # Pixelup Labs — ICP brief for qualifying Contra jobs
 
 Source: "Pixelup Labs — Positioning & ICP Engine" (July 2026). This is the rubric the LLM classifier
-receives verbatim, and the spec the regex classifier (`regex.ts`) implements. Edit both together.
+receives verbatim for every job on the board, and the spec the regex classifier (`regex.ts`) implements
+(the free local mode, and the stand-in when an LLM call fails). Edit both together.
 
 ## Who we are
 
@@ -49,12 +50,14 @@ builds, virtual assistance.
 - Inciting events: rebrand, launch, conference/deadline, competitor out-branding them, site looks generic/template/outdated, outgrown current brand
 - Opinionated founder; positioning/messaging/narrative work welcome; founder-led decision (no committee)
 - Wants systems: design system, retainer, long-term partnership
+- Testing the waters: a paid trial or small first project with more to follow ("first phase", "ongoing", "if this goes well")
 - Budget at or above our $10,000 minimum project (≥ $4k/month retainer for 3+ months)
 
 ## Deal-breakers (reject)
 
 - Pre-PMF / idea stage / pre-seed / unfunded / mid-pivot; equity-only, rev-share or unpaid work
-- Cost-shoppers: tight/low budget, "cheapest", "logo for $500"; budget far below our $10,000 minimum
+- Cost-shoppers: "tight/low budget", "cheapest", "logo for $500"; a budget far below what the work asked for is worth.
+  A small budget alone is not cost-shopping when the client is strong and the first project is simply small (see Entry projects).
 - Procurement-driven or committee buyers: RFP/tender, steering/brand committee, vendor onboarding
 - On-site or US-domicile required, security clearance, local-only
 - Buyers expecting design to drive leads/SEO/ads ("make design drive our MQLs") — a growth-agency ask
@@ -80,8 +83,28 @@ the hours the described scope realistically needs; a monthly retainer × its sta
 A high rate does not make a small scope worth it: $100/hr to design 2–3 screens is a ~$1–2k job.
 If the stated budget and the described scope disagree, go with what the scope realistically pays.
 
-Below $10,000 is too small (a logo, one landing page, a few screens, small fixes, a handful of hours),
-unless the post makes clear it is the first phase of a larger engagement.
+Below $10,000 is too small for a sprint (a logo, one landing page, a few screens, small fixes, a handful
+of hours). Judge whether it is an entry project instead.
+
+## Entry projects (small now, could grow)
+
+Some clients test the waters with a small first project before they hand over the bigger work: we have had
+a client start with a logo and grow into a full engagement. So don't reject a job for its size alone; judge
+where it could lead and rate `growth_potential`:
+
+- **high**: a strong-fit client (a funded or clearly well-resourced B2B software company, ideally AI-native)
+  whose small ask is the first piece of work we sell: a logo or landing page for a funded startup with no
+  real brand or site yet, a brand refresh that will need a site to match, a few screens of a product that is
+  clearly growing, or the post says more work follows ("first phase", "trial project", "ongoing",
+  "long-term", "if this goes well").
+- **medium**: decent client fit and a plausible but unstated path to a sprint.
+- **low**: weak or unknown client fit, or a self-contained one-off (a logo for a side project, small fixes,
+  a single asset).
+- **none**: a deal-breaker applies or the work isn't something we sell.
+
+Write `growth_path` as the likely next steps (e.g. "logo → brand sprint → marketing site"), or leave it
+empty. Rate it for sprint-sized jobs too: there it says whether the work could become a retainer or more
+sprints. An entry project must still pay at least $1,000 for the first piece.
 
 ## Full-time roles
 
@@ -91,13 +114,13 @@ We won't take the seat; we'll reach out to the company on a different platform a
 
 ## Decision rules
 
-- **qualified** — the core ask is one of our sprints (or a combination), the client is (or very likely
-  is) a funded B2B software company, no deal-breaker applies, and the estimated project value is at least
-  $10,000.
+- **qualified** — the core ask is one of our services, the client is (or very likely is) a funded B2B
+  software company, no deal-breaker applies, and either the estimated project value is at least $10,000
+  (a sprint, or a combination) or it is an entry project: high growth potential and at least $1,000.
 - **maybe** — service fits but evidence of client fit is thin, the size is unclear but could plausibly
-  reach $10,000, a minor negative applies (e.g. India-based, a development job building from finished
-  designs), or the description is missing.
-- **rejected** — any deal-breaker, the core ask is not a service we sell, or the work is clearly smaller
-  than $10,000.
+  reach $10,000, a small job with medium growth potential, a minor negative applies (e.g. India-based, a
+  development job building from finished designs), or the description is missing.
+- **rejected** — any deal-breaker, the core ask is not a service we sell, or the work is small with low
+  or no growth potential.
 
 When unsure between two decisions, pick the more conservative one (maybe over qualified).

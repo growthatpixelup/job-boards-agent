@@ -36,10 +36,27 @@ export interface Job {
   };
 }
 
-/** qualified = apply; maybe = worth a human look; rejected = outside the ICP. */
+/** qualified = act on it; maybe = worth a human look; rejected = outside the ICP. */
 export type IcpDecision = "qualified" | "maybe" | "rejected";
 /** Positioning doc rings: carol = bullseye (isolate), diana = whey (10x), eddie = general protein (100x). */
 export type IcpTier = "carol" | "diana" | "eddie";
+/** How likely a job is to grow into a sprint or retainer (icp-brief.md, "Entry projects"). */
+export type GrowthPotential = "high" | "medium" | "low" | "none";
+
+/**
+ * What we do with a job that fits:
+ *   sprint   apply on Contra: a $10k+ sprint
+ *   entry    apply on Contra: small now, from a client that could grow into a sprint (land and expand)
+ *   outreach full-time role: don't apply; reach out to the company off Contra and pitch a sprint
+ */
+export type Lane = "sprint" | "entry" | "outreach";
+
+/** Public links for the company behind an outreach job. People found by the lookup go only to the lead sheet. */
+export interface CompanyLinks {
+  website: string | null;
+  linkedin: string | null;
+  x: string | null;
+}
 
 export interface IcpVerdict {
   decision: IcpDecision;
@@ -62,10 +79,23 @@ export interface IcpVerdict {
     basis: string;
     /** Full-time / in-house role: we don't apply on Contra, we reach out on a different platform. */
     fullTime: boolean;
+    /** How likely the work grows into a sprint or retainer. */
+    growthPotential: GrowthPotential;
+    /** The likely path, e.g. "logo → brand sprint → marketing site"; empty when there is none. */
+    growthPath: string;
   };
 }
 
-export type ClassifiedJob = Job & { isNew: boolean; icp: IcpVerdict };
+export type ClassifiedJob = Job & {
+  isNew: boolean;
+  icp: IcpVerdict;
+  /** null for rejected jobs. */
+  lane: Lane | null;
+  /** Posted to Slack (and the lead sheet, for outreach) by this run: the job fits and hasn't been announced before. */
+  announce: boolean;
+  /** Outreach jobs, when the lead lookup ran. */
+  companyLinks?: CompanyLinks;
+};
 
 export interface RunResult {
   ranAt: string;

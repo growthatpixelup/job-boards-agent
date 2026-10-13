@@ -17,8 +17,14 @@ export const icpCriteria = {
     MONTHLY: { floor: 3_000, target: 4_000, premium: 8_000 }, // retainers from $4k/mo
   } satisfies Partial<Record<BudgetType, { floor: number; target: number; premium: number }>>,
 
-  /** Smallest project worth taking, in USD. The LLM classifier caps anything it sizes below this at "maybe" (see icp-brief.md). */
+  /**
+   * Smallest sprint worth taking, in USD. The LLM classifier caps anything it sizes below this at "maybe",
+   * unless it's an entry project with high growth potential (see icp-brief.md).
+   */
   minProjectUsd: 10_000,
+
+  /** Smallest entry project (a first project that could grow into a sprint) the LLM classifier may qualify, in USD. */
+  entryMinUsd: 1_000,
 
   /** Raised-amount bands in USD millions (doc §2 "Raised"). */
   raised: { excludeBelow: 2, bullseyeMin: 5, bullseyeMax: 60, acceptableMax: 150 },

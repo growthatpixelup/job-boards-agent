@@ -3,7 +3,7 @@ import { readdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { minimalDetail, normalize, type FeedPage, type JobDetail } from "./contra.ts";
 import { matchesFilters } from "./filters.ts";
-import { getClassifier, prescreen } from "./icp/index.ts";
+import { getClassifier } from "./icp/index.ts";
 import type { Job } from "./types.ts";
 
 export const DATA_DIR = path.resolve(import.meta.dirname, "..", "data");
@@ -53,20 +53,24 @@ export async function loadFeed(): Promise<Feed> {
   return { pages: pages.size, jobs: [...jobs.values()], accessLimited, boardTotal };
 }
 
-/** Slugs whose description still needs a get_job_by_slug call (none when ICP filtering is off). */
+/**
+ * Slugs whose description still needs a get_job_by_slug call: every job an LLM classifier will read, or
+ * only those the title/roles/budget prescreen keeps for the regex classifier (none when ICP filtering is off).
+ */
 export function pendingDetails(jobs: Job[]): { pending: string[]; summary: string } {
-  if (getClassifier().name === "none") {
+  const classifier = getClassifier();
+  if (classifier.name === "none") {
     return { pending: [], summary: `${jobs.length} jobs: ICP filtering is off, no details needed` };
   }
   const pending: string[] = [];
   let cached = 0;
   let skipped = 0;
   for (const job of jobs) {
-    if (!matchesFilters(job) || !prescreen(job).fetchDetail) skipped++;
+    if (!matchesFilters(job) || !classifier.needsDetail(job)) skipped++;
     else if (existsSync(detailFile(job.slug))) cached++;
     else pending.push(job.slug);
   }
-  return { pending, summary: `${jobs.length} jobs: ${pending.length} need details, ${cached} cached, ${skipped} skipped by prescreen` };
+  return { pending, summary: `${jobs.length} jobs: ${pending.length} need details, ${cached} cached, ${skipped} not needed` };
 }
 
 /** Rewrites any cached detail still holding a full MCP response (the /contra-scrape skill saves them verbatim) down to the description only. */
