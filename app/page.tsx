@@ -10,7 +10,7 @@ function formatBudget(b: Job["budget"]): string | null {
   if (!b) return null;
   const range = [b.feeMin, b.feeMax]
     .filter((n) => n != null)
-    .map((n) => `$${n!.toLocaleString("en-US")}`)
+    .map((n) => (n! >= 1000 ? `$${+(n! / 1000).toFixed(1)}k` : `$${n}`))
     .join("–");
   const unit = { FIXED: " fixed", HOURLY: "/hr", WEEKLY: "/wk", MONTHLY: "/mo", UNKNOWN: "" }[b.type];
   return range ? `${range}${unit}` : null;
@@ -47,31 +47,34 @@ async function Dashboard() {
   const [runs, pipeline] = await Promise.all([loadRuns(), loadPipeline()]);
   const lastRun = runs.map((r) => r.ranAt).sort().at(-1);
   if (!lastRun) {
-    return <p className="text-zinc-600 dark:text-zinc-400">No scrape data yet.</p>;
+    return <p className="text-muted-foreground">No scrape data yet.</p>;
   }
   const leads = buildLeads(runs, pipeline).map(toRow);
   return (
     <>
-      <p className="mb-6 text-sm text-zinc-600 dark:text-zinc-400">
-        Jobs the AI layer qualified, from every scrape · last scrape {new Date(lastRun).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })}
-        {" · "}stages save to <code className="font-mono text-xs">data/pipeline.json</code>
-        {savesToGitHub ? " on GitHub" : " (commit it to share)"}
+      <p className="mb-6 text-muted-foreground">
+        Jobs the AI layer qualified, across every scrape · last scrape{" "}
+        {new Date(lastRun).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })}
       </p>
       <LeadBoard leads={leads} />
+      <p className="mt-4 text-center text-xs text-muted-foreground">
+        Stages save to <code className="font-mono">data/pipeline.json</code>
+        {savesToGitHub ? " on GitHub." : ". Commit it to share."}
+      </p>
     </>
   );
 }
 
 export default function Home() {
   return (
-    <main className="mx-auto w-full max-w-5xl px-4 py-10">
-      <div className="mb-1 flex items-baseline justify-between gap-4">
-        <h1 className="text-2xl font-semibold">Leads</h1>
-        <Link href="/latest" className="text-sm text-zinc-500 underline hover:no-underline">
-          Latest scrape
+    <main className="mx-auto w-full max-w-5xl px-4 pt-10 pb-20 sm:px-8">
+      <header className="mb-1 flex items-baseline justify-between gap-4">
+        <h1 className="text-xl font-semibold tracking-tight text-balance">Leads</h1>
+        <Link href="/latest" className="rounded-sm text-muted-foreground hover:text-brand">
+          Latest scrape →
         </Link>
-      </div>
-      <Suspense fallback={<p>Loading…</p>}>
+      </header>
+      <Suspense fallback={<p className="text-muted-foreground">Loading…</p>}>
         <Dashboard />
       </Suspense>
     </main>

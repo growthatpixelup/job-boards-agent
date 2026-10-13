@@ -1,26 +1,115 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/*
+ * The PIXELUP Search Dashboard's look (its docs/ui-conventions.md), light theme only: a warm off-white page, white
+ * cards lifted by a hairline ring instead of a border, DM Sans, one dark "ink" for highlighted menu items, and
+ * PIXELUP LABS blue (#004aeb) for buttons, focus and anything selected.
+ */
+
+/* Light only: dark: variants apply under a .dark class, which nothing sets. */
+@custom-variant dark (&:where(.dark, .dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-card: var(--card);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--brand);
+  --color-ink: var(--ink);
+  --color-brand: var(--brand);
+  --color-brand-soft: var(--brand-soft);
+  --font-sans: var(--font-dm-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+
+  --shadow-card: var(--sh-card);
+  --shadow-menu: var(--sh-menu);
+  --shadow-tab: var(--sh-tab);
+  --shadow-track: var(--sh-track);
+  --shadow-btn-primary: var(--sh-btn-primary);
+  --shadow-btn-primary-hover: var(--sh-btn-primary-hover);
+  --shadow-btn-simple: var(--sh-btn-simple);
+  --shadow-btn-simple-hover: var(--sh-btn-simple-hover);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@theme {
+  --ease-out-quad: cubic-bezier(0, 0, 0.2, 1);
+}
+
+:root {
+  color-scheme: light;
+  --background: oklch(0.9856 0.0017 67.8);
+  --foreground: oklch(0.2686 0 0);
+  --card: oklch(1 0 0);
+  --muted: oklch(0.967 0.0025 67.8);
+  /* a warm grey for labels and quiet text */
+  --muted-foreground: oklch(0.4497 0.0082 53.3);
+  /* hairlines are the text colour at low alpha */
+  --border: oklch(0.2686 0 0 / 0.08);
+  --ink: oklch(0.2768 0 0);
+  /* PIXELUP LABS blue, #004aeb */
+  --brand: oklch(0.495 0.248 262.9);
+  --brand-soft: oklch(0.965 0.02 263);
+
+  --sh-card: 0 0 0 1px rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.06), 0 2px 4px 0 rgb(0 0 0 / 0.04);
+  --sh-menu: 0 0 0 1px rgb(0 0 0 / 0.08), 0 12px 32px -18px rgb(0 0 0 / 0.35);
+  --sh-tab: 0 1px 1px rgb(0 0 0 / 0.06), 0 0 0 1px rgb(0 0 0 / 0.04);
+  --sh-track: inset 0 0 0 1px rgb(0 0 0 / 0.03);
+  --sh-btn-primary: 0 1px 1px rgb(0 0 0 / 0.06), 0 0 0 1px oklch(0.495 0.248 262.9 / 0.16), 0 8px 16px -8px oklch(0.495 0.248 262.9 / 0.55), inset 0 -1px 2px oklch(0.38 0.19 263 / 0.5);
+  --sh-btn-primary-hover: 0 1px 1px rgb(0 0 0 / 0.08), 0 0 0 1px oklch(0.495 0.248 262.9 / 0.25), 0 10px 18px -8px oklch(0.495 0.248 262.9 / 0.7), inset 0 -1px 2px oklch(0.38 0.19 263 / 0.6);
+  --sh-btn-simple: 0 1px 1px rgb(1 1 1 / 0.06), 0 0 0 1px hsl(0 0% 86% / 0.16), 0 8px 16px -8px hsl(0 0% 86% / 0.64), inset 0 -1px 2px hsl(0 0% 86% / 0.48);
+  --sh-btn-simple-hover: 0 1px 1px rgb(1 1 1 / 0.12), 0 0 0 1px hsl(0 0% 86% / 0.3), 0 8px 16px -8px hsl(0 0% 86% / 0.9), inset 0 -1px 2px hsl(0 0% 86% / 0.7);
+}
+
+@layer base {
+  * {
+    border-color: var(--border);
+  }
+  html {
+    background: var(--background);
+    font-family: var(--font-sans);
+  }
+  body {
+    background: var(--background);
+    color: var(--foreground);
+  }
+  ::selection {
+    background: color-mix(in oklch, var(--brand) 25%, transparent);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* A white card: 20.8px corners and a hairline ring for an edge. */
+@utility panel {
+  border-radius: 1.3rem;
+  background-color: var(--card);
+  box-shadow: var(--sh-card);
+}
+/* A dropdown: white, 12px corners, ring plus a long soft shadow. */
+@utility menu-surface {
+  border-radius: 0.75rem;
+  background-color: var(--card);
+  box-shadow: var(--sh-menu);
+}
+/* Tabs, buttons and menu items shrink a hair while held. */
+@utility pressable {
+  transition-property: transform, color, background-color, opacity, box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: var(--ease-out-quad);
+  &:active:not(:disabled) {
+    transform: scale(0.96);
+  }
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
 }

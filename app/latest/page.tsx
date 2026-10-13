@@ -22,16 +22,16 @@ function formatBudget(b: Job["budget"]): string {
 }
 
 const DECISION_STYLE: Record<IcpDecision, string> = {
-  qualified: "bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-100",
-  maybe: "bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-100",
-  rejected: "bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300",
+  qualified: "bg-blue-100 text-blue-800",
+  maybe: "bg-amber-100 text-amber-800",
+  rejected: "bg-zinc-100 text-zinc-700",
 };
 
 const LANE_BADGE: Partial<Record<Lane, { label: string; title: string; style: string }>> = {
   outreach: {
     label: "full-time",
     title: "Reach out on a different platform instead of applying on Contra",
-    style: "bg-violet-100 text-violet-800 dark:bg-violet-900 dark:text-violet-100",
+    style: "bg-violet-100 text-violet-800",
   },
 };
 
@@ -53,7 +53,7 @@ async function JobList() {
 
   if (!run) {
     return (
-      <p className="text-zinc-600 dark:text-zinc-400">
+      <p className="text-muted-foreground">
         No data yet. Run <code className="font-mono">/contra-scrape</code> in Claude Code to fetch jobs via the Contra MCP.
       </p>
     );
@@ -61,7 +61,7 @@ async function JobList() {
 
   return (
     <>
-      <p className="mb-6 text-sm text-zinc-600 dark:text-zinc-400">
+      <p className="mb-6 text-sm text-muted-foreground">
         Last run {new Date(run.ranAt).toLocaleString()} · {run.totalScraped} scraped ·{" "}
         {run.classifier === "none"
           ? "ICP filter off"
@@ -70,11 +70,11 @@ async function JobList() {
         {run.accessLimited && ` · feed limited to your account's preview (${run.boardTotal ?? "?"} on the board)`}
       </p>
       {run.jobs.length === 0 && (
-        <p className="text-zinc-600 dark:text-zinc-400">No jobs in this run.</p>
+        <p className="text-muted-foreground">No jobs in this run.</p>
       )}
       <ul className="flex flex-col gap-3">
         {run.jobs.map((job) => (
-          <li key={job.id} className="rounded-lg border border-zinc-200 p-4 dark:border-zinc-800">
+          <li key={job.id} className="panel p-4">
             <div className="flex items-start justify-between gap-4">
               <a href={job.url} target="_blank" rel="noreferrer" className="font-medium hover:underline">
                 {job.title}
@@ -88,13 +88,13 @@ async function JobList() {
                 )}
                 <LaneBadge job={job} />
                 {job.isNew && (
-                  <span className="rounded bg-emerald-100 px-2 py-0.5 text-xs text-emerald-800 dark:bg-emerald-900 dark:text-emerald-100">
+                  <span className="rounded bg-emerald-100 px-2 py-0.5 text-xs text-emerald-800">
                     new
                   </span>
                 )}
               </span>
             </div>
-            <p className="mt-1 text-sm text-zinc-600 dark:text-zinc-400">
+            <p className="mt-1 text-sm text-muted-foreground">
               {[job.organization?.name, formatBudget(job.budget), job.createdAt && new Date(job.createdAt).toLocaleDateString()]
                 .filter(Boolean)
                 .join(" · ")}
@@ -109,10 +109,10 @@ async function JobList() {
                 </span>
                 {job.icp.project.scope && ` — ${job.icp.project.scope}`}
                 {job.icp.project.basis && (
-                  <span className="block text-xs text-zinc-500">{job.icp.project.basis}</span>
+                  <span className="block text-xs text-muted-foreground">{job.icp.project.basis}</span>
                 )}
                 {job.icp.project.growthPath && job.icp.project.growthPotential !== "none" && (
-                  <span className="block text-xs text-zinc-500">
+                  <span className="block text-xs text-muted-foreground">
                     Could grow ({job.icp.project.growthPotential}): {job.icp.project.growthPath}
                   </span>
                 )}
@@ -130,10 +130,10 @@ async function JobList() {
               </p>
             )}
             {(job.roles.length > 0 || job.tools.length > 0) && (
-              <p className="mt-2 text-xs text-zinc-500">{[...job.roles, ...job.tools].join(", ")}</p>
+              <p className="mt-2 text-xs text-muted-foreground">{[...job.roles, ...job.tools].join(", ")}</p>
             )}
             {job.icp && job.icp.reasons.length > 0 && (
-              <ul className="mt-2 list-disc pl-5 text-xs text-zinc-600 dark:text-zinc-400">
+              <ul className="mt-2 list-disc pl-5 text-xs text-muted-foreground">
                 {job.icp.reasons.map((r) => (
                   <li key={r}>{r}</li>
                 ))}
@@ -150,9 +150,9 @@ export default function Latest() {
   return (
     <main className="mx-auto w-full max-w-3xl px-4 py-12">
       <div className="mb-2 flex items-baseline justify-between gap-4">
-        <h1 className="text-2xl font-semibold">Latest scrape</h1>
-        <Link href="/" className="text-sm text-zinc-500 underline hover:no-underline">
-          Leads
+        <h1 className="text-xl font-semibold tracking-tight">Latest scrape</h1>
+        <Link href="/" className="text-muted-foreground hover:text-brand">
+          ← Leads
         </Link>
       </div>
       <Suspense fallback={<p>Loading…</p>}>
