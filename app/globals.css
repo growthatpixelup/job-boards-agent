@@ -110,6 +110,17 @@
   }
 }
 
+/* The copied-to-clipboard toast rises in. */
+@keyframes toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+.toast-in {
+  animation: toast-in 200ms var(--ease-out-quad);
+}
+
 .tnum {
   font-variant-numeric: tabular-nums;
 }

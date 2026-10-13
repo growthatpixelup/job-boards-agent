@@ -104,6 +104,8 @@ export type ClassifiedJob = Job & {
   announce: boolean;
   /** Outreach jobs, when the lead lookup ran. */
   companyLinks?: CompanyLinks;
+  /** Project leads: our answer to Contra's "why you'd be a good fit" field (brief.ts), copied by the dashboard's Apply button. */
+  applicationBrief?: string;
 };
 
 export interface RunResult {

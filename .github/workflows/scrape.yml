@@ -58,15 +58,16 @@ jobs:
         run: npm ci --no-audit --no-fund
 
       # Cached between runs rather than committed, so they never enter git history: job descriptions, Claude's
-      # verdicts (each job is only sent to the API once; again if the job or the brief changes) and the full-time
-      # lead lookups (founders included). GitHub deletes the cache after 7 days without use.
-      - name: Restore cached descriptions, verdicts and leads
+      # verdicts (each job is only sent to the API once; again if the job or the brief changes), the full-time
+      # lead lookups (founders included) and the application briefs. GitHub deletes the cache after 7 days without use.
+      - name: Restore cached descriptions, verdicts, leads and briefs
         uses: actions/cache/restore@v4
         with:
           path: |
             data/details
             data/verdicts
             data/leads
+            data/briefs
           key: contra-data-${{ github.run_id }}-${{ github.run_attempt }}
           restore-keys: contra-data-
 
@@ -79,12 +80,14 @@ jobs:
           ICP_MODEL: claude-sonnet-5-5
           # Full-time roles: find the company's site, LinkedIn, X and founders (web search, contra.com blocked).
           LEAD_LOOKUP: anthropic
+          # Project leads: write the "why you'd be a good fit" answer for Contra's apply form (pitch.md, Claude Opus).
+          APPLICATION_BRIEFS: anthropic
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: npm run scrape:ci
 
       # Saved straight away, even if the scrape failed partway, so a later failing step can't throw away a run's
       # paid-for verdicts and lookups (a cache saved at the end of the job is lost when any step fails).
-      - name: Save cached descriptions, verdicts and leads
+      - name: Save cached descriptions, verdicts, leads and briefs
         if: always()
         uses: actions/cache/save@v4
         with:
@@ -92,6 +95,7 @@ jobs:
             data/details
             data/verdicts
             data/leads
+            data/briefs
           key: contra-data-${{ github.run_id }}-${{ github.run_attempt }}
 
       # Contra may issue a new refresh token on every use; store it for tomorrow's run.

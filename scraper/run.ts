@@ -1,10 +1,12 @@
 import { mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { addBriefs, getBriefWriter } from "./brief.ts";
 import { DATA_DIR, RAW_DIR, loadFeed, minimizeDetails, pruneDetails } from "./feed.ts";
 import { filterConfig, matchesFilters } from "./filters.ts";
 import { LLM_FAILED, getClassifier } from "./icp/index.ts";
 import { isOutreachLead, toClassified } from "./lanes.ts";
 import { LEADS_DIR, getLeadFinder, type Lead } from "./leads.ts";
+import { mapPool } from "./pool.ts";
 import type { ClassifiedJob, IcpDecision, Job, Lane, RunResult } from "./types.ts";
 
 // Ingests the raw MCP feed pages (data/raw/) plus cached descriptions (data/details/)
@@ -18,19 +20,6 @@ async function readJson<T>(file: string, fallback: T): Promise<T> {
   } catch {
     return fallback;
   }
-}
-
-async function mapPool<T, R>(items: T[], limit: number, fn: (item: T) => Promise<R>): Promise<R[]> {
-  const out: R[] = new Array(items.length);
-  let next = 0;
-  const worker = async () => {
-    while (next < items.length) {
-      const i = next++;
-      out[i] = await fn(items[i]);
-    }
-  };
-  await Promise.all(Array.from({ length: Math.min(limit, items.length) }, worker));
-  return out;
 }
 
 const RANK: Record<IcpDecision, number> = { qualified: 0, maybe: 1, rejected: 2 };
@@ -105,6 +94,9 @@ async function main() {
   const preset = process.argv[2] || "ALL";
   // Only the full feed tells us which jobs are gone; a BOOKMARKED/APPLIED run must not prune the rest.
   await lookUpLeads(kept, preset === "ALL" ? new Set(feed.jobs.map((j) => j.id)) : null);
+  // Needs the descriptions, so before they're dropped from the output below.
+  const briefs = await addBriefs(kept, getBriefWriter(), { feedIds: preset === "ALL" ? new Set(feed.jobs.map((j) => j.id)) : null });
+  if (briefs.written || briefs.failed) console.log(`[contra] briefs: ${briefs.written} written, ${briefs.cached} cached, ${briefs.failed} failed`);
 
   const ranAt = new Date().toISOString();
   const result: RunResult = {

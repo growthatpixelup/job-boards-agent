@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState, useTransition, type ReactNode } from "react";
+import { useEffect, useRef, useState, useTransition, type MouseEvent as ReactMouseEvent, type ReactNode } from "react";
 import { STAGES, type Stage } from "@/lib/pipeline.ts";
 import type { CompanyLinks, IcpDecision, Lane } from "@/scraper/types.ts";
 import { moveLead } from "./actions.ts";
@@ -29,6 +29,8 @@ export interface LeadRow {
   firstSeenAt: string;
   onBoard: boolean;
   stage: Stage;
+  /** Our answer to Contra's "why you'd be a good fit" field, written during the scrape; null until then. */
+  brief: string | null;
 }
 
 const OPEN: Stage[] = ["new", "applied", "talking"];
@@ -56,7 +58,41 @@ export function LeadBoard({ leads: initial }: { leads: LeadRow[] }) {
   const [filter, setFilter] = useState<Filter>("open");
   const [lane, setLane] = useState<Lane | "all">("all");
   const [error, setError] = useState<string | null>(null);
+  const [toast, setToast] = useState<{ text: string; key: number } | null>(null);
+  const toastTimer = useRef<ReturnType<typeof setTimeout>>(undefined);
+  const toastCount = useRef(0);
   const [, startTransition] = useTransition();
+
+  function notify(text: string) {
+    clearTimeout(toastTimer.current);
+    setToast({ text, key: ++toastCount.current });
+    toastTimer.current = setTimeout(() => setToast(null), 4000);
+  }
+
+  function copyBrief(lead: LeadRow) {
+    if (!lead.brief) return notify("No application brief for this job yet: it's written on the next scrape");
+    const brief = lead.brief;
+    // Started inside the click, while the page still has the user's gesture and focus.
+    (navigator.clipboard?.writeText(brief) ?? Promise.reject(new Error("no clipboard API")))
+      .catch(() => {
+        if (!copyWithSelection(brief)) throw new Error("copy failed");
+      })
+      .then(
+        () => notify("Application brief copied to clipboard"),
+        () => notify("Couldn't copy the brief: open Details and copy it from there"),
+      );
+  }
+
+  /** Apply: copy the brief, show that it's copied, then open the post on Contra to paste it in. */
+  function apply(lead: LeadRow, e: ReactMouseEvent<HTMLAnchorElement>) {
+    e.preventDefault();
+    copyBrief(lead);
+    setTimeout(() => {
+      const tab = window.open(lead.url, "_blank");
+      if (tab) tab.opener = null;
+      else notify("Your browser blocked the new tab: open the post from its title");
+    }, 700);
+  }
 
   function move(lead: LeadRow, stage: Stage) {
     if (stage === lead.stage) return;
@@ -120,13 +156,41 @@ export function LeadBoard({ leads: initial }: { leads: LeadRow[] }) {
         ) : (
           <ul className="divide-y">
             {shown.map((lead) => (
-              <LeadItem key={lead.id} lead={lead} onMove={(s) => move(lead, s)} />
+              <LeadItem key={lead.id} lead={lead} onMove={(s) => move(lead, s)} onApply={(e) => apply(lead, e)} onCopy={() => copyBrief(lead)} />
             ))}
           </ul>
         )}
       </div>
+
+      <div role="status" aria-live="polite" className="pointer-events-none fixed inset-x-0 bottom-6 z-50 flex justify-center px-4">
+        {toast && (
+          <div key={toast.key} className="toast-in flex items-center gap-2 rounded-xl bg-ink px-4 py-2.5 text-sm font-medium text-white shadow-menu">
+            <svg className="size-4 shrink-0" viewBox="0 0 16 16" fill="none" aria-hidden>
+              <path d="M3.5 8.5l3 3 6-7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            {toast.text}
+          </div>
+        )}
+      </div>
     </div>
   );
+}
+
+/** The older copy route, for browsers or embedded views that refuse the Clipboard API. */
+function copyWithSelection(text: string): boolean {
+  const area = document.createElement("textarea");
+  area.value = text;
+  area.setAttribute("readonly", "");
+  area.style.cssText = "position:fixed;top:0;left:0;opacity:0";
+  document.body.append(area);
+  area.select();
+  try {
+    return document.execCommand("copy");
+  } catch {
+    return false;
+  } finally {
+    area.remove();
+  }
 }
 
 function matches(l: LeadRow, f: Filter): boolean {
@@ -279,7 +343,17 @@ function StageMenu({ lead, onMove }: { lead: LeadRow; onMove: (s: Stage) => void
   );
 }
 
-function LeadItem({ lead, onMove }: { lead: LeadRow; onMove: (s: Stage) => void }) {
+function LeadItem({
+  lead,
+  onMove,
+  onApply,
+  onCopy,
+}: {
+  lead: LeadRow;
+  onMove: (s: Stage) => void;
+  onApply: (e: ReactMouseEvent<HTMLAnchorElement>) => void;
+  onCopy: () => void;
+}) {
   const fullTime = lead.lane === "outreach";
   const meta = [lead.company, lead.budget, lead.postedAt && `posted ${day(lead.postedAt)}`].filter(Boolean);
   const links = lead.companyLinks
@@ -287,7 +361,7 @@ function LeadItem({ lead, onMove }: { lead: LeadRow; onMove: (s: Stage) => void 
         ([, href]) => href,
       )
     : [];
-  const hasDetails = lead.basis || lead.growth || lead.reasons.length > 0;
+  const hasDetails = lead.brief || lead.basis || lead.growth || lead.reasons.length > 0;
 
   return (
     <li className="px-5 py-4">
@@ -324,9 +398,22 @@ function LeadItem({ lead, onMove }: { lead: LeadRow; onMove: (s: Stage) => void 
           {hasDetails && (
             <details className="group mt-2.5">
               <summary className="w-fit cursor-pointer list-none text-xs font-medium tracking-wide text-muted-foreground uppercase select-none hover:text-foreground">
-                <span className="group-open:hidden">Why it qualified</span>
+                <span className="group-open:hidden">{lead.brief ? "Brief and details" : "Why it qualified"}</span>
                 <span className="hidden group-open:inline">Hide</span>
               </summary>
+              {lead.brief && (
+                <div className="mt-2 rounded-xl border bg-card px-3.5 py-3">
+                  <div className="mb-1.5 flex items-center justify-between gap-3">
+                    <span className="text-xs font-medium tracking-wide text-muted-foreground uppercase">
+                      Application brief <span className="tnum font-normal normal-case">· {lead.brief.length.toLocaleString("en-US")} / 1,500</span>
+                    </span>
+                    <button type="button" onClick={onCopy} className={`${btnSimple} h-7 px-2.5 text-xs`}>
+                      Copy
+                    </button>
+                  </div>
+                  <p className="text-[13px] leading-relaxed whitespace-pre-line">{lead.brief}</p>
+                </div>
+              )}
               <div className="mt-2 space-y-1.5 rounded-xl bg-muted/70 px-3.5 py-3 text-[13px] leading-relaxed text-muted-foreground">
                 {lead.basis && <p>{lead.basis}</p>}
                 {lead.growth && <p>Could grow ({lead.growth})</p>}
@@ -348,7 +435,14 @@ function LeadItem({ lead, onMove }: { lead: LeadRow; onMove: (s: Stage) => void 
           )}
           <div className="ml-auto flex items-center gap-2 sm:ml-0">
             <StageMenu lead={lead} onMove={onMove} />
-            <a href={lead.url} target="_blank" rel="noreferrer" className={fullTime ? btnSimple : btnPrimary}>
+            <a
+              href={lead.url}
+              target="_blank"
+              rel="noreferrer"
+              onClick={fullTime ? undefined : onApply}
+              title={fullTime ? undefined : "Copies the application brief, then opens the post on Contra"}
+              className={fullTime ? btnSimple : btnPrimary}
+            >
               {fullTime ? "View post" : "Apply"}
               <svg className="size-3.5 opacity-80" viewBox="0 0 16 16" fill="none" aria-hidden>
                 <path d="M5.5 10.5l5-5M6 5.5h4.5V10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />

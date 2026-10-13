@@ -99,6 +99,22 @@ the brief, which also decide which descriptions to fetch), `none` (keep every jo
 Housekeeping filters are in `scraper/filters.ts`; the money rule's numbers (`minHourlyUsd`,
 `minProjectUsd`) are in `scraper/icp/criteria.ts`.
 
+## Application briefs
+
+Contra's apply form asks three things: why you'd be a good fit (1,500 characters), a call link (Contra fills it
+in) and example projects (picked on Contra). For every project lead, the scrape writes the first one:
+`scraper/brief.ts` gives Claude Opus 5.5 the full job post and `scraper/pitch.md`, the facts and voice it may use
+(Pixelup's clients, timelines, Contra track record, Daksh's tone, the start-date line). Only what's in
+`pitch.md` can appear in a brief, so keep it true: edit it to add a case study or change availability, and the
+next scrape rewrites the briefs of every open lead.
+
+Briefs are written in GitHub Actions because only the scrape has the job descriptions; each is checked (under
+1,500 characters, no links or email addresses, revised once if not), cached in `data/briefs/` (Actions cache,
+gitignored) and saved with the job in the run output. In the dashboard, **Apply** copies the brief, shows
+"Application brief copied to clipboard" and opens the post on Contra; "Brief and details" under each lead shows
+it with a Copy button. `APPLICATION_BRIEFS=anthropic` turns this on (the workflow sets it); `BRIEF_MODEL`
+picks the model.
+
 ## Lead sheet
 
 Full-time roles from companies (not private individuals) get a lookup: Claude with web search finds
@@ -128,8 +144,9 @@ Jobs that have left Contra's board stay, marked "off the board". `/latest` shows
 
 - **Stages:** New → Applied → Talking → Won / Lost / Passed, picked per lead. They're saved in
   `data/pipeline.json` (job id → stage, title, time), so git keeps the history.
-- **Apply on Contra** opens the job post on contra.com to apply by hand. Full-time roles get
-  **View post** instead, plus the company's links: those are for outreach off Contra, not applying.
+- **Apply** copies the job's application brief (see "Application briefs") and opens the post on Contra to paste
+  it in. Full-time roles get **View post** instead, plus the company's links: those are for outreach off Contra,
+  not applying.
 
 Running locally, the dashboard reads `data/` and a stage change writes `data/pipeline.json`; commit and push it
 to share.

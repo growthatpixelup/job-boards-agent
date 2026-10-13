@@ -39,6 +39,7 @@ function toRow(lead: Lead): LeadRow {
     firstSeenAt: lead.firstSeenAt,
     onBoard: lead.onBoard,
     stage: lead.stage,
+    brief: lead.applicationBrief ?? null,
   };
 }
 
