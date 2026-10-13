@@ -131,12 +131,17 @@ Jobs that have left Contra's board stay, marked "off the board". `/latest` shows
 - **Apply on Contra** opens the job post on contra.com to apply by hand. Full-time roles get
   **View post** instead, plus the company's links: those are for outreach off Contra, not applying.
 
-Running locally, a stage change writes `data/pipeline.json`; commit and push it to share. A hosted copy
-(e.g. Vercel) can't keep files, so set `PIPELINE_GITHUB_TOKEN` (fine-grained PAT for this repo, Contents:
-Read and write) and each change is committed to the repo instead (`PIPELINE_GITHUB_REPO` and
-`PIPELINE_GITHUB_BRANCH` default to `PIXELUPLABS/contra-scrapper` and `main`). It refuses to save until
-`DASHBOARD_PASSWORD` is set, which puts a password on every page (any username). The scrape workflow rebases
-onto those commits before pushing its own. New scrape data reaches a hosted copy when it redeploys.
+Running locally, the dashboard reads `data/` and a stage change writes `data/pipeline.json`; commit and push it
+to share.
+
+**Hosted (Vercel).** A hosted copy has no `data/` folder, so set `DASHBOARD_GITHUB_TOKEN` (fine-grained PAT for
+this repo, Contents: Read and write): it then reads `data/` from GitHub on every visit, so it always shows the
+latest scrape without redeploying, and commits each stage change to `data/pipeline.json`
+(`DASHBOARD_GITHUB_REPO` and `DASHBOARD_GITHUB_BRANCH` default to `PIXELUPLABS/contra-scrapper` and `main`).
+It refuses to save stages until `DASHBOARD_PASSWORD` is set, which puts a password on every page (any
+username). The scrape workflow rebases onto those commits before pushing its own. The Vercel project isn't
+linked to this repo (Vercel blocks private-repo deploys from commit authors outside its team, such as the
+Actions bot), so a code change needs a new deployment.
 
 ## Local use
 

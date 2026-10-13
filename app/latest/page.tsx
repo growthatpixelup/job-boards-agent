@@ -1,18 +1,8 @@
-import { readFile } from "node:fs/promises";
-import path from "node:path";
 import Link from "next/link";
 import { connection } from "next/server";
 import { Suspense } from "react";
-import type { ClassifiedJob, IcpDecision, Job, Lane, RunResult } from "@/scraper/types.ts";
-
-async function loadLatest(): Promise<RunResult | null> {
-  try {
-    const file = path.join(process.cwd(), "data", "latest.json");
-    return JSON.parse(await readFile(file, "utf8")) as RunResult;
-  } catch {
-    return null;
-  }
-}
+import { loadLatest } from "@/lib/pipeline-store.ts";
+import type { ClassifiedJob, IcpDecision, Job, Lane } from "@/scraper/types.ts";
 
 function formatBudget(b: Job["budget"]): string {
   if (!b) return "—";

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { connection } from "next/server";
 import { Suspense } from "react";
 import { buildLeads, type Lead } from "@/lib/pipeline.ts";
-import { loadPipeline, loadRuns, savesToGitHub } from "@/lib/pipeline-store.ts";
+import { loadPipeline, loadRuns, missingGitHubToken, readsFromGitHub } from "@/lib/pipeline-store.ts";
 import type { Job } from "@/scraper/types.ts";
 import { LeadBoard, type LeadRow } from "./lead-board.tsx";
 
@@ -44,6 +44,13 @@ function toRow(lead: Lead): LeadRow {
 
 async function Dashboard() {
   await connection();
+  if (missingGitHubToken) {
+    return (
+      <p className="panel p-5 text-muted-foreground">
+        Add <code className="font-mono text-foreground">DASHBOARD_GITHUB_TOKEN</code> in the Vercel project settings to load leads from the repo.
+      </p>
+    );
+  }
   const [runs, pipeline] = await Promise.all([loadRuns(), loadPipeline()]);
   const lastRun = runs.map((r) => r.ranAt).sort().at(-1);
   if (!lastRun) {
@@ -59,7 +66,7 @@ async function Dashboard() {
       <LeadBoard leads={leads} />
       <p className="mt-4 text-center text-xs text-muted-foreground">
         Stages save to <code className="font-mono">data/pipeline.json</code>
-        {savesToGitHub ? " on GitHub." : ". Commit it to share."}
+        {readsFromGitHub ? " on GitHub." : ". Commit it to share."}
       </p>
     </>
   );
