@@ -10,7 +10,12 @@ export function isAuthorized(authorization: string | null): boolean {
   if (LOCKED) return false;
   if (!PASSWORD) return true;
   if (!authorization?.startsWith("Basic ")) return false;
-  const decoded = atob(authorization.slice(6));
+  let decoded: string;
+  try {
+    decoded = atob(authorization.slice(6));
+  } catch {
+    return false; // not base64
+  }
   const given = decoded.slice(decoded.indexOf(":") + 1);
   // Constant-time compare.
   let diff = given.length ^ PASSWORD.length;

@@ -28,8 +28,7 @@ users' personal information. So:
 ## Automatic runs (GitHub Actions)
 
 `.github/workflows/scrape.yml` scrapes once a day from **11 AM San Francisco time**, plus on demand from
-Actions → "Daily Contra scrape" → Run workflow. Each scrape commits `data/latest.json`,
-`data/runs/`, `data/seen-ids.json` and `data/announced-ids.json`, then posts to Slack and the lead sheet.
+Actions → "Daily Contra scrape" → Run workflow. Each scrape saves its run to Supabase (see "Database"), then posts to Slack and the lead sheet.
 
 GitHub starts this repo's scheduled runs hours late (4.5–7 hours in October 2026), so the workflow wakes
 every hour and a quick `gate` job decides: the first wake-up at or after 11 AM SF scrapes, and its data
@@ -88,7 +87,7 @@ Claude also rates how likely each job is to grow (shown in the app), and the job
 | project | meets the money rule | when qualified |
 | outreach | a full-time role for work we sell: don't apply, reach out off Contra and pitch a project | when qualified or maybe, whatever the pay, with the company's links; founders go to the lead sheet |
 
-Each job is posted once, the first run it fits (`data/announced-ids.json`), so an older job that a
+Each job is posted once, the first run it fits (the `announced_jobs` table), so an older job that a
 change to the brief newly qualifies gets posted too. Each verdict is cached in `data/verdicts/`, so a
 job is only sent to Claude once (again if the job or the brief changes; a brief change re-reads the
 whole board, ~230 jobs, on the next run). If a Claude call fails, the regex rules (`regex.ts`) stand
@@ -135,30 +134,41 @@ To connect the sheet, once:
 Until then the step logs how many leads it would have sent and skips. `LEAD_LOOKUP=anthropic` turns the
 lookup on (the workflow sets it); `LEAD_MODEL` picks the model (default `claude-sonnet-5-5`).
 
+## Database
+
+Scrape state lives in Supabase (project `leads-manager`), not in git. Tables are in
+`supabase/migrations/`: `runs` (one row per scrape, the whole run as JSON; the newest is "latest"),
+`seen_jobs`, `announced_jobs` and `pipeline_leads` (each lead's stage). RLS is on with no policies, so only the
+service role key can read or write; keep it server-side and out of `NEXT_PUBLIC_*`.
+
+- **Env** (`.env.local`, Vercel, and GitHub Actions secrets): `NEXT_PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`.
+  The publishable key (`NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`) is only used by the helpers in `utils/supabase/`.
+- **Set up a new project:** run the migration in the SQL editor, then `npm run db:import` copies any old
+  `data/*.json` files in.
+- The caches in `data/details`, `verdicts`, `leads` and `briefs` stay on disk / in the Actions cache: they hold
+  personal data or are cheap to rebuild, and stay out of the database.
+
 ## Lead dashboard
 
 `npm run dev` → http://localhost:3000. It lists every job the AI layer qualified, from every scrape
-(`data/runs/` and `data/latest.json`): qualified projects, and full-time roles that fit (the same rule as
+(the `runs` table): qualified projects, and full-time roles that fit (the same rule as
 Slack). A job keeps its newest verdict, so one a later run rejects drops out, unless it already has a stage.
 Jobs that have left Contra's board stay, marked "off the board". `/latest` shows the latest scrape as before.
 
 - **Stages:** New → Applied → Talking → Won / Lost / Passed, picked per lead. They're saved in
-  `data/pipeline.json` (job id → stage, title, time), so git keeps the history.
+  Supabase's `pipeline_leads` table (job id → stage, title, time).
 - **Apply** copies the job's application brief (see "Application briefs") and opens the post on Contra to paste
   it in. Full-time roles get **View post** instead, plus the company's links: those are for outreach off Contra,
   not applying.
 
-Running locally, the dashboard reads `data/` and a stage change writes `data/pipeline.json`; commit and push it
-to share.
+The dashboard reads runs and stages from Supabase and saves stage changes there, locally and hosted alike.
 
 **Hosted (Vercel).** The dashboard runs at https://pixelup-leads-growth-pixelup.vercel.app (Vercel project
-`pixelup-leads` in the growth-pixelup team, behind Vercel login). A hosted copy has no `data/` folder, so set `DASHBOARD_GITHUB_TOKEN` (fine-grained PAT for
-this repo, Contents: Read and write): it then reads `data/` from GitHub on every visit, so it always shows the
-latest scrape without redeploying, and commits each stage change to `data/pipeline.json`
-(`DASHBOARD_GITHUB_REPO` and `DASHBOARD_GITHUB_BRANCH` default to `PIXELUPLABS/contra-scrapper` and `main`).
+`pixelup-leads` in the growth-pixelup team, behind Vercel login). Set `NEXT_PUBLIC_SUPABASE_URL` and
+`SUPABASE_SERVICE_ROLE_KEY` in the Vercel project; it then shows the latest scrape without redeploying.
 `DASHBOARD_PASSWORD` puts a password on every page (any username); on Vercel every page stays locked until
 it's set, because the short `pixelup-leads.vercel.app` address isn't behind Vercel login. Env changes on Vercel
-take effect on the next deployment. The scrape workflow rebases onto those commits before pushing its own. The Vercel project isn't
+take effect on the next deployment. The Vercel project isn't
 linked to this repo (Vercel blocks private-repo deploys from commit authors outside its team, such as the
 Actions bot), so a code change needs a new deployment.
 

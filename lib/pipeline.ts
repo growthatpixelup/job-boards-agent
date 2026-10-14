@@ -1,7 +1,7 @@
 import type { ClassifiedJob, IcpVerdict, Lane, RunResult } from "../scraper/types.ts";
 
 // The lead dashboard: every job the AI layer said is worth acting on, across all runs, plus the stage the
-// team has moved it to. Stages live in data/pipeline.json (see lib/pipeline-store.ts).
+// team has moved it to. Stages live in Supabase's pipeline_leads table (see lib/pipeline-store.ts).
 
 export const STAGES = [
   { id: "new", label: "New" },
@@ -18,7 +18,7 @@ export function isStage(s: unknown): s is Stage {
   return STAGES.some((st) => st.id === s);
 }
 
-/** data/pipeline.json. Keyed by Contra job id; the title is kept so the file (and its git history) reads on its own. */
+/** The pipeline_leads table, keyed by Contra job id; the title is kept so a row reads on its own. */
 export interface Pipeline {
   leads: Record<string, { title: string; stage: Stage; updatedAt: string }>;
 }
@@ -51,38 +51,59 @@ function isLead(job: ClassifiedJob, lane: string | null): lane is Lane {
   return lane === "project" && job.icp.decision === "qualified";
 }
 
+/** What the job_states table keeps per job: its newest verdict and when runs first and last saw it. */
+export interface JobState {
+  id: string;
+  url: string;
+  /** The newest verdict the job got while it was still kept (not rejected). */
+  job: ClassifiedJob;
+  firstSeenAt: string;
+  /** The last run that had the job, or that rejected it. */
+  lastSeenAt: string;
+  /** The newest run rejected it (rejected jobs are only kept as title/url/reasons). */
+  rejected: boolean;
+}
+
 /**
- * Every lead across the runs, each with its newest verdict. A job's newest verdict wins, so one a later run
- * rejected (a stricter brief) drops out, unless the team has already given it a stage.
+ * Folds one run into the job states, as the scraper saves it. `states` must hold at least the states of the run's
+ * jobs and of the jobs it rejected; it is updated in place. Returns the states that changed. Runs go in oldest first.
  */
-export function buildLeads(runs: RunResult[], pipeline: Pipeline): Lead[] {
-  const sorted = [...runs].sort((a, b) => a.ranAt.localeCompare(b.ranAt));
-  const latestRanAt = sorted.at(-1)?.ranAt ?? "";
-  const firstSeen = new Map<string, string>();
-  const newest = new Map<string, { job: ClassifiedJob | null; ranAt: string }>();
-  const idByUrl = new Map<string, string>();
-
-  for (const run of sorted) {
-    for (const job of run.jobs) {
-      if (!firstSeen.has(job.id)) firstSeen.set(job.id, run.ranAt);
-      newest.set(job.id, { job, ranAt: run.ranAt });
-      idByUrl.set(job.url, job.id);
-    }
-    // Rejected jobs are only kept as title/url/reasons.
-    for (const r of run.rejected ?? []) {
-      const id = idByUrl.get(r.url);
-      if (id) newest.set(id, { job: null, ranAt: run.ranAt });
-    }
+export function applyRun(states: Map<string, JobState>, run: RunResult): JobState[] {
+  const changed = new Map<string, JobState>();
+  for (const job of run.jobs) {
+    const next: JobState = {
+      id: job.id,
+      url: job.url,
+      job,
+      firstSeenAt: states.get(job.id)?.firstSeenAt ?? run.ranAt,
+      lastSeenAt: run.ranAt,
+      rejected: false,
+    };
+    states.set(job.id, next);
+    changed.set(job.id, next);
   }
+  const idByUrl = new Map([...states.values()].map((st) => [st.url, st.id]));
+  for (const r of run.rejected ?? []) {
+    const id = idByUrl.get(r.url);
+    const prev = id ? states.get(id) : undefined;
+    if (!id || !prev) continue;
+    const next = { ...prev, lastSeenAt: run.ranAt, rejected: true };
+    states.set(id, next);
+    changed.set(id, next);
+  }
+  return [...changed.values()];
+}
 
-  // Older verdicts, for jobs whose newest verdict is a rejection but that already have a stage.
-  const lastFit = new Map<string, ClassifiedJob>();
-  for (const run of sorted) for (const job of run.jobs) lastFit.set(job.id, job);
-
+/**
+ * Every lead, each with its newest verdict. A job's newest verdict wins, so one a later run rejected (a stricter
+ * brief) drops out, unless the team has already given it a stage. `latestRanAt` is the newest run.
+ */
+export function buildLeads(states: Iterable<JobState>, pipeline: Pipeline, latestRanAt: string): Lead[] {
   const leads: Lead[] = [];
-  for (const [id, { job: newestJob, ranAt }] of newest) {
-    const staged = pipeline.leads[id];
-    const job = newestJob ?? (staged ? lastFit.get(id) : undefined);
+  for (const st of states) {
+    const staged = pipeline.leads[st.id];
+    // A rejected job keeps its older verdict only while it has a stage.
+    const job = st.rejected && !staged ? undefined : st.job;
     if (!job) continue;
     // Runs from before lanes existed only flagged full-time roles.
     const lane = job.lane ?? (job.icp.project?.fullTime ? "outreach" : job.icp.decision === "rejected" ? null : "project");
@@ -92,9 +113,9 @@ export function buildLeads(runs: RunResult[], pipeline: Pipeline): Lead[] {
       lane: lane as Lane,
       stage: staged?.stage ?? "new",
       stageUpdatedAt: staged?.updatedAt ?? null,
-      firstSeenAt: firstSeen.get(id)!,
-      lastSeenAt: ranAt,
-      onBoard: ranAt === latestRanAt,
+      firstSeenAt: st.firstSeenAt,
+      lastSeenAt: st.lastSeenAt,
+      onBoard: st.lastSeenAt === latestRanAt,
     });
   }
   return leads.sort((a, b) => b.firstSeenAt.localeCompare(a.firstSeenAt) || (b.createdAt ?? "").localeCompare(a.createdAt ?? ""));
@@ -103,16 +124,4 @@ export function buildLeads(runs: RunResult[], pipeline: Pipeline): Lead[] {
 /** Returns a new pipeline with the job moved to the stage. */
 export function setStage(pipeline: Pipeline, id: string, title: string, stage: Stage, now = new Date()): Pipeline {
   return { leads: { ...pipeline.leads, [id]: { title, stage, updatedAt: now.toISOString() } } };
-}
-
-export function parsePipeline(text: string | null): Pipeline {
-  if (!text) return { leads: {} };
-  const parsed = JSON.parse(text) as Partial<Pipeline>;
-  return { leads: parsed.leads ?? {} };
-}
-
-/** Stable, diff-friendly: sorted keys, one lead per line block. */
-export function serializePipeline(pipeline: Pipeline): string {
-  const leads = Object.fromEntries(Object.entries(pipeline.leads).sort(([a], [b]) => a.localeCompare(b)));
-  return JSON.stringify({ leads }, null, 2) + "\n";
 }

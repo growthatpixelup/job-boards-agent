@@ -1,10 +1,9 @@
 import { readFile } from "node:fs/promises";
+import { loadLatestRun } from "../lib/db.ts";
 import path from "node:path";
 import { SHEET_HEADERS, SHEET_KEY, sheetRows } from "./announce.ts";
-import { DATA_DIR } from "./feed.ts";
 import { isOutreachLead } from "./lanes.ts";
 import { LEADS_DIR, type Lead } from "./leads.ts";
-import type { RunResult } from "./types.ts";
 
 // Sends the latest run's full-time leads (company links + founders from data/leads/) to the Google Sheet,
 // through the Apps Script web app in scripts/leads-sheet.gs. It sends every current lead and the script
@@ -13,7 +12,8 @@ import type { RunResult } from "./types.ts";
 //      SHEET_DRY_RUN=1 prints the rows instead.
 
 async function main() {
-  const run = JSON.parse(await readFile(path.join(DATA_DIR, "latest.json"), "utf8")) as RunResult;
+  const run = await loadLatestRun();
+  if (!run) return void console.log("[sheet] no run saved yet");
   const leads = new Map<string, Lead>();
   for (const j of run.jobs.filter(isOutreachLead)) {
     try {

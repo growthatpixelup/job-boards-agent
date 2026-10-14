@@ -2,7 +2,7 @@ import Link from "next/link";
 import { connection } from "next/server";
 import { Suspense } from "react";
 import { buildLeads, type Lead } from "@/lib/pipeline.ts";
-import { loadPipeline, loadRuns, missingGitHubToken, readsFromGitHub } from "@/lib/pipeline-store.ts";
+import { latestRanAt, loadJobStates, loadPipeline } from "@/lib/pipeline-store.ts";
 import type { Job } from "@/scraper/types.ts";
 import { LeadBoard, type LeadRow } from "./lead-board.tsx";
 
@@ -45,19 +45,11 @@ function toRow(lead: Lead): LeadRow {
 
 async function Dashboard() {
   await connection();
-  if (missingGitHubToken) {
-    return (
-      <p className="panel p-5 text-muted-foreground">
-        Add <code className="font-mono text-foreground">DASHBOARD_GITHUB_TOKEN</code> in the Vercel project settings to load leads from the repo.
-      </p>
-    );
-  }
-  const [runs, pipeline] = await Promise.all([loadRuns(), loadPipeline()]);
-  const lastRun = runs.map((r) => r.ranAt).sort().at(-1);
+  const [states, pipeline, lastRun] = await Promise.all([loadJobStates(), loadPipeline(), latestRanAt()]);
   if (!lastRun) {
     return <p className="text-muted-foreground">No scrape data yet.</p>;
   }
-  const leads = buildLeads(runs, pipeline).map(toRow);
+  const leads = buildLeads(states, pipeline, lastRun).map(toRow);
   return (
     <>
       <p className="mb-6 text-muted-foreground">
@@ -65,10 +57,6 @@ async function Dashboard() {
         {new Date(lastRun).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })}
       </p>
       <LeadBoard leads={leads} />
-      <p className="mt-4 text-center text-xs text-muted-foreground">
-        Stages save to <code className="font-mono">data/pipeline.json</code>
-        {readsFromGitHub ? " on GitHub." : ". Commit it to share."}
-      </p>
     </>
   );
 }

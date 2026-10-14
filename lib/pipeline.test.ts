@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import type { ClassifiedJob, IcpVerdict, RunResult } from "../scraper/types.ts";
-import { buildLeads, parsePipeline, serializePipeline, setStage, type Pipeline } from "./pipeline.ts";
+import { applyRun, buildLeads as buildFromStates, setStage, type JobState, type Pipeline } from "./pipeline.ts";
 
 // Which jobs reach the lead dashboard, and how stages are kept.
 
@@ -26,6 +26,14 @@ function run(ranAt: string, jobs: ClassifiedJob[], rejected: string[] = []): Run
 }
 
 const empty: Pipeline = { leads: {} };
+
+/** Folds the runs in order, as the scraper saves them, then builds the leads. */
+function buildLeads(runs: RunResult[], pipeline: Pipeline) {
+  const states = new Map<string, JobState>();
+  const sorted = [...runs].sort((a, b) => a.ranAt.localeCompare(b.ranAt));
+  for (const r of sorted) applyRun(states, r);
+  return buildFromStates(states.values(), pipeline, sorted.at(-1)?.ranAt ?? "");
+}
 const ids = (runs: RunResult[], p = empty) => buildLeads(runs, p).map((l) => l.id);
 
 describe("buildLeads", () => {
@@ -68,13 +76,23 @@ describe("buildLeads", () => {
   });
 });
 
-describe("pipeline file", () => {
-  it("round-trips with sorted keys", () => {
-    const now = new Date("2026-10-13T10:00:00Z");
-    const p = setStage(setStage(empty, "z", "Z", "talking", now), "a", "A", "new", now);
-    const text = serializePipeline(p);
-    assert.deepEqual(Object.keys(JSON.parse(text).leads), ["a", "z"]);
-    assert.deepEqual(parsePipeline(text), p);
-    assert.deepEqual(parsePipeline(null), empty);
+describe("applyRun", () => {
+  it("keeps the first-seen time and updates only the jobs a run touched", () => {
+    const states = new Map<string, JobState>();
+    applyRun(states, run("2026-10-12T10:00:00Z", [job("a"), job("b")]));
+    const changed = applyRun(states, run("2026-10-13T10:00:00Z", [job("a")], ["b"]));
+    assert.deepEqual(changed.map((c) => [c.id, c.rejected, c.firstSeenAt]).sort(), [
+      ["a", false, "2026-10-12T10:00:00Z"],
+      ["b", true, "2026-10-12T10:00:00Z"],
+    ]);
+  });
+
+  it("gives the same states when the same run is applied twice", () => {
+    const states = new Map<string, JobState>();
+    const r = run("2026-10-12T10:00:00Z", [job("a")]);
+    applyRun(states, r);
+    const once = JSON.stringify([...states.values()]);
+    applyRun(states, r);
+    assert.equal(JSON.stringify([...states.values()]), once);
   });
 });

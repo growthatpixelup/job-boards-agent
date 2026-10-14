@@ -1,7 +1,8 @@
 import { mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
+import { addIds, loadIds, saveRun } from "../lib/db.ts";
 import { addBriefs, getBriefWriter } from "./brief.ts";
-import { DATA_DIR, RAW_DIR, loadFeed, minimizeDetails, pruneDetails } from "./feed.ts";
+import { RAW_DIR, loadFeed, minimizeDetails, pruneDetails } from "./feed.ts";
 import { filterConfig, matchesFilters } from "./filters.ts";
 import { LLM_FAILED, getClassifier } from "./icp/index.ts";
 import { isOutreachLead, toClassified } from "./lanes.ts";
@@ -12,7 +13,7 @@ import type { ClassifiedJob, IcpDecision, Job, Lane, RunResult } from "./types.t
 // Ingests the raw MCP feed pages (data/raw/) plus cached descriptions (data/details/)
 // saved by the /contra-scrape skill, classifies each job against the ICP, sorts the ones
 // that fit into lanes, looks up the companies behind full-time roles, and writes
-// data/latest.json for the app.
+// the run to Supabase (runs table) for the app.
 
 async function readJson<T>(file: string, fallback: T): Promise<T> {
   try {
@@ -61,11 +62,9 @@ async function main() {
   }
 
   const classifier = getClassifier();
-  const seenFile = path.join(DATA_DIR, "seen-ids.json");
-  const seen = new Set(await readJson<string[]>(seenFile, []));
+  const seen = await loadIds("seen_jobs");
   // Jobs already posted to Slack, so each is posted once: when it's new, or when a rubric change first qualifies it.
-  const announcedFile = path.join(DATA_DIR, "announced-ids.json");
-  const announced = new Set(await readJson<string[]>(announcedFile, []));
+  const announced = await loadIds("announced_jobs");
 
   const candidates = feed.jobs.filter((j) => matchesFilters(j));
   const verdicts = await mapPool(candidates, classifier.concurrency, (j: Job) => classifier.classify(j));
@@ -115,15 +114,10 @@ async function main() {
       .map((j) => ({ title: j.title, url: j.url, reasons: j.icp.reasons })),
   };
 
-  await mkdir(path.join(DATA_DIR, "runs"), { recursive: true });
-  const json = JSON.stringify(result, null, 2);
-  // One file per run (UTC date + time), so twice-daily runs don't overwrite each other.
-  await writeFile(path.join(DATA_DIR, "runs", `${ranAt.slice(0, 16).replace(":", "")}.json`), json);
-  await writeFile(path.join(DATA_DIR, "latest.json"), json);
-  for (const j of feed.jobs) if (!failed.has(j.id)) seen.add(j.id);
-  await writeFile(seenFile, JSON.stringify([...seen]));
-  for (const j of kept) if (j.announce) announced.add(j.id);
-  await writeFile(announcedFile, JSON.stringify([...announced]));
+  // The run first: if a later write fails, the ids stay unsaved and the next run re-posts rather than drops.
+  await saveRun(result, process.env.RUN_DAILY === "1");
+  await addIds("seen_jobs", feed.jobs.filter((j) => !failed.has(j.id)).map((j) => j.id));
+  // announced_jobs is written by notify.ts once Slack has accepted the post, so a failed post is retried.
   await rm(RAW_DIR, { recursive: true, force: true }); // consumed; next run starts clean (details stay cached)
   // Only the full feed tells us which jobs are gone; a BOOKMARKED/APPLIED run must not prune the rest.
   if (result.preset === "ALL") {

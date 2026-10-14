@@ -10,15 +10,15 @@ on:
   workflow_dispatch: # "Run workflow" button in the Actions tab; always scrapes
 
 permissions:
-  contents: write # commit the refreshed data/ files
+  contents: read # job data lives in Supabase now, nothing is committed
 
 concurrency:
   group: contra-scrape
   cancel-in-progress: false
 
 jobs:
-  # A few seconds per hourly wake-up. The daily scrape's data commit is tagged "(daily)", so finding one since
-  # SF midnight means today's scrape is done.
+  # A few seconds per hourly wake-up. The daily scrape's run is saved to Supabase with daily = true, so finding
+  # one since SF midnight means today's scrape is done.
   gate:
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -27,16 +27,17 @@ jobs:
     steps:
       - id: check
         env:
-          GH_TOKEN: ${{ github.token }}
+          SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
           EVENT: ${{ github.event_name }}
         run: |
           decide() { echo "go=$1" >> "$GITHUB_OUTPUT"; echo "$2"; }
           [ "$EVENT" = "schedule" ] || { decide true "Started by hand: scraping."; exit 0; }
           hour=$(TZ=America/Los_Angeles date +%-H)
           [ "$hour" -ge 11 ] || { decide false "Before 11 AM in San Francisco ($(TZ=America/Los_Angeles date +%H:%M)): not yet."; exit 0; }
-          since=$(TZ=America/Los_Angeles date +%Y-%m-%dT00:00:00%:z) # SF midnight, e.g. 2026-10-13T00:00:00-07:00
-          daily=$(gh api "repos/$GITHUB_REPOSITORY/commits?path=data/latest.json&since=$since&per_page=100" \
-            --jq '[.[] | select(.commit.message | contains("(daily)"))] | length')
+          since=$(TZ=America/Los_Angeles date -d 'today 00:00' -u +%Y-%m-%dT%H:%M:%SZ) # SF midnight, in UTC
+          daily=$(curl -sSf "$SUPABASE_URL/rest/v1/runs?select=ran_at&daily=eq.true&ran_at=gte.$since" \
+            -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" | jq length)
           if [ "$daily" -gt 0 ]; then decide false "Today's daily scrape already ran."; else decide true "First wake-up after 11 AM SF today: scraping."; fi
 
   scrape:
@@ -72,6 +73,7 @@ jobs:
           restore-keys: contra-data-
 
       - name: Fetch jobs from the Contra MCP and classify
+        id: scrape
         env:
           CONTRA_CLIENT_ID: ${{ secrets.CONTRA_CLIENT_ID }}
           CONTRA_REFRESH_TOKEN: ${{ secrets.CONTRA_REFRESH_TOKEN }}
@@ -83,6 +85,10 @@ jobs:
           # Project leads: write the "why you'd be a good fit" answer for Contra's apply form (pitch.md, Claude Opus).
           APPLICATION_BRIEFS: anthropic
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Runs, seen/announced job ids and stages live in Supabase; the scheduled scrape is flagged daily for the gate.
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          RUN_DAILY: ${{ github.event_name == 'schedule' && '1' || '0' }}
         run: npm run scrape:ci
 
       # Saved straight away, even if the scrape failed partway, so a later failing step can't throw away a run's
@@ -114,31 +120,40 @@ jobs:
           gh secret set CONTRA_REFRESH_TOKEN --repo "$GITHUB_REPOSITORY" < "$f"
           echo "Stored the new refresh token."
 
-      - name: Commit updated job data
-        id: commit
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898341+github-actions[bot]@users.noreply.github.com"
-          git add -A data # latest.json, runs/, seen-ids.json, announced-ids.json (raw/, details/, verdicts/, leads/ are gitignored)
-          git diff --cached --quiet && { echo "No changes."; exit 0; }
-          # "(daily)" marks the scheduled scrape; the gate job looks for it.
-          git commit -m "data: Contra scrape $(TZ=Asia/Kolkata date "+%F %H:%M IST")${{ github.event_name == 'schedule' && ' (daily)' || '' }}"
-          # The lead dashboard may have committed stage changes (data/pipeline.json) since checkout.
-          git pull --rebase origin "$GITHUB_REF_NAME"
-          git push
-
-      # The two announcement steps run only after a successful scrape and commit, and each runs even if the other fails.
+      # The two announcement steps run only after a successful scrape, and each runs even if the other fails.
       - name: Notify Slack
-        if: ${{ !cancelled() && steps.commit.outcome == 'success' }}
+        if: ${{ !cancelled() && steps.scrape.outcome == 'success' }}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           LEADS_SHEET_URL: ${{ vars.LEADS_SHEET_URL }} # optional repository variable: the lead sheet's link
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: npm run notify --silent
 
       # Skips until the LEADS_WEBHOOK_URL secret is set (README → "Lead sheet").
       - name: Add full-time leads to the Google Sheet
-        if: ${{ !cancelled() && steps.commit.outcome == 'success' }}
+        if: ${{ !cancelled() && steps.scrape.outcome == 'success' }}
         env:
           LEADS_WEBHOOK_URL: ${{ secrets.LEADS_WEBHOOK_URL }}
           LEADS_WEBHOOK_TOKEN: ${{ secrets.LEADS_WEBHOOK_TOKEN }}
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: npm run sheet --silent
+
+  # A scrape that fails (an expired Contra token, a Supabase outage) would otherwise only show in the Actions tab,
+  # and Slack would just go quiet. Skipped when the gate says not to scrape. The next hourly wake-up retries, and
+  # posts again if it fails again.
+  alert:
+    needs: [gate, scrape]
+    if: ${{ failure() }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Tell Slack the scrape failed
+        env:
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          [ -n "$SLACK_WEBHOOK_URL" ] || { echo "SLACK_WEBHOOK_URL not set; nothing to tell"; exit 0; }
+          jq -n --arg jobs "Failed run: $RUN_URL" '{summary: "⚠️ Contra scrape failed, no jobs were checked", jobs: $jobs}' \
+            | curl -sSf -X POST -H "Content-Type: application/json" -d @- "$SLACK_WEBHOOK_URL"

@@ -1,16 +1,14 @@
-import { readFile } from "node:fs/promises";
-import path from "node:path";
+import { addIds, loadLatestRun } from "../lib/db.ts";
 import { slackMessage } from "./announce.ts";
-import { DATA_DIR } from "./feed.ts";
-import type { RunResult } from "./types.ts";
 
-// Posts the latest run's announced jobs (fitting, and never posted before) to Slack, grouped by lane, via a
+// Posts the latest run's (from Supabase) announced jobs (fitting, and never posted before) to Slack, grouped by lane, via a
 // Workflow Builder webhook trigger with two Text variables: `summary` and `jobs`.
 // Env: SLACK_WEBHOOK_URL (skips quietly when unset), SLACK_DRY_RUN=1 prints the payload instead,
 //      LEADS_SHEET_URL (optional) links the lead sheet under the full-time roles.
 
 async function main() {
-  const run = JSON.parse(await readFile(path.join(DATA_DIR, "latest.json"), "utf8")) as RunResult;
+  const run = await loadLatestRun();
+  if (!run) return void console.log("[notify] no run saved yet; nothing to post");
   const payload = slackMessage(run, process.env.LEADS_SHEET_URL || undefined);
 
   if (process.env.SLACK_DRY_RUN) return void console.log(JSON.stringify(payload, null, 2));
@@ -20,6 +18,8 @@ async function main() {
   const res = await fetch(url, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
   if (!res.ok) throw new Error(`Slack webhook returned ${res.status}: ${(await res.text()).slice(0, 200)}`);
   console.log(`[notify] posted to Slack: ${payload.summary}`);
+  // Only now: a failed post leaves them unannounced, so the next run posts them.
+  await addIds("announced_jobs", run.jobs.filter((j) => j.announce).map((j) => j.id));
 }
 
 main().catch((err) => {
