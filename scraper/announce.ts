@@ -72,14 +72,74 @@ export function slackMessage(run: RunResult, sheetUrl?: string): { summary: stri
         .map((s) =>
           [
             s.title,
-            ...s.jobs.slice(0, MAX_PER_LANE).map(line),
+            s.jobs.slice(0, MAX_PER_LANE).map(line).join("\n\n"),
             ...(s.jobs.length > MAX_PER_LANE ? [`…and ${s.jobs.length - MAX_PER_LANE} more`] : []),
             ...(s.lane === "outreach" && sheetUrl ? [`Founders and lookup notes are in the lead sheet: ${sheetUrl}`] : []),
-          ].join("\n"),
+          ].join("\n\n"),
         )
-        .join("\n\n")
+        .join("\n\n\n")
     : "—";
-  return { summary, jobs };
+  return { summary, jobs: sections.length ? `\n${jobs}` : jobs };
+}
+
+// --- Block Kit version, for a Slack app's Incoming Webhook (https://hooks.slack.com/services/...). ---
+// A Workflow Builder webhook (https://hooks.slack.com/triggers/...) only takes text variables, so it gets slackMessage.
+
+type Block = Record<string, unknown>;
+
+/** Slack mrkdwn treats & < > as markup; anything from a Contra post must be escaped. */
+const esc = (t: string) => t.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+
+const link = (url: string, label: string) => `<${url}|${esc(label).replace(/\|/g, "¦")}>`;
+
+function jobBlock(j: ClassifiedJob): Block {
+  const l = j.companyLinks;
+  const links = l ? ([["Site", l.website], ["LinkedIn", l.linkedin], ["X", l.x]] as const).filter(([, u]) => u) : [];
+  const rows = [
+    `*${link(j.url, j.title)}*`,
+    esc([j.organization?.name, budget(j.budget)].filter(Boolean).join(" · ")),
+  ];
+  const est = size(j);
+  if (est) rows.push(esc(est));
+  const concerns = j.icp.project?.concerns ?? [];
+  if (concerns.length) rows.push(`:warning: ${esc(concerns.join(" · "))}`);
+  if (j.lane === "outreach") rows.push(links.length ? links.map(([k, u]) => link(u!, k)).join("  ·  ") : "_Company links not found; look them up by hand_");
+  const text = rows.join("\n").slice(0, 2900); // a section's text is capped at 3000
+  return {
+    type: "section",
+    text: { type: "mrkdwn", text },
+    // The button is a real link, so nothing is posted back to Slack.
+    accessory: { type: "button", text: { type: "plain_text", text: j.lane === "outreach" ? "View post" : "Apply" }, url: j.url },
+  };
+}
+
+/** The same message as slackMessage, laid out for Incoming Webhooks: one block per job, no link preview cards. */
+export function slackBlocks(run: RunResult, sheetUrl?: string): { text: string; blocks: Block[]; unfurl_links: false; unfurl_media: false } {
+  const { summary } = slackMessage(run, sheetUrl);
+  const fresh = run.jobs.filter((j) => j.announce);
+  const sections = SECTIONS.map((sec) => ({ ...sec, jobs: fresh.filter((j) => j.lane === sec.lane) })).filter((sec) => sec.jobs.length);
+  const when = new Date(run.ranAt).toLocaleString("en-IN", {
+    timeZone: "Asia/Kolkata", day: "numeric", month: "short", hour: "numeric", minute: "2-digit",
+  });
+
+  const blocks: Block[] = [];
+  if (!sections.length) {
+    blocks.push({ type: "section", text: { type: "mrkdwn", text: `:zzz: *No new Contra jobs to act on*\n${when} IST` } });
+  } else {
+    const plural = (n: number, noun: string) => `${n} ${noun}${n === 1 ? "" : "s"}`;
+    blocks.push({ type: "header", text: { type: "plain_text", text: `${plural(fresh.length, "Contra job")} to act on` } });
+    blocks.push({ type: "context", elements: [{ type: "mrkdwn", text: `${when} IST · ${sections.map((sec) => plural(sec.jobs.length, sec.noun)).join(", ")}` }] });
+    for (const sec of sections) {
+      blocks.push({ type: "divider" });
+      blocks.push({ type: "section", text: { type: "mrkdwn", text: `*${esc(sec.title)}*` } });
+      for (const j of sec.jobs.slice(0, MAX_PER_LANE)) blocks.push(jobBlock(j));
+      if (sec.jobs.length > MAX_PER_LANE) blocks.push({ type: "context", elements: [{ type: "mrkdwn", text: `…and ${sec.jobs.length - MAX_PER_LANE} more` }] });
+      if (sec.lane === "outreach" && sheetUrl) {
+        blocks.push({ type: "context", elements: [{ type: "mrkdwn", text: `Founders and lookup notes are in the <${sheetUrl}|lead sheet>` }] });
+      }
+    }
+  }
+  return { text: summary, blocks, unfurl_links: false, unfurl_media: false };
 }
 
 export const SHEET_HEADERS = [

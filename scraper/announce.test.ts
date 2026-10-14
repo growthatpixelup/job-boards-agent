@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { SHEET_HEADERS, sheetRows, slackMessage } from "./announce.ts";
+import { SHEET_HEADERS, sheetRows, slackBlocks, slackMessage } from "./announce.ts";
 import { LLM_FAILED } from "./icp/llm.ts";
 import { isActionable, laneOf, toClassified } from "./lanes.ts";
 import { cleanLead, type Lead } from "./leads.ts";
@@ -113,6 +113,32 @@ describe("Slack message", () => {
   it("says so when there is nothing to act on", () => {
     assert.deepEqual(slackMessage(run([old])).jobs, "—");
     assert.match(slackMessage(run([old])).summary, /^No new Contra jobs to act on/);
+  });
+});
+
+describe("Slack blocks", () => {
+  const tricky = toClassified(job("t", { title: "Design <b>&</b> build | AI" }), verdict({ concerns: ["on-site in NYC"] }), none, none);
+  const old = toClassified(job("x"), verdict(), none, new Set(["x"]));
+
+  it("makes one section with a link button per job, escapes Contra text, and turns link previews off", () => {
+    const m = slackBlocks(run([tricky, old]));
+    assert.equal(m.unfurl_links, false);
+    assert.match(m.text, /^1 Contra job to act on/);
+    const sections = m.blocks.filter((b) => b.type === "section" && b.accessory);
+    assert.equal(sections.length, 1);
+    const text = (sections[0].text as { text: string }).text;
+    assert.ok(text.includes("Design &lt;b&gt;&amp;&lt;/b&gt; build ¦ AI"), text);
+    assert.ok(!text.includes("<b>"), text);
+    assert.equal((sections[0].accessory as { url: string }).url, tricky.url);
+  });
+
+  it("stays inside Slack's 50-block limit even with many jobs", () => {
+    const many = Array.from({ length: 40 }, (_, i) => toClassified(job(`m${i}`), verdict(), none, none));
+    assert.ok(slackBlocks(run(many)).blocks.length <= 50);
+  });
+
+  it("says so when there is nothing to act on", () => {
+    assert.match(JSON.stringify(slackBlocks(run([old])).blocks), /No new Contra jobs/);
   });
 });
 

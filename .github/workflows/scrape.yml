@@ -2,9 +2,9 @@ name: Daily Contra scrape
 
 on:
   schedule:
-    # Once a day from 11 AM San Francisco time (follows daylight saving). GitHub starts this repo's scheduled
+    # Twice a day: 11 AM and 11 PM Pacific time (follows daylight saving). GitHub starts this repo's scheduled
     # runs hours late (4.5–7 h in Oct 2026), so it wakes the workflow every hour and the `gate` job lets one
-    # scrape through per SF day: the first wake-up at or after 11 AM SF. A failed scrape tries again next hour.
+    # scrape through per slot: the first wake-up at or after 11 AM or 11 PM PT. A failed scrape tries again next hour.
     - cron: "5 * * * *"
       timezone: "America/Los_Angeles"
   workflow_dispatch: # "Run workflow" button in the Actions tab; always scrapes
@@ -17,8 +17,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # A few seconds per hourly wake-up. The daily scrape's run is saved to Supabase with daily = true, so finding
-  # one since SF midnight means today's scrape is done.
+  # A few seconds per hourly wake-up. A scheduled scrape's run is saved to Supabase with daily = true, so finding
+  # one since the current slot began (11 AM or 11 PM PT) means this slot's scrape is done.
   gate:
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -33,12 +33,13 @@ jobs:
         run: |
           decide() { echo "go=$1" >> "$GITHUB_OUTPUT"; echo "$2"; }
           [ "$EVENT" = "schedule" ] || { decide true "Started by hand: scraping."; exit 0; }
+          # The slot we are in: it began at the latest of 11 AM today, 11 PM today, 11 PM yesterday (Pacific time).
           hour=$(TZ=America/Los_Angeles date +%-H)
-          [ "$hour" -ge 11 ] || { decide false "Before 11 AM in San Francisco ($(TZ=America/Los_Angeles date +%H:%M)): not yet."; exit 0; }
-          since=$(TZ=America/Los_Angeles date -d 'today 00:00' -u +%Y-%m-%dT%H:%M:%SZ) # SF midnight, in UTC
-          daily=$(curl -sSf "$SUPABASE_URL/rest/v1/runs?select=ran_at&daily=eq.true&ran_at=gte.$since" \
+          if [ "$hour" -ge 23 ]; then start='today 23:00'; elif [ "$hour" -ge 11 ]; then start='today 11:00'; else start='yesterday 23:00'; fi
+          since=$(TZ=America/Los_Angeles date -d "$start" -u +%Y-%m-%dT%H:%M:%SZ)
+          done=$(curl -sSf "$SUPABASE_URL/rest/v1/runs?select=ran_at&daily=eq.true&ran_at=gte.$since" \
             -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" | jq length)
-          if [ "$daily" -gt 0 ]; then decide false "Today's daily scrape already ran."; else decide true "First wake-up after 11 AM SF today: scraping."; fi
+          if [ "$done" -gt 0 ]; then decide false "This slot's scrape (since $since) already ran."; else decide true "First wake-up in the slot that began $since: scraping."; fi
 
   scrape:
     needs: gate
@@ -155,5 +156,9 @@ jobs:
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           [ -n "$SLACK_WEBHOOK_URL" ] || { echo "SLACK_WEBHOOK_URL not set; nothing to tell"; exit 0; }
-          jq -n --arg jobs "Failed run: $RUN_URL" '{summary: "⚠️ Contra scrape failed, no jobs were checked", jobs: $jobs}' \
-            | curl -sSf -X POST -H "Content-Type: application/json" -d @- "$SLACK_WEBHOOK_URL"
+          # A Workflow Builder webhook takes the `summary` and `jobs` variables; an Incoming Webhook takes `text`.
+          case "$SLACK_WEBHOOK_URL" in
+            */triggers/*) body=$(jq -n --arg jobs "Failed run: $RUN_URL" '{summary: "⚠️ Contra scrape failed, no jobs were checked", jobs: $jobs}') ;;
+            *) body=$(jq -n --arg url "$RUN_URL" '{text: ":warning: Contra scrape failed, no jobs were checked\n<\($url)|Open the failed run>"}') ;;
+          esac
+          curl -sSf -X POST -H "Content-Type: application/json" -d "$body" "$SLACK_WEBHOOK_URL"

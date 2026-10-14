@@ -27,14 +27,15 @@ users' personal information. So:
 
 ## Automatic runs (GitHub Actions)
 
-`.github/workflows/scrape.yml` scrapes once a day from **11 AM San Francisco time**, plus on demand from
-Actions → "Daily Contra scrape" → Run workflow. Each scrape saves its run to Supabase (see "Database"), then posts to Slack and the lead sheet.
+`.github/workflows/scrape.yml` scrapes twice a day, at **11 AM and 11 PM Pacific time** (it follows daylight
+saving), plus on demand from Actions → "Daily Contra scrape" → Run workflow. Each scrape saves its run to
+Supabase (see "Database"), then posts to Slack and the lead sheet.
 
 GitHub starts this repo's scheduled runs hours late (4.5–7 hours in October 2026), so the workflow wakes
-every hour and a quick `gate` job decides: the first wake-up at or after 11 AM SF scrapes, and its data
-commit is tagged "(daily)"; later wake-ups that day find that commit and stop within seconds. If the
-scrape fails, the next hour tries again. Manual runs always scrape and don't count as the daily one. The
-hourly checks show up as short runs in the Actions tab.
+every hour and a quick `gate` job decides. The slot began at the latest 11 AM or 11 PM PT; the first wake-up in
+a slot scrapes, and its run is saved with `daily = true`. Later wake-ups in the same slot find that run and stop
+within seconds. If the scrape fails, Slack gets a "scrape failed" message and the next hour tries again. Manual
+runs always scrape and don't count toward a slot. The hourly checks show up as short runs in the Actions tab.
 
 Repository secrets (Settings → Secrets and variables → Actions):
 
@@ -44,7 +45,7 @@ Repository secrets (Settings → Secrets and variables → Actions):
 | `CONTRA_REFRESH_TOKEN` | same |
 | `ANTHROPIC_API_KEY` | Claude API key for the ICP classifier and the lead lookup |
 | `GH_SECRETS_PAT` | Fine-grained PAT for this repo with **Secrets: Read and write**. Contra rotates the refresh token on every use; the workflow stores the new one with this. |
-| `SLACK_WEBHOOK_URL` | Slack Workflow Builder webhook with Text variables `summary` and `jobs` |
+| `SLACK_WEBHOOK_URL` | Either a Slack app's Incoming Webhook (`hooks.slack.com/services/...`, recommended: one card per job with an Apply button, no link previews) or a Workflow Builder webhook (`.../triggers/...`) with Text variables `summary` and `jobs`. The scraper picks the format from the URL. |
 | `LEADS_WEBHOOK_URL` | The lead sheet's Apps Script web app URL (see "Lead sheet"); the sheet step skips until it's set |
 | `LEADS_WEBHOOK_TOKEN` | The `TOKEN` string set in that script |
 
