@@ -56,12 +56,11 @@ Every write is two steps: `*_prepare` returns a preview, `*_confirm` sends it, a
 / `revert_mcp_write_*` can undo some. Applying and messaging are visible to real clients, so always confirm
 first. Posting jobs and invoices needs the matching workspace type.
 
-Built: **applied sync** (see "Lead dashboard"). Ideas that fit this project, not built yet:
+Built: **applied sync** and a local **inbox check** (see "Lead dashboard" and "Local sync"). Ideas not built yet:
 
-- **Reply watch:** poll `list_chat_conversations` for unread replies and ping Slack, so "Talking" is set
-  automatically. Needs adding `list_chat_conversations` to `READ_ONLY_TOOLS` in `scraper/mcp-client.ts`
-  (and a rule in `scraper/contra.test.ts`); chat messages are other users' personal data, so store only
-  "unread reply on job X", never the text.
+- **Reply watch in Slack:** the local sync already counts unread conversations; posting that to Slack from the
+  scheduled scrape would need the same chat tool in the Actions run. Chat messages are other users' personal data,
+  so keep it to a count, never names or text.
 - **One-click apply:** replace the dashboard's copy-and-open with `apply_to_job_prepare` / `_confirm` using
   the stored brief. Breaks the "read-only" rule above, so it would need to run from Claude Code with a human
   approving each application, not from the scheduled scrape.
@@ -197,12 +196,16 @@ service role key can read or write; keep it server-side and out of `NEXT_PUBLIC_
 Slack). A job keeps its newest verdict, so one a later run rejects drops out, unless it already has a stage.
 Jobs that have left Contra's board stay, marked "off the board". `/latest` shows the latest scrape as before.
 
-- **Stages:** New → Applied → Talking → Won / Lost / Passed, picked per lead. They're saved in
+- **Stages:** New → Priority → Applied → Talking → Won / Lost / Passed, picked per lead. **☆ Priority** on a New
+  lead flags it for Daksh, who opens the **Priority** tab (the first one) to see just those; applying (or Sync from
+  Contra noticing it) moves it on to Applied. Adding Priority needed `supabase/migrations/20261014000002_priority_stage.sql`. They're saved in
   Supabase's `pipeline_leads` table (job id → stage, title, time).
 - **Applied sync:** each scrape also reads Contra's `APPLIED` feed (`list_job_feed`, read-only; `scraper/applied.ts`)
   and moves those jobs to **Applied**, so applying on Contra, or from a phone, shows up without clicking. It only
-  touches jobs with no stage or still "New"; a stage set by hand (Talking, Won, Lost, Passed) is never overwritten.
-  Contra shows a freelancer nothing past "applied", so later stages stay manual. A failure here never fails the
+  touches jobs with no stage or still "New", and the board opens on the **New** tab, so a job you applied to drops out of
+  the working list and shows under **Applied** (the Open tab still lists New + Applied + Talking together); a stage set by hand (Talking, Won, Lost, Passed) is never overwritten.
+  Contra shows a freelancer nothing past "applied" (checked: the job and feed records carry no application outcome, and a
+  chat conversation isn't linked to a job), so Talking / Won / Lost stay manual; the sync's unread count is the nudge. A failure here never fails the
   scrape; the next run retries.
 - **Apply** copies the job's application brief (see "Application briefs") and opens the post on Contra to paste
   it in. Full-time roles get **View post** instead, plus the company's links: those are for outreach off Contra,
@@ -219,9 +222,23 @@ take effect on the next deployment. The Vercel project isn't
 linked to this repo (Vercel blocks private-repo deploys from commit authors outside its team, such as the
 Actions bot), so a code change needs a new deployment.
 
+## Local sync
+
+`npm run contra:sync`, or **Sync from Contra** at the top of the dashboard (hidden on Vercel), reads your own Contra
+account on demand instead of waiting for the next scrape: jobs you applied to move to **Applied**, and it reports
+how many conversations have unread messages (a count only; names and text are never read or stored). Same rule as
+the scheduled sync: a stage set by hand is never overwritten. It writes only stages to Supabase; toward Contra it
+uses `list_job_feed` and `list_chat_conversations`, both read-only.
+
+It needs its own Contra login so it doesn't fight GitHub over the refresh token: run `npm run contra:auth`, keep
+the `.contra-auth.json` it writes on this machine (gitignored), and **don't** paste it into GitHub secrets. The
+file is updated in place each time Contra rotates the token. If Contra turns out to log out the GitHub copy when
+you authenticate again, re-run the auth steps under "Switching the Contra account" afterwards.
+
 ## Local use
 
 - `npm run dev`: the lead dashboard at http://localhost:3000 (see "Lead dashboard")
+- `npm run contra:sync`: pull applied jobs and the unread count from Contra (see "Local sync")
 - `/contra-scrape` in Claude Code: scrape through Claude Code's own Contra MCP login
 - `SLACK_DRY_RUN=1 npm run notify` / `SHEET_DRY_RUN=1 npm run sheet`: print what would be posted
 - `npm test`: ICP rule, lane, Contra-rules and lead dashboard tests

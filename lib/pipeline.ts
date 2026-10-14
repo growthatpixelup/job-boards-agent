@@ -5,6 +5,7 @@ import type { ClassifiedJob, IcpVerdict, Lane, RunResult } from "../scraper/type
 
 export const STAGES = [
   { id: "new", label: "New" },
+  { id: "priority", label: "Priority" },
   { id: "applied", label: "Applied" },
   { id: "talking", label: "Talking" },
   { id: "won", label: "Won" },

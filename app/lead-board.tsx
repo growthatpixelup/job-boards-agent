@@ -33,11 +33,12 @@ export interface LeadRow {
   brief: string | null;
 }
 
-const OPEN: Stage[] = ["new", "applied", "talking"];
+const OPEN: Stage[] = ["new", "priority", "applied", "talking"];
 type Filter = "open" | "all" | Stage;
 
 const STAGE_DOT: Record<Stage, string> = {
   new: "bg-brand",
+  priority: "bg-rose-500",
   applied: "bg-amber-500",
   talking: "bg-violet-500",
   won: "bg-emerald-500",
@@ -55,7 +56,14 @@ const btnSimple = `${btnBase} border-[0.5px] border-foreground/5 bg-card text-fo
 
 export function LeadBoard({ leads: initial }: { leads: LeadRow[] }) {
   const [leads, setLeads] = useState(initial);
-  const [filter, setFilter] = useState<Filter>("open");
+  // Starts on New: a job that gets applied to (by hand, or by "Sync from Contra") leaves this list and shows under Applied.
+  const [filter, setFilter] = useState<Filter>("new");
+  // Take fresh server data (after a sync or a scrape) instead of keeping the first copy forever.
+  const [seen, setSeen] = useState(initial);
+  if (initial !== seen) {
+    setSeen(initial);
+    setLeads(initial);
+  }
   const [lane, setLane] = useState<Lane | "all">("all");
   const [error, setError] = useState<string | null>(null);
   const [toast, setToast] = useState<{ text: string; key: number } | null>(null);
@@ -131,7 +139,7 @@ export function LeadBoard({ leads: initial }: { leads: LeadRow[] }) {
             aria-label="Stage"
             value={filter}
             onChange={setFilter}
-            options={(["open", ...STAGES.map((s) => s.id), "all"] as Filter[]).map((f) => ({ value: f, label: filterLabel(f), count: count(f) }))}
+            options={(["priority", "new", "applied", "talking", "open", "won", "lost", "passed", "all"] as Filter[]).map((f) => ({ value: f, label: filterLabel(f), count: count(f) }))}
           />
           <Segmented
             aria-label="Lane"
@@ -434,6 +442,17 @@ function LeadItem({
             </div>
           )}
           <div className="ml-auto flex items-center gap-2 sm:ml-0">
+            {(lead.stage === "new" || lead.stage === "priority") && (
+              <button
+                type="button"
+                onClick={() => onMove(lead.stage === "priority" ? "new" : "priority")}
+                aria-pressed={lead.stage === "priority"}
+                title={lead.stage === "priority" ? "Take off the Priority tab" : "Put on the Priority tab for Daksh"}
+                className={lead.stage === "priority" ? `${btnBase} bg-rose-500 text-white hover:bg-rose-600` : btnSimple}
+              >
+                {lead.stage === "priority" ? "★ Priority" : "☆ Priority"}
+              </button>
+            )}
             <StageMenu lead={lead} onMove={onMove} />
             <a
               href={lead.url}

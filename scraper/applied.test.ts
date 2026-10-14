@@ -11,13 +11,14 @@ describe("applied sync", () => {
     assert.deepEqual(appliedFromPages(pages), [{ id: "a", title: "Brand" }]);
   });
 
-  it("marks only jobs with no stage or still New, never overwriting a stage set by hand", () => {
-    const applied = ["a", "b", "c", "d"].map((id) => ({ id, title: id }));
+  it("marks only jobs with no stage or still New or Priority, never overwriting a stage set by hand", () => {
+    const applied = ["a", "b", "c", "d", "e"].map((id) => ({ id, title: id }));
     const stages = [
       { id: "b", stage: "new" },
       { id: "c", stage: "talking" },
       { id: "d", stage: "passed" },
+      { id: "e", stage: "priority" },
     ];
-    assert.deepEqual(toMarkApplied(applied, stages).map((a) => a.id), ["a", "b"]);
+    assert.deepEqual(toMarkApplied(applied, stages).map((a) => a.id), ["a", "b", "e"]);
   });
 });

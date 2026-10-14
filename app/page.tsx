@@ -5,6 +5,7 @@ import { buildLeads, type Lead } from "@/lib/pipeline.ts";
 import { latestRanAt, loadJobStates, loadPipeline } from "@/lib/pipeline-store.ts";
 import type { Job } from "@/scraper/types.ts";
 import { LeadBoard, type LeadRow } from "./lead-board.tsx";
+import { SyncButton } from "./sync-button.tsx";
 
 function formatBudget(b: Job["budget"]): string | null {
   if (!b) return null;
@@ -66,9 +67,12 @@ export default function Home() {
     <main className="mx-auto w-full max-w-5xl px-4 pt-10 pb-20 sm:px-8">
       <header className="mb-1 flex items-baseline justify-between gap-4">
         <h1 className="text-xl font-semibold tracking-tight text-balance">Leads</h1>
-        <Link href="/latest" className="rounded-sm text-muted-foreground hover:text-brand">
-          Latest scrape →
-        </Link>
+        <span className="flex items-baseline gap-5">
+          {!process.env.VERCEL && <SyncButton />}
+          <Link href="/latest" className="rounded-sm text-muted-foreground hover:text-brand">
+            Latest scrape →
+          </Link>
+        </span>
       </header>
       <Suspense fallback={<p className="text-muted-foreground">Loading…</p>}>
         <Dashboard />

@@ -6,7 +6,8 @@ export const MCP_URL = "https://contra.com/mcp";
 export const OAUTH_BASE = "https://contra.com/api/mcp/oauth";
 
 /** The only tools this client will call. Anything else is refused before it reaches Contra. */
-const READ_ONLY_TOOLS = new Set(["whoami", "list_job_feed", "get_job_by_slug"]);
+// list_chat_conversations is for the local sync's unread count only (lib/contra-sync.ts); message text and names are never kept.
+const READ_ONLY_TOOLS = new Set(["whoami", "list_job_feed", "get_job_by_slug", "list_chat_conversations"]);
 
 export interface Tokens {
   accessToken: string;
