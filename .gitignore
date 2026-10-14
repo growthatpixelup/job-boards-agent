@@ -43,6 +43,7 @@ next-env.d.ts
 
 # scraper output
 /data/raw/
+/data/applied.json
 /data/details/
 /data/verdicts/
 # founders / company links for full-time leads; they go only to the lead sheet, never into git

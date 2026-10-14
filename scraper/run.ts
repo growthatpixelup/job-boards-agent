@@ -1,6 +1,7 @@
 import { mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
-import { addIds, loadIds, saveRun } from "../lib/db.ts";
+import { addIds, loadIds, loadStages, saveRun, saveStageRow } from "../lib/db.ts";
+import { takeApplied, toMarkApplied } from "./applied.ts";
 import { addBriefs, getBriefWriter } from "./brief.ts";
 import { RAW_DIR, loadFeed, minimizeDetails, pruneDetails } from "./feed.ts";
 import { filterConfig, matchesFilters } from "./filters.ts";
@@ -117,6 +118,18 @@ async function main() {
   // The run first: if a later write fails, the ids stay unsaved and the next run re-posts rather than drops.
   await saveRun(result, process.env.RUN_DAILY === "1");
   await addIds("seen_jobs", feed.jobs.filter((j) => !failed.has(j.id)).map((j) => j.id));
+  // Jobs applied to on Contra move to the "Applied" stage; a stage set by hand is never overwritten.
+  const applied = await takeApplied();
+  if (applied) {
+    try {
+      const mark = toMarkApplied(applied, await loadStages());
+      const updatedAt = new Date().toISOString();
+      for (const a of mark) await saveStageRow({ id: a.id, title: a.title, stage: "applied", updated_at: updatedAt });
+      console.log(`[contra] applied sync: ${mark.length} moved to Applied, ${applied.length - mark.length} already staged`);
+    } catch (err) {
+      console.warn(`[contra] applied sync failed, retried next run: ${err instanceof Error ? err.message : err}`);
+    }
+  }
   // announced_jobs is written by notify.ts once Slack has accepted the post, so a failed post is retried.
   await rm(RAW_DIR, { recursive: true, force: true }); // consumed; next run starts clean (details stay cached)
   // Only the full feed tells us which jobs are gone; a BOOKMARKED/APPLIED run must not prune the rest.

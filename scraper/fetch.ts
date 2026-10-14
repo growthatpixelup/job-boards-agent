@@ -1,6 +1,7 @@
 import { mkdir, rm, writeFile } from "node:fs/promises";
 import { DETAILS_DIR, RAW_DIR, detailFile, loadFeed, pendingDetails } from "./feed.ts";
 import { minimalDetail } from "./contra.ts";
+import { appliedFromPages, saveApplied } from "./applied.ts";
 import { ContraMcp, describeAccount, refreshTokens } from "./mcp-client.ts";
 
 // Headless version of the /contra-scrape skill's fetch steps: pulls the job feed (and
@@ -40,6 +41,25 @@ async function main() {
     console.log(`[contra] page ${page}: ${res.entries?.length ?? 0} entries`);
     if (!res.hasNextPage || !res.endCursor) break;
     after = res.endCursor;
+  }
+
+  // Jobs already applied to, so the dashboard can move them to "Applied" (run.ts). Best effort: never fails the scrape.
+  if (preset === "ALL") {
+    try {
+      const pages = [];
+      let appliedAfter: string | undefined;
+      for (let page = 1; page <= maxPages; page++) {
+        const res = await mcp.call("list_job_feed", { preset: "APPLIED", first: 100, sort: "NEWEST", ...(appliedAfter ? { after: appliedAfter } : {}) });
+        pages.push(res);
+        if (!res.hasNextPage || !res.endCursor) break;
+        appliedAfter = res.endCursor;
+      }
+      const applied = appliedFromPages(pages);
+      await saveApplied(applied);
+      console.log(`[contra] applied: ${applied.length} job(s)`);
+    } catch (err) {
+      console.warn(`[contra] applied feed skipped: ${err instanceof Error ? err.message : err}`);
+    }
   }
 
   const { pending, summary } = pendingDetails((await loadFeed()).jobs);

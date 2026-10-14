@@ -25,6 +25,47 @@ users' personal information. So:
 
 `scraper/contra.test.ts` checks these rules.
 
+## What else the Contra MCP can do
+
+The scraper uses 3 of the ~150 tools Contra's MCP server exposes. Checked against the connected account
+(freelancer, Contra Pro) on 2026-10-14. Everything below is outside the scraper's read-only allowlist; use
+it from Claude Code (`/mcp` → contra), not from `scraper/`.
+
+**Jobs applied to, and their status.** `list_job_feed` with `preset: "APPLIED"` returns every job the account
+applied to (title, budget, roles, public link, posted date). Same call with `BOOKMARKED`, `NOT_A_FIT` (dismissed)
+or `CLOSED` gives the other slices; every entry also says whether the account viewed, applied, bookmarked,
+dismissed or was matched. **Limit: that is all the status Contra shows a freelancer.** There is no
+"shortlisted / rejected / hired" field for your own applications; `list_job_candidates` (which has those
+statuses) is client-side, for jobs you posted. A reply shows up as a chat message, so the closest thing to
+"status" is `list_chat_conversations` (unread counts, latest message) and `list_chat_messages`. To track
+outcomes, keep using the dashboard stages (Applied → Talking → Won / Lost); the APPLIED feed can seed them
+(compare its job ids with `pipeline_leads`).
+
+| Area | Tools |
+|---|---|
+| Find work | `list_job_feed` (`FOR_YOU`, `ALL`, `APPLIED`, `BOOKMARKED`, `NOT_A_FIT`, `CLOSED`; search, budget, role and tool filters), `get_job_by_slug`, `list_active_challenges`, `search_challenges`, `get_challenge_by_slug` |
+| Act on jobs | `apply_to_job_prepare` / `_confirm` (message, calendar link, up to 10 portfolio projects), `bookmark_job`, `remove_job_bookmark`, `dismiss_job_feed_entry` |
+| Inbox | `list_chat_conversations`, `list_chat_messages`, `send_chat_message_prepare` / `_confirm` |
+| Outreach | `send_inquiry_*`, `send_paid_project_proposal_*`, `search_freelancers`, `search_studios`, `get_user_profile_by_username`, `list_user_reviews` |
+| Your profile | `update_profile_*`, portfolio projects (`list_` / `create_` / `update_` / `delete_portfolio_project_*`), `start_portfolio_site_import`, services and products (`create_` / `update_` / `delete_productized_service_*`, `*_product_*`) |
+| Money | `create_invoice_*`, `list_invoices_sent` / `_receivable`, `get_invoice_status`, payment links (`*_payment_link_*`), `list_contractor_transactions`, `list_client_transactions`, `send_direct_payment_*`, `pay_invoice_*` |
+| Hiring (client side) | `create_job_*`, `post_job_*`, `update_job_*`, `unpost_job_*`, `list_jobs`, `list_job_candidates`, `shortlist_candidate`, `dismiss_candidate`, `respond_to_candidate_*` |
+| Account | `whoami`, `auth_status`, `list_workspaces`, `switch_workspace`, `list_reversible_mcp_writes`, `revert_mcp_write_*`, co-agent intake settings |
+
+Every write is two steps: `*_prepare` returns a preview, `*_confirm` sends it, and `list_reversible_mcp_writes`
+/ `revert_mcp_write_*` can undo some. Applying and messaging are visible to real clients, so always confirm
+first. Posting jobs and invoices needs the matching workspace type.
+
+Built: **applied sync** (see "Lead dashboard"). Ideas that fit this project, not built yet:
+
+- **Reply watch:** poll `list_chat_conversations` for unread replies and ping Slack, so "Talking" is set
+  automatically. Needs adding `list_chat_conversations` to `READ_ONLY_TOOLS` in `scraper/mcp-client.ts`
+  (and a rule in `scraper/contra.test.ts`); chat messages are other users' personal data, so store only
+  "unread reply on job X", never the text.
+- **One-click apply:** replace the dashboard's copy-and-open with `apply_to_job_prepare` / `_confirm` using
+  the stored brief. Breaks the "read-only" rule above, so it would need to run from Claude Code with a human
+  approving each application, not from the scheduled scrape.
+
 ## Automatic runs (GitHub Actions)
 
 `.github/workflows/scrape.yml` scrapes twice a day, at **11 AM and 11 PM Pacific time** (it follows daylight
@@ -158,6 +199,11 @@ Jobs that have left Contra's board stay, marked "off the board". `/latest` shows
 
 - **Stages:** New → Applied → Talking → Won / Lost / Passed, picked per lead. They're saved in
   Supabase's `pipeline_leads` table (job id → stage, title, time).
+- **Applied sync:** each scrape also reads Contra's `APPLIED` feed (`list_job_feed`, read-only; `scraper/applied.ts`)
+  and moves those jobs to **Applied**, so applying on Contra, or from a phone, shows up without clicking. It only
+  touches jobs with no stage or still "New"; a stage set by hand (Talking, Won, Lost, Passed) is never overwritten.
+  Contra shows a freelancer nothing past "applied", so later stages stay manual. A failure here never fails the
+  scrape; the next run retries.
 - **Apply** copies the job's application brief (see "Application briefs") and opens the post on Contra to paste
   it in. Full-time roles get **View post** instead, plus the company's links: those are for outreach off Contra,
   not applying.
