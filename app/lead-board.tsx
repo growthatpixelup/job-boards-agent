@@ -44,6 +44,7 @@ const STAGE_DOT: Record<Stage, string> = {
   won: "bg-emerald-500",
   lost: "bg-zinc-400",
   passed: "bg-zinc-300",
+  closed: "bg-zinc-300",
 };
 
 const usd = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`;
@@ -139,7 +140,7 @@ export function LeadBoard({ leads: initial }: { leads: LeadRow[] }) {
             aria-label="Stage"
             value={filter}
             onChange={setFilter}
-            options={(["priority", "new", "applied", "talking", "open", "won", "lost", "passed", "all"] as Filter[]).map((f) => ({ value: f, label: filterLabel(f), count: count(f) }))}
+            options={(["priority", "new", "applied", "talking", "open", "won", "lost", "passed", "closed", "all"] as Filter[]).map((f) => ({ value: f, label: filterLabel(f), count: count(f) }))}
           />
           <Segmented
             aria-label="Lane"

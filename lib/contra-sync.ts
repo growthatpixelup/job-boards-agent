@@ -3,6 +3,8 @@ import path from "node:path";
 import { ContraMcp, refreshTokens } from "../scraper/mcp-client.ts";
 import { appliedFromPages, toMarkApplied } from "./applied.ts";
 import { loadStages, saveStageRow } from "./db.ts";
+import { buildLeads } from "./pipeline.ts";
+import { latestRanAt, loadJobStates, loadPipeline } from "./pipeline-store.ts";
 
 // Local-only sync with the Contra account, run from the dashboard's "Sync from Contra" button or `npm run contra:sync`.
 // Uses its own login in .contra-auth.json (gitignored; `npm run contra:auth`), not the GitHub Actions one: Contra
@@ -12,11 +14,18 @@ import { loadStages, saveStageRow } from "./db.ts";
 const AUTH_FILE = path.resolve(process.cwd(), ".contra-auth.json");
 const MAX_PAGES = 5;
 
+/** A get_job_by_slug response for a job that has finished: closed, or past its expiry. */
+export function isFinished(detail: { ok?: boolean; job?: { status?: string } } | null | undefined): boolean {
+  return detail?.ok !== false && (detail?.job?.status === "CLOSED" || detail?.job?.status === "EXPIRED");
+}
+
 export interface SyncResult {
   /** Jobs the account has applied to on Contra. */
   applied: number;
   /** Of those, how many were moved to the Applied stage just now. */
   moved: number;
+  /** Open leads (New or Priority) that Contra says have finished, moved to the Closed stage just now. */
+  closed: number;
   /** Chat conversations with unread messages (a count only: names and text are never read). */
   unreadConversations: number;
 }
@@ -55,6 +64,24 @@ export async function syncFromContra(): Promise<SyncResult> {
   const updatedAt = new Date().toISOString();
   for (const a of mark) await saveStageRow({ id: a.id, title: a.title, stage: "applied", updated_at: updatedAt });
 
+  // Leads still waiting on us (New or Priority) whose job has finished on Contra: nothing left to do, so Closed.
+  // Re-read the stages first so a job just moved to Applied above isn't checked. One lookup per lead; a failed
+  // lookup leaves the lead alone.
+  const lastRun = await latestRanAt();
+  const waiting = lastRun
+    ? buildLeads(await loadJobStates(), await loadPipeline(), lastRun).filter((l) => l.stage === "new" || l.stage === "priority")
+    : [];
+  let closed = 0;
+  for (const lead of waiting) {
+    try {
+      if (!isFinished(await mcp.call("get_job_by_slug", { slug: lead.slug }))) continue;
+      await saveStageRow({ id: lead.id, title: lead.title.slice(0, 200), stage: "closed", updated_at: new Date().toISOString() });
+      closed++;
+    } catch (err) {
+      console.warn(`[contra] couldn't check "${lead.title}": ${err instanceof Error ? err.message : err}`);
+    }
+  }
+
   // A reply from a client is the only status signal Contra gives a freelancer. Failing here must not lose the stage sync.
   let unreadConversations = 0;
   try {
@@ -64,7 +91,7 @@ export async function syncFromContra(): Promise<SyncResult> {
     console.warn(`[contra] inbox check skipped: ${err instanceof Error ? err.message : err}`);
   }
 
-  return { applied: applied.length, moved: mark.length, unreadConversations };
+  return { applied: applied.length, moved: mark.length, closed, unreadConversations };
 }
 
 /** One line for a toast or the terminal. */
@@ -73,6 +100,7 @@ export function describeSync(r: SyncResult): string {
     r.moved ? `${r.moved} job${r.moved === 1 ? "" : "s"} moved to Applied` : "Applied stages already up to date",
     `${r.applied} applied on Contra`,
   ];
+  if (r.closed) parts.push(`${r.closed} closed on Contra`);
   if (r.unreadConversations) parts.push(`${r.unreadConversations} unread conversation${r.unreadConversations === 1 ? "" : "s"} on Contra`);
   return parts.join(" · ");
 }

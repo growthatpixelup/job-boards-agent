@@ -11,6 +11,7 @@ export const STAGES = [
   { id: "won", label: "Won" },
   { id: "lost", label: "Lost" },
   { id: "passed", label: "Passed" },
+  { id: "closed", label: "Closed" },
 ] as const;
 
 export type Stage = (typeof STAGES)[number]["id"];

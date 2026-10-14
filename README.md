@@ -196,7 +196,7 @@ service role key can read or write; keep it server-side and out of `NEXT_PUBLIC_
 Slack). A job keeps its newest verdict, so one a later run rejects drops out, unless it already has a stage.
 Jobs that have left Contra's board stay, marked "off the board". `/latest` shows the latest scrape as before.
 
-- **Stages:** New → Priority → Applied → Talking → Won / Lost / Passed, picked per lead. **☆ Priority** on a New
+- **Stages:** New → Priority → Applied → Talking → Won / Lost / Passed, picked per lead; **Closed** is set by Sync from Contra. **☆ Priority** on a New
   lead flags it for Daksh, who opens the **Priority** tab (the first one) to see just those; applying (or Sync from
   Contra noticing it) moves it on to Applied. Adding Priority needed `supabase/migrations/20261014000002_priority_stage.sql`. They're saved in
   Supabase's `pipeline_leads` table (job id → stage, title, time).
@@ -204,7 +204,9 @@ Jobs that have left Contra's board stay, marked "off the board". `/latest` shows
   and moves those jobs to **Applied**, so applying on Contra, or from a phone, shows up without clicking. It only
   touches jobs with no stage or still "New", and the board opens on the **New** tab, so a job you applied to drops out of
   the working list and shows under **Applied** (the Open tab still lists New + Applied + Talking together); a stage set by hand (Talking, Won, Lost, Passed) is never overwritten.
-  Contra shows a freelancer nothing past "applied" (checked: the job and feed records carry no application outcome, and a
+  The sync also looks up every New or Priority lead (`get_job_by_slug`) and moves the ones Contra reports closed or
+  expired to **Closed**, out of the working tabs (it needs `20261014000003_closed_stage.sql`). Leads already applied
+  to are left as they are. Contra shows a freelancer nothing past "applied" (checked: the job and feed records carry no application outcome, and a
   chat conversation isn't linked to a job), so Talking / Won / Lost stay manual; the sync's unread count is the nudge. A failure here never fails the
   scrape; the next run retries.
 - **Apply** copies the job's application brief (see "Application briefs") and opens the post on Contra to paste
