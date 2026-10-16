@@ -12,6 +12,8 @@ const SECTIONS: { lane: Lane; title: string; noun: string }[] = [
   { lane: "outreach", title: "📇 Full-time roles: don't apply, reach out off Contra and pitch a project", noun: "full-time lead" },
 ];
 
+const plural = (n: number, noun: string) => `${n} ${noun}${n === 1 ? "" : "s"}`;
+
 function money(n: number): string {
   return `$${n.toLocaleString("en-US", { maximumFractionDigits: 0 })}`;
 }
@@ -55,14 +57,16 @@ function line(j: ClassifiedJob): string {
   return rows.join("\n");
 }
 
-/** The Workflow Builder webhook's two Text variables. */
-export function slackMessage(run: RunResult, sheetUrl?: string): { summary: string; jobs: string } {
+/**
+ * The Workflow Builder webhook's two Text variables. The workflow prints `jobs` straight after `summary`, so it
+ * always starts on a new line, and ends with the dashboard link when there is one.
+ */
+export function slackMessage(run: RunResult, sheetUrl?: string, dashboardUrl?: string): { summary: string; jobs: string } {
   const fresh = run.jobs.filter((j) => j.announce);
   const when = new Date(run.ranAt).toLocaleString("en-IN", {
     timeZone: "Asia/Kolkata", day: "numeric", month: "short", hour: "numeric", minute: "2-digit",
   });
   const sections = SECTIONS.map((s) => ({ ...s, jobs: fresh.filter((j) => j.lane === s.lane) })).filter((s) => s.jobs.length);
-  const plural = (n: number, noun: string) => `${n} ${noun}${n === 1 ? "" : "s"}`;
 
   const summary = fresh.length
     ? `${plural(fresh.length, "Contra job")} to act on (${sections.map((s) => plural(s.jobs.length, s.noun)).join(", ")}) · ${when} IST`
@@ -78,8 +82,9 @@ export function slackMessage(run: RunResult, sheetUrl?: string): { summary: stri
           ].join("\n\n"),
         )
         .join("\n\n\n")
-    : "—";
-  return { summary, jobs: sections.length ? `\n${jobs}` : jobs };
+    : `Checked ${plural(run.totalScraped, "open job")} on Contra; nothing new passed the AI layer.`;
+  const dashboard = dashboardUrl && `${sections.length ? "Added to the dashboard" : "Open leads are on the dashboard"}: ${dashboardUrl}`;
+  return { summary, jobs: `\n${[jobs, dashboard].filter(Boolean).join("\n\n")}` };
 }
 
 // --- Block Kit version, for a Slack app's Incoming Webhook (https://hooks.slack.com/services/...). ---
@@ -114,7 +119,11 @@ function jobBlock(j: ClassifiedJob): Block {
 }
 
 /** The same message as slackMessage, laid out for Incoming Webhooks: one block per job, no link preview cards. */
-export function slackBlocks(run: RunResult, sheetUrl?: string): { text: string; blocks: Block[]; unfurl_links: false; unfurl_media: false } {
+export function slackBlocks(
+  run: RunResult,
+  sheetUrl?: string,
+  dashboardUrl?: string,
+): { text: string; blocks: Block[]; unfurl_links: false; unfurl_media: false } {
   const { summary } = slackMessage(run, sheetUrl);
   const fresh = run.jobs.filter((j) => j.announce);
   const sections = SECTIONS.map((sec) => ({ ...sec, jobs: fresh.filter((j) => j.lane === sec.lane) })).filter((sec) => sec.jobs.length);
@@ -124,9 +133,9 @@ export function slackBlocks(run: RunResult, sheetUrl?: string): { text: string; 
 
   const blocks: Block[] = [];
   if (!sections.length) {
-    blocks.push({ type: "section", text: { type: "mrkdwn", text: `:zzz: *No new Contra jobs to act on*\n${when} IST` } });
+    const checked = `checked ${plural(run.totalScraped, "open job")}, nothing new passed the AI layer`;
+    blocks.push({ type: "section", text: { type: "mrkdwn", text: `:zzz: *No new Contra jobs to act on*\n${when} IST · ${checked}` } });
   } else {
-    const plural = (n: number, noun: string) => `${n} ${noun}${n === 1 ? "" : "s"}`;
     blocks.push({ type: "header", text: { type: "plain_text", text: `${plural(fresh.length, "Contra job")} to act on` } });
     blocks.push({ type: "context", elements: [{ type: "mrkdwn", text: `${when} IST · ${sections.map((sec) => plural(sec.jobs.length, sec.noun)).join(", ")}` }] });
     for (const sec of sections) {
@@ -138,6 +147,10 @@ export function slackBlocks(run: RunResult, sheetUrl?: string): { text: string; 
         blocks.push({ type: "context", elements: [{ type: "mrkdwn", text: `Founders and lookup notes are in the <${sheetUrl}|lead sheet>` }] });
       }
     }
+  }
+  if (dashboardUrl) {
+    const text = `${sections.length ? "Added to the" : "Open leads are on the"} <${dashboardUrl}|dashboard>`;
+    blocks.push({ type: "context", elements: [{ type: "mrkdwn", text }] });
   }
   return { text: summary, blocks, unfurl_links: false, unfurl_media: false };
 }

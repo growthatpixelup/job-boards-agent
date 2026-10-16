@@ -110,9 +110,17 @@ describe("Slack message", () => {
     assert.ok(!jobs.includes("/hr ×"), jobs);
   });
 
-  it("says so when there is nothing to act on", () => {
-    assert.deepEqual(slackMessage(run([old])).jobs, "—");
-    assert.match(slackMessage(run([old])).summary, /^No new Contra jobs to act on/);
+  it("says so when there is nothing to act on, in full", () => {
+    const { summary, jobs } = slackMessage(run([old]), undefined, "https://leads.example");
+    assert.match(summary, /^No new Contra jobs to act on/);
+    assert.equal(jobs, "\nChecked 1 open job on Contra; nothing new passed the AI layer.\n\nOpen leads are on the dashboard: https://leads.example");
+  });
+
+  it("starts on its own line and ends with the dashboard link", () => {
+    const { jobs } = slackMessage(run([sprint]), undefined, "https://leads.example");
+    assert.match(jobs, /^\n🎯 Apply on Contra/);
+    assert.match(jobs, /\n\nAdded to the dashboard: https:\/\/leads\.example$/);
+    assert.ok(!slackMessage(run([sprint])).jobs.includes("dashboard"), "no link without a URL");
   });
 });
 
@@ -139,6 +147,11 @@ describe("Slack blocks", () => {
 
   it("says so when there is nothing to act on", () => {
     assert.match(JSON.stringify(slackBlocks(run([old])).blocks), /No new Contra jobs/);
+  });
+
+  it("ends with the dashboard link", () => {
+    const last = slackBlocks(run([tricky]), undefined, "https://leads.example").blocks.at(-1);
+    assert.match(JSON.stringify(last), /Added to the <https:\/\/leads\.example\|dashboard>/);
   });
 });
 

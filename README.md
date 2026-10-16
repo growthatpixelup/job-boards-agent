@@ -67,15 +67,16 @@ Built: **applied sync** and a local **inbox check** (see "Lead dashboard" and "L
 
 ## Automatic runs (GitHub Actions)
 
-`.github/workflows/scrape.yml` scrapes twice a day, at **11 AM and 11 PM Pacific time** (it follows daylight
-saving), plus on demand from Actions → "Daily Contra scrape" → Run workflow. Each scrape saves its run to
-Supabase (see "Database"), then posts to Slack and the lead sheet.
+`.github/workflows/scrape.yml` scrapes once a day, at **11 AM Pacific time** (it follows daylight saving), plus
+on demand from Actions → "Daily Contra scrape" → Run workflow. Each scrape saves its run to Supabase (see
+"Database"), which puts its jobs on the dashboard, then posts one message to Slack (ending with the dashboard link)
+and adds full-time roles to the lead sheet.
 
-GitHub starts this repo's scheduled runs hours late (4.5–7 hours in October 2026), so the workflow wakes
-every hour and a quick `gate` job decides. The slot began at the latest 11 AM or 11 PM PT; the first wake-up in
-a slot scrapes, and its run is saved with `daily = true`. Later wake-ups in the same slot find that run and stop
-within seconds. If the scrape fails, Slack gets a "scrape failed" message and the next hour tries again. Manual
-runs always scrape and don't count toward a slot. The hourly checks show up as short runs in the Actions tab.
+GitHub can start a scheduled run late or skip it, so the workflow also wakes at noon, 1 PM and 2 PM PT and a quick
+`gate` job decides: a wake-up scrapes only if no scheduled scrape has run since 11 AM PT today (its run is saved with
+`daily = true`); otherwise it stops within seconds and posts nothing. If the scrape fails, Slack gets a "scrape
+failed" message and the next wake-up tries again, until 2 PM PT. Manual runs always scrape and don't count as the
+day's scrape. The skipped wake-ups show up as short runs in the Actions tab.
 
 Repository secrets (Settings → Secrets and variables → Actions):
 
@@ -89,7 +90,8 @@ Repository secrets (Settings → Secrets and variables → Actions):
 | `LEADS_WEBHOOK_URL` | The lead sheet's Apps Script web app URL (see "Lead sheet"); the sheet step skips until it's set |
 | `LEADS_WEBHOOK_TOKEN` | The `TOKEN` string set in that script |
 
-Optional repository variable (same page, Variables tab): `LEADS_SHEET_URL`, the sheet's link, shown in Slack.
+Optional repository variables (same page, Variables tab): `LEADS_SHEET_URL`, the sheet's link, shown in Slack, and
+`DASHBOARD_URL`, the dashboard link at the end of each Slack message (default https://pixelup-leads.vercel.app).
 
 ### Switching the Contra account (e.g. on another machine)
 

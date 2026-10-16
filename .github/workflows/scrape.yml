@@ -2,10 +2,10 @@ name: Daily Contra scrape
 
 on:
   schedule:
-    # Twice a day: 11 AM and 11 PM Pacific time (follows daylight saving). GitHub starts this repo's scheduled
-    # runs hours late (4.5–7 h in Oct 2026), so it wakes the workflow every hour and the `gate` job lets one
-    # scrape through per slot: the first wake-up at or after 11 AM or 11 PM PT. A failed scrape tries again next hour.
-    - cron: "5 * * * *"
+    # Once a day at 11 AM Pacific time (follows daylight saving). GitHub can start a scheduled run late or skip it, so
+    # the workflow also wakes at noon, 1 PM and 2 PM PT; the `gate` job lets a wake-up scrape only if today's scrape
+    # hasn't run yet (a failed one tries again at the next wake-up). Skipped wake-ups post nothing.
+    - cron: "5 11-14 * * *"
       timezone: "America/Los_Angeles"
   workflow_dispatch: # "Run workflow" button in the Actions tab; always scrapes
 
@@ -17,8 +17,8 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  # A few seconds per hourly wake-up. A scheduled scrape's run is saved to Supabase with daily = true, so finding
-  # one since the current slot began (11 AM or 11 PM PT) means this slot's scrape is done.
+  # A few seconds per wake-up. A scheduled scrape's run is saved to Supabase with daily = true, so finding one since
+  # 11 AM PT today means today's scrape is done.
   gate:
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -33,13 +33,15 @@ jobs:
         run: |
           decide() { echo "go=$1" >> "$GITHUB_OUTPUT"; echo "$2"; }
           [ "$EVENT" = "schedule" ] || { decide true "Started by hand: scraping."; exit 0; }
-          # The slot we are in: it began at the latest of 11 AM today, 11 PM today, 11 PM yesterday (Pacific time).
-          hour=$(TZ=America/Los_Angeles date +%-H)
-          if [ "$hour" -ge 23 ]; then start='today 23:00'; elif [ "$hour" -ge 11 ]; then start='today 11:00'; else start='yesterday 23:00'; fi
-          since=$(TZ=America/Los_Angeles date -d "$start" -u +%Y-%m-%dT%H:%M:%SZ)
-          done=$(curl -sSf "$SUPABASE_URL/rest/v1/runs?select=ran_at&daily=eq.true&ran_at=gte.$since" \
+          # Today's scrape is due from 11 AM Pacific time; a wake-up GitHub delays past midnight still belongs to yesterday.
+          if [ "$(TZ=America/Los_Angeles date +%-H)" -ge 11 ]; then day=today; else day=yesterday; fi
+          # Kept in Pacific time with its offset (e.g. 2026-10-16T11:00:00-07:00). Don't add -u: it reads "11:00" as UTC
+          # too, which once put the start in the future after 5 PM PT and made every wake-up scrape and post to Slack.
+          since=$(TZ=America/Los_Angeles date -d "$day 11:00" +%Y-%m-%dT%H:%M:%S%:z)
+          done=$(curl -sSf -G "$SUPABASE_URL/rest/v1/runs" --data-urlencode select=ran_at --data-urlencode daily=eq.true \
+            --data-urlencode "ran_at=gte.$since" \
             -H "apikey: $SUPABASE_SERVICE_ROLE_KEY" -H "Authorization: Bearer $SUPABASE_SERVICE_ROLE_KEY" | jq length)
-          if [ "$done" -gt 0 ]; then decide false "This slot's scrape (since $since) already ran."; else decide true "First wake-up in the slot that began $since: scraping."; fi
+          if [ "$done" -gt 0 ]; then decide false "Today's scrape (since $since) already ran."; else decide true "No scrape since $since yet: scraping."; fi
 
   scrape:
     needs: gate
@@ -127,6 +129,7 @@ jobs:
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           LEADS_SHEET_URL: ${{ vars.LEADS_SHEET_URL }} # optional repository variable: the lead sheet's link
+          DASHBOARD_URL: ${{ vars.DASHBOARD_URL || 'https://pixelup-leads.vercel.app' }} # linked at the end of the message
           NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: npm run notify --silent
@@ -142,8 +145,8 @@ jobs:
         run: npm run sheet --silent
 
   # A scrape that fails (an expired Contra token, a Supabase outage) would otherwise only show in the Actions tab,
-  # and Slack would just go quiet. Skipped when the gate says not to scrape. The next hourly wake-up retries, and
-  # posts again if it fails again.
+  # and Slack would just go quiet. Skipped when the gate says not to scrape. The next wake-up (until 2 PM PT) retries,
+  # and posts again if it fails again.
   alert:
     needs: [gate, scrape]
     if: ${{ failure() }}
