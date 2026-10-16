@@ -52,7 +52,12 @@ const STAGE_DOT: Record<Stage, string> = {
 };
 
 const usd = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`;
-const day = (iso: string) => new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+const THIS_YEAR = new Date().getFullYear();
+/** "Oct 9", or "Jul 23, 2025" for an older year (applications can be years old). */
+const day = (iso: string) => {
+  const d = new Date(iso);
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: d.getFullYear() === THIS_YEAR ? undefined : "numeric" });
+};
 
 const focusRing = "outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-1";
 const btnBase = `pressable inline-flex h-8 shrink-0 items-center justify-center gap-1.5 rounded-lg px-3 text-sm font-medium whitespace-nowrap select-none ${focusRing}`;

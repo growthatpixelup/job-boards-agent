@@ -78,7 +78,8 @@ function ago(iso: string | null, now: number): string | null {
   if (ms < 3_600_000) return `${Math.max(1, Math.round(ms / 60_000))}m ago`;
   if (ms < DAY) return `${Math.round(ms / 3_600_000)}h ago`;
   if (ms < 30 * DAY) return `${Math.round(ms / DAY)}d ago`;
-  return new Date(iso).toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  const d = new Date(iso);
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: d.getFullYear() === new Date(now).getFullYear() ? undefined : "numeric" });
 }
 
 function matchesVerdict(j: BoardRow, v: Verdict) {
@@ -127,8 +128,8 @@ export function JobBoard({ jobs, now }: { jobs: BoardRow[]; now: number }) {
   }
 
   return (
-    <div className="grid gap-5 lg:grid-cols-[220px_minmax(0,1fr)] lg:items-start">
-      <aside className="panel space-y-4 p-3 lg:sticky lg:top-6">
+    <div className="grid grid-cols-[minmax(0,1fr)] gap-5 lg:grid-cols-[220px_minmax(0,1fr)] lg:items-start">
+      <aside className="panel min-w-0 space-y-4 p-3 lg:sticky lg:top-6">
         <FilterGroup
           label="AI layer"
           value={verdict}
@@ -395,8 +396,11 @@ function JobCard({ job, now }: { job: BoardRow; now: number }) {
           </a>
         </div>
       </div>
-      <div className="mt-3 flex flex-wrap items-center gap-1.5 sm:hidden">
+      <div className="mt-3 flex items-center justify-between gap-3 sm:hidden">
         <CardBadges job={job} verdict={verdict} stage={stage} />
+        <a href={job.url} target="_blank" rel="noreferrer" className={btnSimple}>
+          View on Contra
+        </a>
       </div>
     </li>
   );
@@ -404,9 +408,13 @@ function JobCard({ job, now }: { job: BoardRow; now: number }) {
 
 function CardBadges({ job, verdict, stage }: { job: BoardRow; verdict: (typeof VERDICT_PILL)[IcpDecision] | null; stage: string | null | undefined }) {
   return (
-    <div className="flex flex-wrap items-center justify-end gap-1.5">
-      {job.applied && <Pill tone="brand">Applied</Pill>}
-      {stage && !job.applied && <Pill title="Stage on the Leads page">{stage}</Pill>}
+    <div className="flex flex-wrap items-center gap-1.5 sm:justify-end">
+      {job.applied && (
+        <Pill tone="brand" title="Contra lists this job among the ones this account applied to">
+          Applied
+        </Pill>
+      )}
+      {stage && !(job.applied && job.stage === "applied") && <Pill title="Its stage on the Leads page">Leads: {stage}</Pill>}
       {job.fullTime && <Pill title="Full-time role: reach out off Contra and pitch a project">Full-time</Pill>}
       {job.matched && <Pill title="Contra matched this job to the account">Matched</Pill>}
       {job.bookmarked && <Pill>Saved</Pill>}
