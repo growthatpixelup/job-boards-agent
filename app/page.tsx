@@ -1,21 +1,11 @@
 import Link from "next/link";
 import { connection } from "next/server";
 import { Suspense } from "react";
+import { formatBudget, ist } from "@/lib/format.ts";
 import { buildLeads, type Lead } from "@/lib/pipeline.ts";
-import { latestRanAt, loadJobStates, loadPipeline } from "@/lib/pipeline-store.ts";
-import type { Job } from "@/scraper/types.ts";
+import { loadJobStates, loadLatest, loadPipeline } from "@/lib/pipeline-store.ts";
 import { LeadBoard, type LeadRow } from "./lead-board.tsx";
 import { SyncButton } from "./sync-button.tsx";
-
-function formatBudget(b: Job["budget"]): string | null {
-  if (!b) return null;
-  const range = [b.feeMin, b.feeMax]
-    .filter((n) => n != null)
-    .map((n) => (n! >= 1000 ? `$${+(n! / 1000).toFixed(1)}k` : `$${n}`))
-    .join("–");
-  const unit = { FIXED: " fixed", HOURLY: "/hr", WEEKLY: "/wk", MONTHLY: "/mo", UNKNOWN: "" }[b.type];
-  return range ? `${range}${unit}` : null;
-}
 
 /** Only what the board shows, so the page doesn't ship whole run records to the browser. */
 function toRow(lead: Lead): LeadRow {
@@ -41,21 +31,24 @@ function toRow(lead: Lead): LeadRow {
     onBoard: lead.onBoard,
     stage: lead.stage,
     brief: lead.applicationBrief ?? null,
+    appliedOnContra: lead.appliedOnContra,
+    judged: lead.judged,
   };
 }
 
 async function Dashboard() {
   await connection();
-  const [states, pipeline, lastRun] = await Promise.all([loadJobStates(), loadPipeline(), latestRanAt()]);
-  if (!lastRun) {
+  const [states, pipeline, run] = await Promise.all([loadJobStates(), loadPipeline(), loadLatest()]);
+  if (!run) {
     return <p className="text-muted-foreground">No scrape data yet.</p>;
   }
-  const leads = buildLeads(states, pipeline, lastRun).map(toRow);
+  // Runs from before the board and the APPLIED feed were saved have neither; the leads then work as before.
+  const contra = { applied: run.applied ?? [], boardIds: run.board ? new Set(run.board.map((j) => j.id)) : null };
+  const leads = buildLeads(states, pipeline, new Date(run.ranAt).toISOString(), contra).map(toRow);
   return (
     <>
       <p className="mb-6 text-muted-foreground">
-        Jobs the AI layer qualified, across every scrape · last scrape{" "}
-        {new Date(lastRun).toLocaleString("en-US", { dateStyle: "medium", timeStyle: "short" })}
+        Jobs the AI layer qualified, plus every job applied to on Contra · last scrape {ist(run.ranAt)}
       </p>
       <LeadBoard leads={leads} />
     </>
@@ -67,8 +60,11 @@ export default function Home() {
     <main className="mx-auto w-full max-w-5xl px-4 pt-10 pb-20 sm:px-8">
       <header className="mb-1 flex items-baseline justify-between gap-4">
         <h1 className="text-xl font-semibold tracking-tight text-balance">Leads</h1>
-        <span className="flex items-baseline gap-5">
-          {!process.env.VERCEL && <SyncButton />}
+        <span className="flex flex-wrap items-baseline justify-end gap-x-5 gap-y-1">
+          <SyncButton />
+          <Link href="/contra" className="rounded-sm text-muted-foreground hover:text-brand">
+            All jobs →
+          </Link>
           <Link href="/latest" className="rounded-sm text-muted-foreground hover:text-brand">
             Latest scrape →
           </Link>

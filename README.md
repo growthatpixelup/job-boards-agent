@@ -56,7 +56,7 @@ Every write is two steps: `*_prepare` returns a preview, `*_confirm` sends it, a
 / `revert_mcp_write_*` can undo some. Applying and messaging are visible to real clients, so always confirm
 first. Posting jobs and invoices needs the matching workspace type.
 
-Built: **applied sync** and a local **inbox check** (see "Lead dashboard" and "Local sync"). Ideas not built yet:
+Built: **applied sync** and a local **inbox check** (see "Lead dashboard" and "Sync from Contra"). Ideas not built yet:
 
 - **Reply watch in Slack:** the local sync already counts unread conversations; posting that to Slack from the
   scheduled scrape would need the same chat tool in the Actions run. Chat messages are other users' personal data,
@@ -196,7 +196,15 @@ service role key can read or write; keep it server-side and out of `NEXT_PUBLIC_
 `npm run dev` → http://localhost:3000. It lists every job the AI layer qualified, from every scrape
 (the `runs` table): qualified projects, and full-time roles that fit (the same rule as
 Slack). A job keeps its newest verdict, so one a later run rejects drops out, unless it already has a stage.
-Jobs that have left Contra's board stay, marked "off the board". `/latest` shows the latest scrape as before.
+Jobs that have left Contra's board stay, marked "off the board". Every job Contra lists as applied to is on it
+too, in **Applied** unless moved on, even one the AI layer never read (the scrape skips jobs already applied to; it's
+marked "Not judged"). `/latest` shows the latest scrape as before.
+
+**All jobs** (`/contra`) is the whole Contra board as of the latest scrape, laid out like Contra's job feed: filters
+for the AI layer's verdict, posting date and budget type, search, sort by newest or budget, and a card per job with
+the client, budget, duration, skills, the verdict and its first reason, and Applied / stage badges. Descriptions are
+never stored (see "Rules"), so **View on Contra** opens the full post. Each run saves the board in `runs.data.board`
+(slim verdicts only); older runs drop theirs when a new one is saved.
 
 - **Stages:** New → Priority → Applied → Talking → Won / Lost / Passed, picked per lead; **Closed** is set by Sync from Contra. **☆ Priority** on a New
   lead flags it for Daksh, who opens the **Priority** tab (the first one) to see just those; applying (or Sync from
@@ -226,9 +234,20 @@ take effect on the next deployment. The Vercel project isn't
 linked to this repo (Vercel blocks private-repo deploys from commit authors outside its team, such as the
 Actions bot), so a code change needs a new deployment.
 
-## Local sync
+## Sync from Contra
 
-`npm run contra:sync`, or **Sync from Contra** at the top of the dashboard (hidden on Vercel), reads your own Contra
+**Hosted:** the button starts the scrape workflow in GitHub Actions (`workflow_dispatch` with `notify: false`), which
+logs in with the scraper's Contra account (the GitHub secrets, Daksh's login), reads the whole board, the APPLIED
+feed and new verdicts, saves the run, and skips Slack and the lead sheet (the next daily scrape posts anything new).
+The button follows the run (named `Sync from the dashboard · <id>`) and reloads the page when it's done, usually in
+about a minute. It needs `GITHUB_DISPATCH_TOKEN` in the Vercel project: a fine-grained token, resource owner
+growthatpixelup, only the job-boards-agent repo, permission **Actions: Read and write** (`GITHUB_REPO` overrides the
+repo). Runs wait for each other (one concurrency group), so a sync never uses the Contra token at the same time as
+the daily scrape. With the token set, a local copy syncs the same way.
+
+**Local, without the token:**
+
+`npm run contra:sync`, or **Sync from Contra** at the top of the dashboard, reads your own Contra
 account on demand instead of waiting for the next scrape: jobs you applied to move to **Applied**, and it reports
 how many conversations have unread messages (a count only; names and text are never read or stored). Same rule as
 the scheduled sync: a stage set by hand is never overwritten. It writes only stages to Supabase; toward Contra it
@@ -242,7 +261,7 @@ you authenticate again, re-run the auth steps under "Switching the Contra accoun
 ## Local use
 
 - `npm run dev`: the lead dashboard at http://localhost:3000 (see "Lead dashboard")
-- `npm run contra:sync`: pull applied jobs and the unread count from Contra (see "Local sync")
+- `npm run contra:sync`: pull applied jobs and the unread count from Contra (see "Sync from Contra")
 - `/contra-scrape` in Claude Code: scrape through Claude Code's own Contra MCP login
 - `SLACK_DRY_RUN=1 npm run notify` / `SHEET_DRY_RUN=1 npm run sheet`: print what would be posted
 - `npm test`: ICP rule, lane, Contra-rules and lead dashboard tests

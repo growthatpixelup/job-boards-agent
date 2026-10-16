@@ -85,6 +85,13 @@ export function minimalDetail(detail: JobDetail | null | undefined): JobDetail |
   return { ok: true, job: { description: redactContact(blocknoteToText(d.blocknoteDescription ?? d.description)) } };
 }
 
+/** A job as the dashboard stores it: everything but the description, which is never saved (see README, "Rules"). */
+export function withoutDescription(job: Job): Omit<Job, "description"> {
+  const { description, ...rest } = job;
+  void description;
+  return rest;
+}
+
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function normalize(entry: any, detail?: JobDetail | null): Job | null {
   const job = entry?.job;

@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import type { ClassifiedJob, IcpVerdict, RunResult } from "../scraper/types.ts";
-import { applyRun, buildLeads as buildFromStates, setStage, type JobState, type Pipeline } from "./pipeline.ts";
+import { applyRun, buildLeads as buildFromStates, setStage, type ContraView, type JobState, type Pipeline } from "./pipeline.ts";
 
 // Which jobs reach the lead dashboard, and how stages are kept.
 
@@ -28,11 +28,11 @@ function run(ranAt: string, jobs: ClassifiedJob[], rejected: string[] = []): Run
 const empty: Pipeline = { leads: {} };
 
 /** Folds the runs in order, as the scraper saves them, then builds the leads. */
-function buildLeads(runs: RunResult[], pipeline: Pipeline) {
+function buildLeads(runs: RunResult[], pipeline: Pipeline, contra?: ContraView) {
   const states = new Map<string, JobState>();
   const sorted = [...runs].sort((a, b) => a.ranAt.localeCompare(b.ranAt));
   for (const r of sorted) applyRun(states, r);
-  return buildFromStates(states.values(), pipeline, sorted.at(-1)?.ranAt ?? "");
+  return buildFromStates(states.values(), pipeline, sorted.at(-1)?.ranAt ?? "", contra);
 }
 const ids = (runs: RunResult[], p = empty) => buildLeads(runs, p).map((l) => l.id);
 
@@ -73,6 +73,26 @@ describe("buildLeads", () => {
     const leads = buildLeads([r], setStage(empty, "b", "Job b", "won"));
     assert.equal(leads.find((l) => l.id === "a")!.stage, "new");
     assert.equal(leads.find((l) => l.id === "b")!.stage, "won");
+  });
+  it("shows every job applied to on Contra, even one the AI layer never read or rejected", () => {
+    const { description: _d, isNew: _n, announce: _a, icp: _i, lane: _l, ...record } = job("z");
+    void [_d, _n, _a, _i, _l];
+    const runs = [run("2026-10-12T10:00:00Z", [job("a"), job("r", { decision: "rejected", lane: null })])];
+    const contra: ContraView = { applied: [record, job("r")], boardIds: new Set(["a", "r"]) };
+    const leads = buildLeads(runs, empty, contra);
+    const byId = new Map(leads.map((l) => [l.id, l]));
+    // A rejected verdict stays out of the leads unless the job was applied to.
+    assert.deepEqual([...byId.keys()].sort(), ["a", "r", "z"]);
+    assert.deepEqual([byId.get("r")!.stage, byId.get("r")!.lane, byId.get("r")!.judged], ["applied", "project", true]);
+    const z = byId.get("z")!;
+    assert.deepEqual([z.stage, z.judged, z.appliedOnContra, z.onBoard], ["applied", false, true, false]);
+    assert.deepEqual([byId.get("a")!.stage, byId.get("a")!.appliedOnContra], ["new", false]);
+  });
+
+  it("keeps a stage set by hand on an applied job, and reads on-the-board from the whole board", () => {
+    const runs = [run("2026-10-12T10:00:00Z", [job("a")]), run("2026-10-13T10:00:00Z", [])];
+    const leads = buildLeads(runs, setStage(empty, "a", "Job a", "talking"), { applied: [job("a")], boardIds: new Set(["a"]) });
+    assert.deepEqual(leads.map((l) => [l.id, l.stage, l.onBoard]), [["a", "talking", true]]);
   });
 });
 

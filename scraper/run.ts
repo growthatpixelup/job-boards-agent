@@ -3,6 +3,7 @@ import path from "node:path";
 import { addIds, loadIds, loadStages, saveRun, saveStageRow } from "../lib/db.ts";
 import { takeApplied, toMarkApplied } from "./applied.ts";
 import { addBriefs, getBriefWriter } from "./brief.ts";
+import { boardOf } from "./board.ts";
 import { RAW_DIR, loadFeed, minimizeDetails, pruneDetails } from "./feed.ts";
 import { filterConfig, matchesFilters } from "./filters.ts";
 import { LLM_FAILED, getClassifier } from "./icp/index.ts";
@@ -98,6 +99,10 @@ async function main() {
   const briefs = await addBriefs(kept, getBriefWriter(), { feedIds: preset === "ALL" ? new Set(feed.jobs.map((j) => j.id)) : null });
   if (briefs.written || briefs.failed) console.log(`[contra] briefs: ${briefs.written} written, ${briefs.cached} cached, ${briefs.failed} failed`);
 
+  // Jobs applied to on Contra (fetch.ts read the APPLIED feed); null when this run didn't read it.
+  const applied = await takeApplied();
+  const board = boardOf(feed.jobs, classified);
+
   const ranAt = new Date().toISOString();
   const result: RunResult = {
     ranAt,
@@ -113,13 +118,14 @@ async function main() {
     rejected: classified
       .filter((j) => j.icp.decision === "rejected")
       .map((j) => ({ title: j.title, url: j.url, reasons: j.icp.reasons })),
+    board,
+    ...(applied ? { applied: applied.flatMap((a) => (a.job ? [a.job] : [])) } : {}),
   };
 
   // The run first: if a later write fails, the ids stay unsaved and the next run re-posts rather than drops.
   await saveRun(result, process.env.RUN_DAILY === "1");
   await addIds("seen_jobs", feed.jobs.filter((j) => !failed.has(j.id)).map((j) => j.id));
   // Jobs applied to on Contra move to the "Applied" stage; a stage set by hand is never overwritten.
-  const applied = await takeApplied();
   if (applied) {
     try {
       const mark = toMarkApplied(applied, await loadStages());

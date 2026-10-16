@@ -1,10 +1,15 @@
+import { normalize, withoutDescription } from "../scraper/contra.ts";
+import type { BoardJob } from "../scraper/types.ts";
+
 // "Applied sync": jobs the Contra account applied to (list_job_feed, preset APPLIED) move to the "Applied" stage
 // in the dashboard on their own. Contra shows a freelancer nothing beyond "applied", so later stages stay manual.
-// Only the job id and title are kept; poster details are never read.
+// Each keeps its feed record (normalize: company name only, no description) so the Applied tab can show jobs the
+// AI layer never put on the board; poster details are never read.
 
 export interface AppliedJob {
   id: string;
   title: string;
+  job?: BoardJob;
 }
 
 /** The jobs applied to, from raw list_job_feed pages (preset APPLIED). */
@@ -15,7 +20,8 @@ export function appliedFromPages(pages: any[]): AppliedJob[] {
     for (const e of page?.entries ?? []) {
       const job = e?.job;
       if (!job?.jobId || e.visitorDidApply === false) continue; // ads, and entries the account didn't apply to
-      out.set(job.jobId, { id: job.jobId, title: String(job.title ?? "").slice(0, 200) });
+      const record = withoutDescription(normalize(e)!);
+      out.set(job.jobId, { id: job.jobId, title: String(job.title ?? "").slice(0, 200), job: { ...record, visitor: { ...record.visitor, applied: true } } });
     }
   }
   return [...out.values()];

@@ -92,6 +92,20 @@ async function saveJobStates(run: RunResult): Promise<void> {
 export async function saveRun(run: RunResult, daily: boolean): Promise<void> {
   check(await db().from("runs").upsert({ ran_at: run.ranAt, preset: run.preset, daily, data: run }), "saving the run");
   await saveJobStates(run);
+  if (run.board) await dropOlderBoards(run.ranAt);
+}
+
+/** Only the newest run keeps the whole board (the "All jobs" page reads just that one), so the table stays small. */
+async function dropOlderBoards(keep: string): Promise<void> {
+  const older = check(
+    await db().from("runs").select("ran_at,data").not("data->board", "is", null).neq("ran_at", keep),
+    "reading older boards",
+  ) as { ran_at: string; data: RunResult }[];
+  for (const r of older) {
+    const { board, ...data } = r.data;
+    void board;
+    check(await db().from("runs").update({ data }).eq("ran_at", r.ran_at), "dropping an older board");
+  }
 }
 
 export type IdTable = "seen_jobs" | "announced_jobs";

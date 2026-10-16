@@ -31,6 +31,10 @@ export interface LeadRow {
   stage: Stage;
   /** Our answer to Contra's "why you'd be a good fit" field, written during the scrape; null until then. */
   brief: string | null;
+  /** On Contra's list of jobs this account applied to. */
+  appliedOnContra: boolean;
+  /** False when the AI layer never read the job (known only from Contra's applied list). */
+  judged: boolean;
 }
 
 const OPEN: Stage[] = ["new", "priority", "applied", "talking"];
@@ -364,6 +368,8 @@ function LeadItem({
   onCopy: () => void;
 }) {
   const fullTime = lead.lane === "outreach";
+  // Apply copies the brief; a job without one (full-time, or never judged) just links to the post.
+  const viewOnly = fullTime || !lead.judged;
   const meta = [lead.company, lead.budget, lead.postedAt && `posted ${day(lead.postedAt)}`].filter(Boolean);
   const links = lead.companyLinks
     ? ([["Website", lead.companyLinks.website], ["LinkedIn", lead.companyLinks.linkedin], ["X", lead.companyLinks.x]] as const).filter(
@@ -385,8 +391,14 @@ function LeadItem({
                 Full-time
               </Badge>
             )}
-            {lead.decision === "maybe" && <Badge>Maybe</Badge>}
-            {!lead.onBoard && <Badge title="Not in the latest scrape">Off the board</Badge>}
+            {lead.judged && lead.decision === "maybe" && <Badge>Maybe</Badge>}
+            {lead.appliedOnContra && (
+              <Badge tone="brand" title="Contra lists this job among the ones this account applied to">
+                Applied on Contra
+              </Badge>
+            )}
+            {!lead.judged && <Badge title="The AI layer never read it: the scrape skips jobs that were already applied to">Not judged</Badge>}
+            {!lead.onBoard && <Badge title="Not on Contra's board in the latest scrape">Off the board</Badge>}
           </div>
           <p className="mt-1 text-muted-foreground">{meta.join(" · ")}</p>
           {lead.scope && <p className="mt-2 line-clamp-2 text-pretty">{lead.scope}</p>}
@@ -407,7 +419,7 @@ function LeadItem({
           {hasDetails && (
             <details className="group mt-2.5">
               <summary className="w-fit cursor-pointer list-none text-xs font-medium tracking-wide text-muted-foreground uppercase select-none hover:text-foreground">
-                <span className="group-open:hidden">{lead.brief ? "Brief and details" : "Why it qualified"}</span>
+                <span className="group-open:hidden">{lead.brief ? "Brief and details" : lead.judged ? "Why it qualified" : "Details"}</span>
                 <span className="hidden group-open:inline">Hide</span>
               </summary>
               {lead.brief && (
@@ -459,11 +471,11 @@ function LeadItem({
               href={lead.url}
               target="_blank"
               rel="noreferrer"
-              onClick={fullTime ? undefined : onApply}
-              title={fullTime ? undefined : "Copies the application brief, then opens the post on Contra"}
-              className={fullTime ? btnSimple : btnPrimary}
+              onClick={viewOnly ? undefined : onApply}
+              title={viewOnly ? undefined : "Copies the application brief, then opens the post on Contra"}
+              className={viewOnly ? btnSimple : btnPrimary}
             >
-              {fullTime ? "View post" : "Apply"}
+              {viewOnly ? "View post" : "Apply"}
               <svg className="size-3.5 opacity-80" viewBox="0 0 16 16" fill="none" aria-hidden>
                 <path d="M5.5 10.5l5-5M6 5.5h4.5V10" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
               </svg>

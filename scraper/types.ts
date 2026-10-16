@@ -123,4 +123,20 @@ export interface RunResult {
   jobs: ClassifiedJob[];
   /** Jobs the ICP filter dropped, kept for auditing the rules. */
   rejected: { title: string; url: string; reasons: string[] }[];
+  /** Every job on the board this run, in Contra's newest-first order, for the dashboard's "All jobs" page. */
+  board?: BoardJob[];
+  /** The jobs this account has applied to on Contra (the APPLIED feed), newest first; absent when it wasn't read. */
+  applied?: BoardJob[];
 }
+
+/** A job as the "All jobs" page shows it: the feed record without its description (never stored), and the AI layer's verdict. */
+export type BoardJob = Omit<Job, "description"> & {
+  /** Absent for jobs the scrape skips before the AI layer: already applied to or dismissed on Contra (filters.ts). */
+  icp?: BoardVerdict;
+  lane?: Lane | null;
+};
+
+/** The part of a verdict the board shows, so a run with ~230 jobs stays small. */
+export type BoardVerdict = Pick<IcpVerdict, "decision" | "reasons"> & {
+  project?: Pick<NonNullable<IcpVerdict["project"]>, "scope" | "estimatedValueUsd" | "fullTime" | "concerns">;
+};

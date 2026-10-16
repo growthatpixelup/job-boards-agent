@@ -1,4 +1,4 @@
-import type { ClassifiedJob, IcpVerdict, Lane, RunResult } from "../scraper/types.ts";
+import type { BoardJob, ClassifiedJob, IcpVerdict, Lane, RunResult } from "../scraper/types.ts";
 
 // The lead dashboard: every job the AI layer said is worth acting on, across all runs, plus the stage the
 // team has moved it to. Stages live in Supabase's pipeline_leads table (see lib/pipeline-store.ts).
@@ -35,6 +35,29 @@ export type Lead = ClassifiedJob & {
   lastSeenAt: string;
   /** Still on Contra's board as of the latest run. */
   onBoard: boolean;
+  /** Contra lists it among the jobs this account applied to (the latest scrape's APPLIED feed). */
+  appliedOnContra: boolean;
+  /** False for a job only known from the APPLIED feed: the AI layer never read it (the scrape skips applied jobs). */
+  judged: boolean;
+};
+
+/** What the latest scrape read from Contra beyond the verdicts: the jobs applied to, and every job on the board. */
+export interface ContraView {
+  applied: BoardJob[];
+  boardIds: Set<string> | null;
+}
+
+/** Stages that mean someone worked on the job: it stays on the dashboard whatever the AI layer thinks of it. */
+const WORKED: Stage[] = ["applied", "talking", "won", "lost"];
+
+/** Placeholder verdict for an applied job the AI layer never read. */
+const NOT_JUDGED: IcpVerdict = {
+  decision: "maybe",
+  tier: null,
+  score: 0,
+  reasons: ["Applied on Contra. The AI layer never judged it: the scrape skips jobs that were already applied to."],
+  signals: ["contra-applied"],
+  classifier: "contra-applied",
 };
 
 // scraper/icp/llm.ts LLM_FAILED. Not imported: llm.ts reads the brief from disk when loaded, which the Next bundle can't do.
@@ -98,26 +121,58 @@ export function applyRun(states: Map<string, JobState>, run: RunResult): JobStat
 
 /**
  * Every lead, each with its newest verdict. A job's newest verdict wins, so one a later run rejected (a stricter
- * brief) drops out, unless the team has already given it a stage. `latestRanAt` is the newest run.
+ * brief) drops out, unless the team has already given it a stage. `latestRanAt` is the newest run. With `contra`
+ * (from the latest run), every job applied to on Contra is on the dashboard too, in Applied unless moved on, even
+ * one the AI layer never put on the board, and "on the board" is read from the whole board rather than the leads.
  */
-export function buildLeads(states: Iterable<JobState>, pipeline: Pipeline, latestRanAt: string): Lead[] {
+export function buildLeads(states: Iterable<JobState>, pipeline: Pipeline, latestRanAt: string, contra?: ContraView): Lead[] {
   const leads: Lead[] = [];
+  const appliedIds = new Set((contra?.applied ?? []).map((j) => j.id));
+  const known = new Set<string>();
+  const onBoard = (id: string, lastSeenAt: string) => (contra?.boardIds ? contra.boardIds.has(id) : lastSeenAt === latestRanAt);
   for (const st of states) {
+    known.add(st.id);
     const staged = pipeline.leads[st.id];
-    // A rejected job keeps its older verdict only while it has a stage.
-    const job = st.rejected && !staged ? undefined : st.job;
+    const applied = appliedIds.has(st.id);
+    // A rejected job keeps its older verdict only while it has a stage (or was applied to).
+    const job = st.rejected && !staged && !applied ? undefined : st.job;
     if (!job) continue;
     // Runs from before lanes existed only flagged full-time roles.
     const lane = job.lane ?? (job.icp.project?.fullTime ? "outreach" : job.icp.decision === "rejected" ? null : "project");
-    if (!isLead(job, lane) && !(staged && (lane === "project" || lane === "outreach"))) continue;
+    const fits = lane === "project" || lane === "outreach";
+    const worked = applied || (staged && WORKED.includes(staged.stage));
+    if (!isLead(job, lane) && !(staged && fits) && !worked) continue;
     leads.push({
       ...job,
-      lane: lane as Lane,
-      stage: staged?.stage ?? "new",
+      lane: fits ? lane : "project",
+      stage: staged?.stage ?? (applied ? "applied" : "new"),
       stageUpdatedAt: staged?.updatedAt ?? null,
       firstSeenAt: st.firstSeenAt,
       lastSeenAt: st.lastSeenAt,
-      onBoard: st.lastSeenAt === latestRanAt,
+      onBoard: onBoard(st.id, st.lastSeenAt),
+      appliedOnContra: applied,
+      judged: true,
+    });
+  }
+  // Applied on Contra but never a lead, so no saved verdict: the scrape skips jobs already applied to.
+  for (const j of contra?.applied ?? []) {
+    if (known.has(j.id)) continue;
+    const staged = pipeline.leads[j.id];
+    const seen = j.approvedAt ?? j.createdAt ?? latestRanAt;
+    leads.push({
+      ...j,
+      description: null,
+      isNew: false,
+      announce: false,
+      icp: NOT_JUDGED,
+      lane: "project",
+      stage: staged?.stage ?? "applied",
+      stageUpdatedAt: staged?.updatedAt ?? null,
+      firstSeenAt: seen,
+      lastSeenAt: latestRanAt,
+      onBoard: contra?.boardIds?.has(j.id) ?? false,
+      appliedOnContra: true,
+      judged: false,
     });
   }
   return leads.sort((a, b) => b.firstSeenAt.localeCompare(a.firstSeenAt) || (b.createdAt ?? "").localeCompare(a.createdAt ?? ""));

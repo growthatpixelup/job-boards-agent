@@ -1,4 +1,6 @@
 name: Daily Contra scrape
+# The dashboard's "Sync from Contra" button starts a run with a request id, and finds it again by this name.
+run-name: ${{ inputs.request && format('Sync from the dashboard · {0}', inputs.request) || github.workflow }}
 
 on:
   schedule:
@@ -7,7 +9,16 @@ on:
     # hasn't run yet (a failed one tries again at the next wake-up). Skipped wake-ups post nothing.
     - cron: "5 11-14 * * *"
       timezone: "America/Los_Angeles"
-  workflow_dispatch: # "Run workflow" button in the Actions tab; always scrapes
+  workflow_dispatch: # "Run workflow" button in the Actions tab, or the dashboard's Sync button; always scrapes
+    inputs:
+      notify:
+        description: Post new jobs to Slack and the lead sheet (the dashboard's Sync button turns this off)
+        type: boolean
+        default: true
+      request:
+        description: Set by the dashboard's Sync button so it can find this run
+        type: string
+        default: ""
 
 permissions:
   contents: read # job data lives in Supabase now, nothing is committed
@@ -123,9 +134,10 @@ jobs:
           gh secret set CONTRA_REFRESH_TOKEN --repo "$GITHUB_REPOSITORY" < "$f"
           echo "Stored the new refresh token."
 
-      # The two announcement steps run only after a successful scrape, and each runs even if the other fails.
+      # The two announcement steps run only after a successful scrape, and each runs even if the other fails. A
+      # dashboard sync skips both: what it finds is posted by the next daily scrape (announced_jobs isn't updated).
       - name: Notify Slack
-        if: ${{ !cancelled() && steps.scrape.outcome == 'success' }}
+        if: ${{ !cancelled() && steps.scrape.outcome == 'success' && (github.event_name != 'workflow_dispatch' || inputs.notify) }}
         env:
           SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
           LEADS_SHEET_URL: ${{ vars.LEADS_SHEET_URL }} # optional repository variable: the lead sheet's link
@@ -136,7 +148,7 @@ jobs:
 
       # Skips until the LEADS_WEBHOOK_URL secret is set (README → "Lead sheet").
       - name: Add full-time leads to the Google Sheet
-        if: ${{ !cancelled() && steps.scrape.outcome == 'success' }}
+        if: ${{ !cancelled() && steps.scrape.outcome == 'success' && (github.event_name != 'workflow_dispatch' || inputs.notify) }}
         env:
           LEADS_WEBHOOK_URL: ${{ secrets.LEADS_WEBHOOK_URL }}
           LEADS_WEBHOOK_TOKEN: ${{ secrets.LEADS_WEBHOOK_TOKEN }}

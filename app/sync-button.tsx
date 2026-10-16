@@ -1,22 +1,50 @@
 "use client";
 
-import { useState, useTransition } from "react";
-import { syncContra } from "./actions.ts";
+import { useState, type ReactNode } from "react";
+import { syncContra, syncStatus } from "./actions.ts";
 
-/** Local only (page.tsx hides it on Vercel): pulls applied jobs and unread replies from Contra. */
+const POLL_MS = 5_000;
+const GIVE_UP_MS = 8 * 60_000; // a scrape that re-reads the board can take a few minutes
+
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+/**
+ * Reads the Contra account again: on the hosted dashboard by starting a scrape in GitHub Actions (Daksh's login,
+ * no Slack post) and following it; locally, with the local login. The page's data reloads when it finishes.
+ */
 export function SyncButton() {
-  const [pending, startTransition] = useTransition();
-  const [message, setMessage] = useState<string | null>(null);
+  const [pending, setPending] = useState(false);
+  const [message, setMessage] = useState<ReactNode>(null);
 
-  function sync() {
+  async function sync() {
+    setPending(true);
     setMessage(null);
-    startTransition(async () => {
-      try {
-        setMessage(await syncContra());
-      } catch (err) {
-        setMessage(err instanceof Error ? err.message : "Sync failed");
+    try {
+      const res = await syncContra();
+      if ("done" in res) return setMessage(res.done);
+      setMessage("Syncing with Contra… about a minute");
+      for (const start = Date.now(); Date.now() - start < GIVE_UP_MS; ) {
+        await sleep(POLL_MS);
+        const run = await syncStatus(res.started);
+        if (run.status === "done") return setMessage(run.summary ?? "Synced");
+        if (run.status === "failed") {
+          return setMessage(
+            <>
+              Sync {run.conclusion === "cancelled" ? "was cancelled" : "failed"} ·{" "}
+              <a href={run.url} target="_blank" rel="noreferrer" className="underline hover:text-brand">
+                open the run
+              </a>
+            </>,
+          );
+        }
+        setMessage(run.status === "running" ? "Syncing with Contra… reading the board" : "Syncing with Contra… waiting for GitHub");
       }
-    });
+      setMessage("Still running on GitHub: reload the page in a minute");
+    } catch (err) {
+      setMessage(err instanceof Error ? err.message : "Sync failed");
+    } finally {
+      setPending(false);
+    }
   }
 
   return (
